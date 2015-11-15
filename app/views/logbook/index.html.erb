@@ -1,0 +1,28 @@
+<p>
+	Total flight hours in last 24 hours: <%= p 'todo' %>
+</p>
+
+<table>
+	<tr>
+		<th>date</th>
+		<th>tail</th>
+		<td>legs</td>
+		<td>hobbs</td>
+	</tr>
+	
+	<% @entries.each do |e| %>
+		<tr>
+			<td><%= link_to e.date.strftime('%m-%d-%y'), edit_entry_path(e.id) %></td>
+			<td><%= e.tail %></td>
+			<td><%= e.flights.count %></td>
+			<td><%= e.total_time %></td>
+		</tr>
+	<% end %>
+	
+	<tr>
+		<td colspan="100%">
+			<%= link_to 'new entry...', new_entry_path %>
+		</td>
+	</tr>
+	
+</table>

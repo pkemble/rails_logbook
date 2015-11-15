@@ -1,0 +1,32 @@
+<h2>flights:</h2>
+<table>
+	<tr>
+		<td></td>
+		<td></td>
+		<th>dep:</th>
+		<th>arr:</th>
+		<th>blockout</th>
+		<th>blockin</th>
+		<th>total time</th>
+	</tr>
+	<% @flights.each do |f| %>
+		<tr>
+			<td><%= link_to image_tag('pencil-2x.png'), 
+						edit_entry_flight_path(@entry.id, f.id) %></td>
+			<td><%= link_to image_tag('delete-2x.png'), 
+						entry_flight_path(@entry.id, f.id), 
+						method: :delete,
+						data: { confirm: 'Are you sure?' } %></td>
+			<td><%= f.dep %></td>
+			<td><%= f.arr %></td>
+			<td><%= f.blockout %></td>
+			<td><%= f.blockin%></td>
+			<td><%= f.total_time%></td>
+		</tr>
+	<% end %>
+	<tr>
+		<th colspan="100%">
+			<%= link_to 'add a new flight...', new_entry_flight_path(@entry.id) %>
+		</th>
+	</tr>
+</table>

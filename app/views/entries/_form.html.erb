@@ -1,0 +1,14 @@
+<%= form_for @entry do |f| %>
+	<p>
+		<%= f.label :date %>
+		<%= f.date_field :date, :value => Time.now.strftime("%Y-%m-%d")%>
+	</p>
+	<p>
+		<%= f.label :tail %>
+		<%= f.text_field :tail, 
+			:placeholder => 'e.g. \'243\', \'708\'' %>	
+	</p>
+	<p>
+		<%= f.submit %>
+	</p>
+<% end %>

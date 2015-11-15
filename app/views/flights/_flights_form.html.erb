@@ -1,0 +1,29 @@
+
+<% if @flight.errors.any? %>
+	<div class="error">
+		<%= pluralize(@flight.errors.count, "error")%> detected:</br>
+		<ul>
+			<% @flight.errors.full_messages.each do |m| %>
+				<li><%= m %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+	
+<table>
+	<tr>
+		<td><%= f.label :dep %></td><td><%= f.text_field :dep %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :arr %></td><td><%= f.text_field :arr %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :blockout %></td><td><%= f.text_field :blockout %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :blockin %></td><td><%= f.text_field :blockin %></td>
+	</tr>
+</table>
+<p>
+	<%= f.submit %> | <%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn' %>
+</p>

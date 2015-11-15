@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dep: MyText
+  arr: MyText
+  blockin: 1
+  blockout: 1
+  entry_id: 
+
+two:
+  dep: MyText
+  arr: MyText
+  blockin: 1
+  blockout: 1
+  entry_id: 
