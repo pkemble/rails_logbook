@@ -3,12 +3,19 @@ class Entry < ActiveRecord::Base
 	
 	validates :date, presence: true
 		
-	attr_accessor :total_time
+	attr_accessor :total_time, :arpt_string
 	
 	before_save do
+	  # tail
 	  if self.tail =~ /^\d{3}$/
 	    self.tail = 'N' + self.tail.upcase + 'AF'
-	  end	  
+	  end
+	  
+	  #flight number
+	  if self.flight_number =~ /^\d*$/
+	    self.flight_number = 'CNS' + self.flight_number
+	  end
+	  
 	end
 	
 	def total_time
@@ -17,6 +24,17 @@ class Entry < ActiveRecord::Base
 	    t = t + f.total_time
 	  end
 	  total_time = t
+	end
+	
+	def arpt_string
+	  a = ""
+	  unless self.flights.any? == false
+	    self.flights.each do |f|
+	     a += f.dep.gsub('K', '') + '/'
+  	  end
+  	  a += self.flights.last.arr.gsub('K','')
+	  end
+    arpt_string = a
 	end
 	
 end

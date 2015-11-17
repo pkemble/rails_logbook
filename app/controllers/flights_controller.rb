@@ -4,6 +4,7 @@ class FlightsController < ApplicationController
 	def new
 		@flight = Flight.new
 		@entry = Entry.find(params[:entry_id])
+		@last_loc = last_loc
 	end
 	
 	def show
@@ -42,8 +43,20 @@ class FlightsController < ApplicationController
 	  redirect_to edit_entry_path(@entry)
 	end
 	
+	def last_loc
+    #@entry = Entry.find(params[:entry_id])
+    if @entry.flights.any?
+      last_loc = @entry.flights.last.arr
+    else
+      #todo get the preceding entry/flight
+      last_loc = Entry.order('date').last(2)[0].flights.last.arr
+    end
+  end
+	
 	private
 		def flight_params
 			params.require(:flight).permit(:dep,:arr,:blockout,:blockin,:total_time,:block_out_utc,:block_in_utc)
 		end
+		
+
 end

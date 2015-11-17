@@ -11,10 +11,10 @@ end
 class Flight < ActiveRecord::Base
     
   belongs_to :entry
-    
+  
   validates :dep, :arr, :presence => true
   validates :blockout, :blockin, :blocktime => true
-    
+  
   require 'stringutil'
   
   before_save do
