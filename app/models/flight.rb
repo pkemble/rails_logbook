@@ -20,8 +20,8 @@ class Flight < ActiveRecord::Base
   before_save do
     self.dep = self.dep.icao
     self.arr = self.arr.icao
-    self.block_out_utc = to_utc(blockout)
-    self.block_in_utc = to_utc(blockin)
+    self.p_blockout = to_utc(blockout)
+    self.p_blockin = to_utc(blockin)
     self.total_time = get_total_time
   end
   

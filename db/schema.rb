@@ -13,8 +13,21 @@
 
 ActiveRecord::Schema.define(version: 20151115164110) do
 
-# Could not dump table "entries" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "entries", force: :cascade do |t|
+    t.datetime "date"
+    t.text     "tail"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "pic"
+    t.string   "crew_name"
+    t.integer  "crew_meal"
+    t.decimal  "tips",          precision: 8, scale: 2
+    t.text     "remarks"
+    t.string   "flight_number"
+  end
 
   create_table "flights", force: :cascade do |t|
     t.text     "dep"
@@ -22,13 +35,22 @@ ActiveRecord::Schema.define(version: 20151115164110) do
     t.string   "blockin"
     t.string   "blockout"
     t.integer  "entry_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.float    "total_time"
-    t.time     "block_out_utc"
-    t.time     "block_in_utc"
+    t.date     "p_blockout"
+    t.date     "p_blockin"
   end
 
-  add_index "flights", ["entry_id"], name: "index_flights_on_entry_id"
+  add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree
 
+  create_table "widgets", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "stock"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_foreign_key "flights", "entries"
 end

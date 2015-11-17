@@ -49,13 +49,19 @@ class FlightsController < ApplicationController
       last_loc = @entry.flights.last.arr
     else
       #todo get the preceding entry/flight
-      last_loc = Entry.order('date').last(2)[0].flights.last.arr
+      @entries = Entry.order('date')
+      if @entries.count > 1
+        last_loc = Entry.order('date').last(2)[0].flights.last.arr
+      else
+        last_loc = ""
+      end
+      
     end
   end
 	
 	private
 		def flight_params
-			params.require(:flight).permit(:dep,:arr,:blockout,:blockin,:total_time,:block_out_utc,:block_in_utc)
+			params.require(:flight).permit(:dep,:arr,:blockout,:blockin,:total_time,:p_blockout,:p_blockin)
 		end
 		
 
