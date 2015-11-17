@@ -38,19 +38,11 @@ ActiveRecord::Schema.define(version: 20151115164110) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float    "total_time"
-    t.date     "p_blockout"
-    t.date     "p_blockin"
+    t.time     "p_blockout"
+    t.time     "p_blockin"
   end
 
   add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree
-
-  create_table "widgets", force: :cascade do |t|
-    t.string   "name"
-    t.text     "description"
-    t.integer  "stock"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   add_foreign_key "flights", "entries"
 end
