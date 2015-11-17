@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151115164110) do
+ActiveRecord::Schema.define(version: 20151117161200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,12 @@ ActiveRecord::Schema.define(version: 20151115164110) do
     t.float    "total_time"
     t.time     "p_blockout"
     t.time     "p_blockin"
+    t.boolean  "night_to"
+    t.boolean  "night_ld"
+    t.float    "night"
+    t.float    "instrument"
+    t.float    "approaches"
+    t.boolean  "pf"
   end
 
   add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree

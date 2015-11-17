@@ -61,7 +61,8 @@ class FlightsController < ApplicationController
 	
 	private
 		def flight_params
-			params.require(:flight).permit(:dep,:arr,:blockout,:blockin,:total_time,:p_blockout,:p_blockin)
+			params.require(:flight).permit(:dep,:arr,:blockout,:blockin,:total_time,:p_blockout,:p_blockin,
+			:night_to,:night_ld,:night,:instrument,:approaches,:pf)
 		end
 		
 

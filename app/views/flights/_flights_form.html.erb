@@ -18,12 +18,32 @@
 		<td><%= f.label :arr %></td><td><%= f.text_field :arr %></td>
 	</tr>
 	<tr>
-		<td><%= f.label :blockout %></td><td><%= f.text_field :blockout %></td>
+		<td><%= f.label :blockout %></td><td><%= f.text_field :blockout, :class => "blocktimefield" %></td>
 	</tr>
 	<tr>
-		<td><%= f.label :blockin %></td><td><%= f.text_field :blockin %></td>
+		<td><%= f.label :blockin %></td><td><%= f.text_field :blockin, :class => "blocktimefield" %></td>
 	</tr>
 </table>
 <p>
 	<%= f.submit %> | <%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn' %>
 </p>
+<table>
+	<tr>
+		<td><%= f.label :instrument %></td><td><%= f.number_field :instrument %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :approaches %></td><td><%= f.number_field :approaches %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :night %></td><td><%= f.number_field :night %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :night_to %></td><td><%= f.number_field :night_to %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :night_ld %></td><td><%= f.number_field :night_ld %></td>
+	</tr>
+	<tr>
+		<td><%= f.label :pf %></td><td><%= f.number_field :pf %></td>
+	</tr>
+</table>
