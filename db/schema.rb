@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 20151117161200) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float    "total_time"
-    t.time     "p_blockout"
-    t.time     "p_blockin"
+    t.date     "p_blockout"
+    t.date     "p_blockin"
     t.boolean  "night_to"
     t.boolean  "night_ld"
     t.float    "night"
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(version: 20151117161200) do
   end
 
   add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree
+
+  create_table "widgets", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "stock"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   add_foreign_key "flights", "entries"
 end

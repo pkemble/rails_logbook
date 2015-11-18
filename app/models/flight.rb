@@ -14,7 +14,7 @@ class Flight < ActiveRecord::Base
   
   validates :dep, :arr, :presence => true
   validates :blockout, :blockin, :blocktime => true
-  validates :night, Proc.new { |n| n < total_time }
+  #validates :night, :if "night < total_time"
   
   require 'stringutil'
   
