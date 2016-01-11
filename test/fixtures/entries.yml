@@ -1,9 +1,23 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  date: 2015-11-02 18:54:48
-  tail: MyText
-
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+simple_entry:
+  date: 2016-01-03
+  tail: 708
+  flight_number: 976
+  pic: true
+  crew_name: Steve Lemieux
+  crew_meal: 1
+  
+# column: value
+#
 two:
-  date: 2015-11-02 18:54:48
-  tail: MyText
+  date: 2016-01-04
+  tail: N708AF
+  flight_number: CNSSSS104
+  pic: false
+  crew_name: bob bob bob
+#  column: value

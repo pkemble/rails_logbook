@@ -37,10 +37,10 @@ class FlightsController < ApplicationController
 	end
 	
 	def destroy
-	  @entry = Entry.find(params[:entry_id])
+	  #@entry = Entry.find(params[:entry_id])
 	  @flight = Flight.find(params[:id])
 	  @flight.destroy
-	  redirect_to edit_entry_path(@entry)
+	  redirect_to edit_entry_path(@flight.entry_id)
 	end
 	
 	def last_loc
