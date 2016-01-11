@@ -1,3 +1,17 @@
 // Place all the styles related to the Entries controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+td {
+  padding: 0;
+  margin: 2px;
+}
+
+th, td {
+  background-color: #cce1ff
+}
+
+/*table a {
+  background-color: #06f;
+  color: white;
+}*/

@@ -31,14 +31,13 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def arpt_string
-	  a = ""
+	  arpt_string = ""
 	  unless self.flights.any? == false
 	    self.flights.each do |f|
-	     a += f.dep.gsub('K', '') + '/'
+	     arpt_string += f.dep.gsub('K', '') + '-'
   	  end
-  	  a += self.flights.last.arr.gsub('K','')
+  	  arpt_string += self.flights.last.arr.gsub('K','')
 	  end
-    arpt_string = a
 	end
 	
 end

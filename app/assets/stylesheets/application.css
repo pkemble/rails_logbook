@@ -14,37 +14,35 @@
  *= require_self
  */
 
+$primary-color: #06f;
+
 * {
 	font-family: "Courier-new", Courier, monospace;
 	/*font-size: 12px*/
 	
 }
 
+.branding {
+	background-color: $primary-color
+	font-weight: bold;
+	color: white;
+	
+	.branding a, .branding a:visited, .branding a:active {
+		color: white;
+		text-decoration: none;
+	}
+}
+
 .header {
-	height: 40px;
-	padding: 30px;
-	background-color: #06f;
+	@extend .branding;
+	padding: 40px;
 	font-size: 30px;
-	color: white;
 }
 
-.header a, .header a:visited, .header a:active {
-	color: white;
-	text-decoration: none;
+
+/* footer */
+.footer {
+	@extend .branding;
+	padding: 5px;
 }
-
-td {
-	padding: 0;
-	margin: 2px;
-}
-
-th, td {
-	background-color: #cce1ff
-}
-
-/*table a {
-	background-color: #06f;
-	color: white;
-}*/
-
 

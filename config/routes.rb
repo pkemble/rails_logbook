@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-#  resources :entries
   resources :flights
   get 'logbook/index'
 
@@ -11,14 +10,15 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-
+	get 'io' => 'import_export#index'
+	
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
   resources :entries do
-    resources :flights
+    resources :flights#, shallow: true TODO TODO TODO
   end
   
   # Example resource route with options:

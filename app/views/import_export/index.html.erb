@@ -1,0 +1,20 @@
+<h1>import-export</h1>
+
+<table>
+<% @entries.each do |e| %>
+	<tr>
+		<!-- using Expense report 1/2016 -->
+		<td><%= e.date.strftime("%m/%d/%Y") %></td>
+		<td><%= e.tail %></td>
+		<td><%= e.arpt_string %></td>
+		<td></td> <!-- hidden column -->
+		<td></td> <!-- catering -->
+		<td></td> <!-- travel exp. -->
+		<td><%= e.tips %></td>
+		<td></td> <!-- other exp. -->
+		<td><%= e.remarks %></td>
+		<td><%= e.crew_meal %></td>
+		<td>24</td>
+	</tr>
+<% end %>
+</table>
