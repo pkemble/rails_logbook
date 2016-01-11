@@ -16,12 +16,16 @@ class Entry < ActiveRecord::Base
 	    self.flight_number = 'CNS' + self.flight_number
 	  end
 	  
+	  self.total_time = total_time
+	  
 	end
 	
 	def total_time
 	  t = 0
-	  self.flights.each do |f|
-	    t = t + f.total_time
+	  if self.flights.any?
+	   self.flights.each do |f|
+	     t = t + f.total_time
+	   end  
 	  end
 	  total_time = t
 	end

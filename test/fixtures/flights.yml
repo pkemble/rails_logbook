@@ -1,15 +1,21 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  dep: MyText
-  arr: MyText
-  blockin: 1
-  blockout: 1
-  entry_id: 
-
-two:
-  dep: MyText
-  arr: MyText
-  blockin: 1
-  blockout: 1
-  entry_id: 
+# This model initially had no columns defined.  If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+simple_flight:
+  dep: fll
+  arr: bos
+  blockout: 1300
+  blockin: 1333
+  entry: simple_entry
+# column: value
+#
+# bad_times:
+  # dep: psm
+  # arr: bos
+  # blockout: 1300
+  # blockin: 1399 # flunk here
+  # entry: simple_entry
+#  column: value

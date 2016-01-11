@@ -23,7 +23,7 @@ class Flight < ActiveRecord::Base
     self.arr = self.arr.icao
     self.p_blockout = to_utc(blockout)
     self.p_blockin = to_utc(blockin)
-    self.total_time = get_total_time
+    get_total_time
   end
   
   def get_total_time
@@ -34,7 +34,7 @@ class Flight < ActiveRecord::Base
       d1 = d1.prev_day
     end
     
-    total_time = ((d2.to_time - d1.to_time) / 3600 ).round(1)
+    self.total_time = ((d2.to_time - d1.to_time) / 3600 ).round(1)
   end
   
   private
