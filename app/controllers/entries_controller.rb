@@ -1,5 +1,7 @@
 class EntriesController < ApplicationController
   def index
+    # in case someone types it in...
+    redirect_to root_path
   end
   
   def show
