@@ -1,34 +1,42 @@
 <%= form_for @entry do |f| %>
-	<p>
-		<%= f.label :date %>
-		<%= f.date_field :date, :value => Time.now.strftime("%Y-%m-%d")%>
-	</p>
-	<p>
-		<%= f.label :tail %>
-		<%= f.text_field :tail, 
-			:placeholder => 'e.g. \'243\', \'708\'' %>
+	<div>
+		<div><%= f.label :date %></div>
+		<div><%= f.date_field :date, :value => Time.now.strftime("%Y-%m-%d")%></div>
+	</div>
+	<div>
+		<div><%= f.label :tail %></div>
+		<div><%= f.text_field :tail, 
+			:placeholder => 'e.g. \'243\', \'708\'' %></div>
 		
-		<%= f.label :flight_number %>
-		<%= f.text_field :flight_number %>
-	</p>
-	<p>
+		<div><%= f.label :flight_number %></div>
+		<div><%= f.text_field :flight_number %></div>
+	</div>
+	<div>
 		<%= f.label :pic, "PIC" %>
 		<%= f.check_box :pic, :checked => true %>
 		
 		<%= f.label :crew_name, "Crew name" %>
 		<%= f.text_field :crew_name %>
-	</p>
-	<p>
+	</div>
+	<div>
+		<div>Per Diem start and end (HHMM) - leave these blank for 24 hours</div>
+		<div><%= f.text_field :per_diem_start, :size =>"5" %> to 
+			<%= f.text_field :per_diem_end, :size => "5" %>
+			<%= f.check_box :extract_per_diem %>
+			<%= f.label :extract_per_diem, "extract from flights TODO" %>
+			</div>
+	</div>
+	<div>
 		<%= f.label :crew_meal %>
 		<%= f.number_field :crew_meal, maxlength: 1 %>
 		<%= f.label :tips %>
 		$<%= f.number_field :tips, maxlength: 1 %>.00
-	</p>
-	<p>
+	</div>
+	<div>
 		<%= f.label :remarks %>
 		<%= f.text_area :remarks %>
-	</p>
-	<p>
+	</div>
+	<div>
 		<%= f.submit %>
-	</p>
+	</div>
 <% end %>

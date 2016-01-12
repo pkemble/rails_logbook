@@ -1,9 +1,10 @@
 class Entry < ActiveRecord::Base
 	has_many :flights
-	
-	validates :date, presence: true
 		
-	attr_accessor :total_time, :arpt_string
+	validates :date, presence: true
+	validates :per_diem_end, :per_diem_start, :time_format => true
+		
+	attr_accessor :total_time, :arpt_string, :per_diem_start, :per_diem_end, :extract_per_diem
 	
 	before_save do
 	  # tail
@@ -40,5 +41,4 @@ class Entry < ActiveRecord::Base
 	  end
     arpt_string = a
 	end
-	
 end

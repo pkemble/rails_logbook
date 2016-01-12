@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117161200) do
+ActiveRecord::Schema.define(version: 20160111210940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,14 +19,15 @@ ActiveRecord::Schema.define(version: 20151117161200) do
   create_table "entries", force: :cascade do |t|
     t.datetime "date"
     t.text     "tail"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.boolean  "pic"
     t.string   "crew_name"
     t.integer  "crew_meal"
-    t.decimal  "tips",          precision: 8, scale: 2
+    t.decimal  "tips",           precision: 8, scale: 2
     t.text     "remarks"
     t.string   "flight_number"
+    t.float    "per_diem_hours"
   end
 
   create_table "flights", force: :cascade do |t|
@@ -49,6 +50,11 @@ ActiveRecord::Schema.define(version: 20151117161200) do
   end
 
   add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree
+
+  create_table "import_exports", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   add_foreign_key "flights", "entries"
 end

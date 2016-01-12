@@ -1,19 +1,19 @@
-class BlocktimeValidator < ActiveModel::EachValidator
-  def validate_each(rec, attr, val)
-    barr = val.scan(/.{2}/)
-    unless val.length == 4 && barr[0].to_i.between?(00,23) && barr[1].to_i.between?(00,59)
-      str_msg = 'Time doesn\'t seem to fit convention: HHMM' # + barr[0] + ' - ' + barr[1]
-      rec.errors.add(attr, str_msg)
-    end
-  end
-end
+# class BlocktimeValidator < ActiveModel::EachValidator
+  # def validate_each(rec, attr, val)
+    # barr = val.scan(/.{2}/)
+    # unless val.length == 4 && barr[0].to_i.between?(00,23) && barr[1].to_i.between?(00,59)
+      # str_msg = 'Time doesn\'t seem to fit convention: HHMM' # + barr[0] + ' - ' + barr[1]
+      # rec.errors.add(attr, str_msg)
+    # end
+  # end
+# end
 
 class Flight < ActiveRecord::Base
     
   belongs_to :entry
   
   validates :dep, :arr, :presence => true
-  validates :blockout, :blockin, :blocktime => true
+  validates :blockout, :blockin, :time_format => true
   #validates :night, :if "night < total_time"
   
   require 'stringutil'

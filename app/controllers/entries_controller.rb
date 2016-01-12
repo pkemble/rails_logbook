@@ -37,7 +37,9 @@ class EntriesController < ApplicationController
     
   private
     def entry_params
-      params.require(:entry).permit(:date, :tail, :pic, :crew_name, :crew_meal, :tips, :remarks, :flight_number)
+      params.require(:entry).permit(:date, :tail, :pic, :crew_name, :crew_meal,
+                                    :tips, :remarks, :flight_number, :per_diem_start,
+                                    :per_diem_end, :extract_per_diem)
     end
       
 end
