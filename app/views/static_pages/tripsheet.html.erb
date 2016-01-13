@@ -1,0 +1,7 @@
+<h2>Generated at: <%= Time.now %></h2>
+<%= form_tag '/' do %>
+	<% @flights.each do |f| %>
+		<h2>Leg <%= f %></h2>
+		<%= render partial: "trip_form" %>
+	<% end %>
+<% end %>

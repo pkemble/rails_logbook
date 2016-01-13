@@ -1,0 +1,42 @@
+// Place all the styles related to the StaticPages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* TRIP SHEETS */
+
+.tripsheet td {
+  background-color: white;
+}
+
+.tripsheet th, tr {
+  height: 30px;
+}
+
+.block-times .bul {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.block-times .bur {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.block-times .bml {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.block-times .bmr {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.block-times .bll {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.block-times .blr {
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
