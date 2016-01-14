@@ -4,12 +4,39 @@
 
 /* TRIP SHEETS */
 
-.tripsheet td {
-  background-color: white;
+.tripsheet {
+  font-family: sans-serif;
 }
 
-.tripsheet th, tr {
-  height: 30px;
+.tripsheet div {
+  padding: 2px
+}
+
+.trip-head {
+  height: 20px;
+  font-size: 1.5em;
+  padding: 4px;
+}
+
+.leg div {
+  border: 1px solid black;
+}
+
+.dep, .dep-arpt, .arr, .arr-arpt {
+  font-size: 1.2em;
+  display: inline-block;
+}
+
+.dep, .arr {
+  float: left;
+}
+
+.dep-arpt, .arr-arpt {
+  float: left; 
+}
+
+.dep-fbo, .arr-fbo {
+  clear: left;
 }
 
 .block-times .bul {
