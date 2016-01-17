@@ -29,21 +29,17 @@
 </p>
 <table>
 	<tr>
-		<td><%= f.label :instrument %></td><td><%= f.number_field :instrument %></td>
+		<td><%= f.label :instrument %></td><td><%= f.number_field :instrument, :maxlength => "3" %></td>
+		<td><%= f.label :approaches %></td><td><%= f.number_field :approaches, :maxlength => "3" %></td>
 	</tr>
 	<tr>
-		<td><%= f.label :approaches %></td><td><%= f.number_field :approaches %></td>
+		<td><%= f.label :night %></td><td><%= f.number_field :night, :maxlength => "3" %></td>
 	</tr>
 	<tr>
-		<td><%= f.label :night %></td><td><%= f.number_field :night %></td>
+		<td><%= f.label :night_to %></td><td><%= f.number_field :night_to, :maxlength => "3" %></td>
+		<td><%= f.label :night_ld %></td><td><%= f.number_field :night_ld, :maxlength => "3" %></td>
 	</tr>
 	<tr>
-		<td><%= f.label :night_to %></td><td><%= f.number_field :night_to %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :night_ld %></td><td><%= f.number_field :night_ld %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :pf %></td><td><%= f.number_field :pf %></td>
+		<td><%= f.label :pf, "PF" %><%= f.check_box :pf %></td>
 	</tr>
 </table>
