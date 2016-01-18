@@ -1,45 +1,98 @@
-
 <% if @flight.errors.any? %>
-	<div class="error">
-		<%= pluralize(@flight.errors.count, "error")%> detected:</br>
-		<ul>
-			<% @flight.errors.full_messages.each do |m| %>
-				<li><%= m %></li>
-			<% end %>
-		</ul>
-	</div>
+<div class="error">
+	<%= pluralize(@flight.errors.count, "error")%> detected:</br>
+	<ul>
+		<% @flight.errors.full_messages.each do |m| %>
+		<li>
+			<%= m %>
+		</li>
+		<% end %>
+	</ul>
+</div>
 <% end %>
-	
-<table>
-	<tr>
-		<td><%= f.label :dep %></td><td><%= f.text_field :dep, :value => @last_loc %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :arr %></td><td><%= f.text_field :arr %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :blockout %></td><td><%= f.text_field :blockout, :class => "blocktimefield" %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :blockin %></td><td><%= f.text_field :blockin, :class => "blocktimefield" %></td>
-	</tr>
-</table>
-<p>
-	<%= f.submit %> | <%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn' %>
-</p>
-<table>
-	<tr>
-		<td><%= f.label :instrument %></td><td><%= f.number_field :instrument, :maxlength => "3" %></td>
-		<td><%= f.label :approaches %></td><td><%= f.number_field :approaches, :maxlength => "3" %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :night %></td><td><%= f.number_field :night, :maxlength => "3" %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :night_to %></td><td><%= f.number_field :night_to, :maxlength => "3" %></td>
-		<td><%= f.label :night_ld %></td><td><%= f.number_field :night_ld, :maxlength => "3" %></td>
-	</tr>
-	<tr>
-		<td><%= f.label :pf, "PF" %><%= f.check_box :pf %></td>
-	</tr>
-</table>
+<div class="ff">
+	<div class="ff_basics_section">
+		<div class="ff_section">
+			<div class="ff_single">
+				<%= f.label :pf, "Pilot Flying (PF)" %><%= f.check_box :pf %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :dep %>
+			</div>
+			<div class="ff_number">
+				<%= f.text_field :dep %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :arr %>
+			</div>
+			<div class="ff_number">
+				<%= f.text_field :arr %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :blockout %>
+			</div>
+			<div class="ff_number">
+				<%= f.text_field :blockout, :class => "blocktimefield" %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :blockin %>
+			</div>
+			<div class="ff_number">
+				<%= f.text_field :blockin, :class => "blocktimefield" %>
+			</div>
+		</div>
+	</div>
+	<div class="form_submit, section">
+		<%= f.submit %> | <%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn' %>
+	</div>
+	<div class="ff_currency_section">
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :instrument %>
+			</div>
+			<div class="ff_number">
+				<%= f.number_field :instrument, :step => "0.1" %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :approaches %>
+			</div>
+			<div class="ff_number">
+				<%= f.number_field :approaches, :max => "9" %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :night %>
+			</div>
+			<div class="ff_number">
+				<%= f.number_field :night, :max => "9.9" %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :night_to %>
+			</div>
+			<div class="ff_number">
+				<%= f.number_field :night_to, :max => "3" %>
+			</div>
+		</div>
+		<div class="ff_section">
+			<div class="ff_label">
+				<%= f.label :night_ld %>
+			</div>
+			<div class="ff_number">
+				<%= f.number_field :night_ld, :max => "3" %>
+			</div>
+		</div>
+	</div>
+</div>

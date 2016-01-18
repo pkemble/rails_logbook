@@ -3,8 +3,9 @@ class FlightsController < ApplicationController
   
 	def new
 		@flight = Flight.new
+		@flight.dep = last_loc
 		@entry = Entry.find(params[:entry_id])
-		@last_loc = last_loc
+		
 	end
 	
 	def show
@@ -44,16 +45,19 @@ class FlightsController < ApplicationController
 	end
 	
 	def last_loc
-    #@entry = Entry.find(params[:entry_id])
+	  if !@flight.dep.nil?
+	    return @flight.dep
+	  end
+    @entry = Entry.find(params[:entry_id])
     if @entry.flights.any?
       last_loc = @entry.flights.last.arr
     else
       #todo get the preceding entry/flight
       @entries = Entry.order('date')
       if @entries.count > 1
-        last_loc = Entry.order('date').last(2)[0].flights.last.arr
+        self.last_loc = Entry.order('date').last(2)[0].flights.last.arr
       else
-        last_loc = ""
+        self.last_loc = ""
       end
       
     end

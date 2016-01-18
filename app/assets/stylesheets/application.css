@@ -15,7 +15,7 @@
  */
 
 * {
-	font-family: "Courier-new", Courier, monospace;
+	font-family: "Ariel", Helvetica; /* "Courier-new", Courier, monospace; */
 	/*font-size: 12px*/
 	
 }
@@ -35,7 +35,7 @@
 
 td {
 	padding: 0;
-	margin: 2px;
+	margin: 1px;
 }
 
 th, td {

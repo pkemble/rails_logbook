@@ -12,6 +12,8 @@ class Flight < ActiveRecord::Base
     
   belongs_to :entry
   
+  attr_accessor :last_loc, :n_curr
+  
   validates :dep, :arr, :presence => true
   validates :blockout, :blockin, :blocktime => true
   #validates :night, :if "night < total_time"
@@ -35,6 +37,12 @@ class Flight < ActiveRecord::Base
     end
     
     self.total_time = ((d2.to_time - d1.to_time) / 3600 ).round(1)
+  end
+  
+  def n_curr #not used
+    a = self.night_to ? self.night_to : "0" 
+    b = self.night_ld ? sefl.night_ld : "0"
+    n_curr = a + "/" + b    
   end
   
   private
