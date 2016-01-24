@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111210940) do
+ActiveRecord::Schema.define(version: 20160119190506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20160111210940) do
     t.text     "remarks"
     t.string   "flight_number"
     t.float    "per_diem_hours"
+    t.datetime "per_diem_start"
+    t.datetime "per_diem_end"
   end
 
   create_table "flights", force: :cascade do |t|

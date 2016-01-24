@@ -11,6 +11,7 @@
 		<td>flight number</td>
 		<td>identifiers</td>
 		<td>crew member</td>
+		<td>per diem hours</td>
 	</tr>
 	
 	<% @entries.each do |e| %>
@@ -22,6 +23,7 @@
 			<td><%= e.flight_number %></td>
 			<td><%= e.arpt_string %></td>
 			<td><%= e.crew_name %></td>
+			<td><%= e.per_diem_hours %></td>
 		</tr>
 	<% end %>
 	

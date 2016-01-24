@@ -25,6 +25,6 @@ module Logbook
     config.active_record.raise_in_transactional_callbacks = true
         
     #config.autoload_paths += %W["#{config.root}/app/validators/"]
-    #config.autoload_paths << Rails.root.join('app', 'validators')
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

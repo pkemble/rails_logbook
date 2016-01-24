@@ -1,10 +1,12 @@
 class Entry < ActiveRecord::Base
+  require 'hobbstime'
+  
 	has_many :flights
 		
 	validates :date, presence: true
-	validates :per_diem_end, :per_diem_start, :time_format => true
+	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :per_diem_start, :per_diem_end, :extract_per_diem
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :extract_per_diem
 	
 	before_save do
 	  # tail
@@ -17,6 +19,13 @@ class Entry < ActiveRecord::Base
 	    self.flight_number = 'CNS' + self.flight_number
 	  end
 	  
+	  #per diem
+	  #TODO extract per diem
+	  @per_diem = HobbsTime.new(pd_start, pd_end, self.date)
+	  self.per_diem_hours = @per_diem.span
+	  self.per_diem_start = @per_diem.hobbs_start
+	  self.per_diem_end = @per_diem.hobbs_end
+
 	  self.total_time = total_time
 	  
 	end
@@ -40,5 +49,13 @@ class Entry < ActiveRecord::Base
   	  a += self.flights.last.arr.gsub('K','')
 	  end
     arpt_string = a
+	end
+	
+	def get_formatted_per_diem_times
+	  byebug
+	  unless self.per_diem_start.nil? || self.per_diem_end.nil?
+  	  self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
+      self.pd_end = HobbsTime.to_short_format(self.per_diem_end)
+	  end
 	end
 end
