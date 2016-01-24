@@ -1,7 +1,9 @@
 <%= form_for @entry do |f| %>
 	<div>
 		<div><%= f.label :date %></div>
-		<div><%= f.date_field :date, :value => Time.now.strftime("%Y-%m-%d")%></div>
+		<div><%= f.date_field :date, :value => ( @entry.date.nil? ? 
+												 Time.now.strftime("%Y-%m-%d") :
+												 @entry.date.strftime("%Y-%m-%d")) %></div>
 	</div>
 	<div>
 		<div><%= f.label :tail %></div>

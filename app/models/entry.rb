@@ -52,10 +52,9 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def get_formatted_per_diem_times
-	  byebug
-	  unless self.per_diem_start.nil? || self.per_diem_end.nil?
-  	  self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
+    unless self.per_diem_start.nil? || self.per_diem_end.nil?
+      self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
       self.pd_end = HobbsTime.to_short_format(self.per_diem_end)
-	  end
-	end
+    end
+  end
 end

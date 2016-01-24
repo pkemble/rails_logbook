@@ -7,8 +7,8 @@ class HobbsTime
   HMFormat = "%H%M"
   
   def initialize(t1=nil, t2=nil, date=Date.today) # TODO make date arg required.
-    @hobbs_start = t1.nil? ? date.beginning_of_day : Time.strptime(t1, HMFormat)
-    @hobbs_end = t2.nil? ? date.tomorrow : Time.strptime(t2, HMFormat)
+    @hobbs_start = t1.nil? || t1.empty? ? date.beginning_of_day : Time.strptime(t1, HMFormat)
+    @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : Time.strptime(t2, HMFormat)
     @hobbs_date = date
     @span = span
   end
