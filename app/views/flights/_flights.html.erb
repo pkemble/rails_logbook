@@ -1,13 +1,27 @@
 <h2>flights:</h2>
-<table>
+<table class="flight_listing">
 	<tr>
-		<td></td>
-		<td></td>
+		<th colspan="8">
+			Flight times
+		</th>
+		<th colspan="5">
+			Currency
+		</th>
+	</tr>
+	<tr>
+		<th></th>
+		<th></th>
+		<th>PF</th>
 		<th>dep:</th>
 		<th>arr:</th>
 		<th>blockout</th>
 		<th>blockin</th>
 		<th>total time</th>
+		<th>ifr</th>
+		<th>appr</th>
+		<th>night</th>
+		<th>n.t.o.</th>
+		<th>n.ldg</th>
 	</tr>
 	<% @flights.each do |f| %>
 		<tr>
@@ -17,11 +31,17 @@
 						entry_flight_path(@entry.id, f.id), 
 						method: :delete,
 						data: { confirm: 'Are you sure?' } %></td>
+			<td><%= f.pf ? "X" : "" %></td>
 			<td><%= f.dep %></td>
 			<td><%= f.arr %></td>
 			<td><%= f.blockout %></td>
 			<td><%= f.blockin%></td>
 			<td><%= f.total_time%></td>
+			<td><%= f.instrument %></td>
+			<td><%= f.approaches %></td>
+			<td><%= f.night %></td>
+			<td><%= f.night_to %></td>
+			<td><%= f.night_ld %></td>
 		</tr>
 	<% end %>
 	<tr>

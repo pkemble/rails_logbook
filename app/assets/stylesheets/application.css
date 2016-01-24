@@ -17,7 +17,7 @@
 $primary-color: #06f;
 
 * {
-	font-family: "Courier-new", Courier, monospace;
+	font-family: "Ariel", Helvetica; /* "Courier-new", Courier, monospace; */
 	/*font-size: 12px*/
 	
 }
@@ -38,7 +38,6 @@ $primary-color: #06f;
 	padding: 40px;
 	font-size: 30px;
 }
-
 
 /* footer */
 .footer {
