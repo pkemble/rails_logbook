@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Logbook</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<div class="header">
-	<%= link_to 'Ye olde logbook', root_path %>
-</div>
-<%= yield %>
-<p>
-	<h3>params:</h3>
-	<%= debug(params)%>
-</p>
-</body>
+	<head>
+		<title>Logbook</title>
+		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+		<%= render 'layouts/header' %>
+		<div class="container">
+			<%= yield %>
+		</div>
+		<!-- footer TODO -->
+	</body>
 </html>

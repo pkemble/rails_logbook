@@ -10,41 +10,11 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require_jquery
+ *= require_bootstrap-sprockets
  *= require_tree .
  *= require_self
  */
 
-* {
-	font-family: "Ariel", Helvetica; /* "Courier-new", Courier, monospace; */
-	/*font-size: 12px*/
-	
-}
-
-.header {
-	height: 40px;
-	padding: 30px;
-	background-color: #06f;
-	font-size: 30px;
-	color: white;
-}
-
-.header a, .header a:visited, .header a:active {
-	color: white;
-	text-decoration: none;
-}
-
-td {
-	padding: 0;
-	margin: 1px;
-}
-
-th, td {
-	background-color: #cce1ff
-}
-
-/*table a {
-	background-color: #06f;
-	color: white;
-}*/
-
-
+@import "bootstrap-sprockets"
+@import "bootstrap"
