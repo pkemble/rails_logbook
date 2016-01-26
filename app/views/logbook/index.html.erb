@@ -1,8 +1,10 @@
 <p>
 	Total flight hours in last 24 hours: <%= p 'todo' %>
 </p>
-
-<table>
+<p>
+<%= link_to 'new entry', new_entry_path, class: "btn btn-success" %>
+</p>
+<table class="table table-striped table-condensed table-bordered">
 	<tr>
 		<th>date</th>
 		<th>tail</th>
@@ -25,12 +27,5 @@
 			<td><%= e.crew_name %></td>
 			<td><%= e.per_diem_hours %></td>
 		</tr>
-	<% end %>
-	
-	<tr>
-		<td colspan="100%">
-			<%= link_to 'new entry...', new_entry_path %>
-		</td>
-	</tr>
-	
+	<% end %>	
 </table>
