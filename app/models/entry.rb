@@ -1,5 +1,6 @@
 class Entry < ActiveRecord::Base
   require 'hobbstime'
+  require 'stringutil'
   
 	has_many :flights
 		
@@ -44,9 +45,10 @@ class Entry < ActiveRecord::Base
 	  a = ""
 	  unless self.flights.any? == false
 	    self.flights.each do |f|
-	     a += f.dep.gsub('K', '') + '/'
+	      byebug
+	     a += f.dep.remove_icao + '/'
   	  end
-  	  a += self.flights.last.arr.gsub('K','')
+  	  a += self.flights.last.arr.remove_icao
 	  end
     arpt_string = a
 	end
