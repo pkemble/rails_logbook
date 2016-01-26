@@ -16,3 +16,7 @@
 !/log/.keep
 /tmp
 /nbproject/private/
+
+# Ignore development stuff
+.project
+.byebug_history
