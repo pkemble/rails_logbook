@@ -132,12 +132,14 @@
 <div class="row">
 	<div>
 		<%= f.submit :class => "btn btn-primary" %>
-		<%= link_to entry_path(@entry.id),
-						method: :delete,
-						data: { confirm: 'Are you sure? This cannot be undone!' },
-						class: "btn btn-danger" do %>
-							delete this entry and it's flights
-						<% end %>
+		<% if !@entry.new_record? %>
+			<%= link_to entry_path(@entry.id),
+							method: :delete,
+							data: { confirm: 'Are you sure? This cannot be undone!' },
+							class: "btn btn-danger" do %>
+								delete this entry and it's flights
+							<% end %>
+		<% end %>
 	</div>
 </div>
 <% end %>
