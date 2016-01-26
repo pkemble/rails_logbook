@@ -7,7 +7,6 @@ class String
   end
   
   def remove_icao
-    byebug
     if self.length == 4 && self.upcase[0] == 'K'
       s = self[1..3]
       return s

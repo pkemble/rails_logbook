@@ -15,7 +15,7 @@
 	</div>
 <% end %>
 
-<%= form_for @entry do |f| %>
+<%= form_for @entry, :html => { :class => "form-inline"} do |f| %>
 <div class="row">
 	<div class="col-sm-1">
 		<div class="checkbox">
@@ -130,8 +130,8 @@
 	</div>
 </div>
 <div class="row">
-	<div>
-		<%= f.submit :class => "btn btn-primary" %>
+	<div class="col-sm-12">
+		<%= f.submit :class => "btn btn-success" %>
 		<% if !@entry.new_record? %>
 			<%= link_to entry_path(@entry.id),
 							method: :delete,
@@ -140,6 +140,7 @@
 								delete this entry and it's flights
 							<% end %>
 		<% end %>
+		<%= link_to "back to entry listing", root_path, class: "btn btn-primary"%>
 	</div>
 </div>
 <% end %>

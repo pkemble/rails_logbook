@@ -1,3 +1,16 @@
-<h1><%= @entry.tail %> on <%= @entry.date.strftime("%m/%d/%Y") %></h1>
-<%= render 'form' %>
-<%= render 'flights/flights'%>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<%= @entry.tail %> on <%= @entry.nice_date %>
+	</div>
+	<div class="panel-body">
+		<%= render 'form' %>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Flights for <%= @entry.nice_date %>:
+	</div>
+	<div class="panel-body">
+		<%= render 'flights/flights'%>
+	</div>
+</div>

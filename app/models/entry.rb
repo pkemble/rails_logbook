@@ -31,6 +31,10 @@ class Entry < ActiveRecord::Base
 	  
 	end
 	
+	def nice_date
+	  self.date.strftime("%m/%d/%Y")
+	end
+	
 	def total_time
 	  t = 0
 	  if self.flights.any?
@@ -45,7 +49,6 @@ class Entry < ActiveRecord::Base
 	  a = ""
 	  unless self.flights.any? == false
 	    self.flights.each do |f|
-	      byebug
 	     a += f.dep.remove_icao + '/'
   	  end
   	  a += self.flights.last.arr.remove_icao
