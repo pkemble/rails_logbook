@@ -5,7 +5,7 @@
 	</div>
 	<div class="panel-body">
 		<ul>
-			<% @eflight.errors.full_messages.each do |m| %>
+			<% @flight.errors.full_messages.each do |m| %>
 			<li>
 				<%= m %>
 			</li>
@@ -20,8 +20,14 @@
 	</div>
 	<div class="panel-body">
 		<div class="row">
-			<div class="col-sm-2 form-group">
-				<%= f.label :pf, "PF" %><%= f.check_box :pf %>
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label>Role:</label>
+					<div class="radio role-radio">
+						<label> <%= f.radio_button( :pf, true) %>PF </label>
+						<label> <%= f.radio_button( :pf, false) %>PM </label>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -35,7 +41,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-sm-2 form-group">
 				<%= f.label :blockout, "Out"%>
 				<%= f.text_field :blockout, :placeholder => "HHMM(Z)", :class => "blocktimefield form-control" %>
 			</div>
@@ -52,25 +58,25 @@
 	</div>
 	<div class="panel-body">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-sm-2 form-group">
 				<%= f.label :instrument, "IFR" %>
 				<%= f.number_field :instrument, :step => "0.1", :placeholder => "0.0", class: "form-control" %>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 form-group">
 				<%= f.label :approaches %>
 				<%= f.number_field :approaches, class: "form-control" %>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-3">
+			<div class="col-sm-3 form-group">
 				<%= f.label :night %>
 				<%= f.number_field :night, :step => "0.1", :placeholder => "0.0", class: "form-control" %>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-3 form-group">
 				<%= f.label :night_to, "Night T.O." %>
 				<%= f.number_field :night_to, class: "form-control" %>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-sm-3 form-group">
 				<%= f.label :night_ld, "Night Landings" %>
 				<%= f.number_field :night_ld, class: "form-control" %>
 			</div>
@@ -78,9 +84,15 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-12">
 		<div class="btn-group form-group" role="group">
-			<%= f.submit :class => "btn btn-success" %>
+			<% if @flight.new_record? %>
+				<%= f.submit "Save and start next flight", :commit_type => "next", :class => "btn btn-success" %>
+				<%= f.submit "Save and return to entry", :class => "btn btn-success "%>
+			<% else %>
+				<%= f.submit "Update flight", :class => "btn btn-success" %>
+			<% end %>
+			<%= link_to "Clear form", new_entry_flight_path(params[:entry_id]), class: "btn btn-warning" %>
 			<%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn btn-primary' %>
 		</div>
 	</div>

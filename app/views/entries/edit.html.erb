@@ -1,6 +1,6 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<%= @entry.tail %> on <%= @entry.nice_date %>
+		<h3><%= @entry.tail %> on <%= @entry.nice_date %></h3>
 	</div>
 	<div class="panel-body">
 		<%= render 'form' %>
@@ -8,7 +8,7 @@
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		Flights for <%= @entry.nice_date %>:
+		<h3>Flights for <%= @entry.nice_date %>:</h3>
 	</div>
 	<div class="panel-body">
 		<%= render 'flights/flights'%>

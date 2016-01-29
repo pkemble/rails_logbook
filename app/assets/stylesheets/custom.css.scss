@@ -5,6 +5,7 @@
 
 body {
   padding-top: 60px;
+  font-size: 12px;
 }
 
 /* header */
@@ -47,6 +48,14 @@ p {
 }
 
 /* forms */
+
+.role-radio {
+  margin-top: -2px;
+  
+  input[type="radio"] {
+    margin: 0 0 0 -20px;
+  }
+}
 
 #error_explanation {
   color: red;

@@ -16,7 +16,11 @@ class FlightsController < ApplicationController
 		@entry = Entry.find(params[:entry_id])
 		@flight = @entry.flights.new(flight_params)
 		if @flight.save
-		  redirect_to new_entry_flight_path, notice: "Flight saved"
+		  if params[:create_type] == "next"
+		    redirect_to new_entry_flight_path, notice: "Flight saved"  
+		  else
+		    redirect_to edit_entry_path(params[:entry_id])
+		  end
 		else
 		  render 'new'  
 		end

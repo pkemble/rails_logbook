@@ -31,14 +31,13 @@ class EntriesController < ApplicationController
     
     @recent_entry = Entry.last
     @entry = Entry.new
-    
     @entry.tail = @recent_entry.tail
     @entry.pic = @recent_entry.pic
     @entry.crew_name = @recent_entry.crew_name
     @entry.flight_number = @recent_entry.flight_number
     
     render 'new'
-
+    
   end
   
   def update
@@ -60,7 +59,7 @@ class EntriesController < ApplicationController
     def entry_params
       params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
-                                    :pd_end, :extract_per_diem )
+                                    :pd_end )
     end
     
     def recent_params

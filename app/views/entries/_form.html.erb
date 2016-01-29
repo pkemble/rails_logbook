@@ -1,70 +1,64 @@
 <% if @entry.errors.any? %>
-	<div class="panel panel-danger">
-		<div class="panel-heading">
-			<%= pluralize(@entry.errors.count, "error")%> detected:</br>
-		</div>
-		<div class="panel-body">
-			<ul>
-				<% @entry.errors.full_messages.each do |m| %>
-				<li>
-					<%= m %>
-				</li>
-				<% end %>
-			</ul>
-		</div>
+<div class="panel panel-danger">
+	<div class="panel-heading">
+		<%= pluralize(@entry.errors.count, "error")%> detected:</br>
 	</div>
+	<div class="panel-body">
+		<ul>
+			<% @entry.errors.full_messages.each do |m| %>
+			<li>
+				<%= m %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
+</div>
 <% end %>
 
-<%= form_for @entry, :html => { :class => "form-inline"} do |f| %>
+<%= form_for @entry do |f| %>
 <div class="row">
 	<div class="col-sm-1">
-		<div class="checkbox">
-			<%= f.label :pic  do %>
-				<%= f.check_box :pic, :checked => true %>PIC
-			<% end %>
+		<div class="form-group">
+			<label>Seat:</label>
+			<div class="radio role-radio">
+				<label> <%= f.radio_button( :pic, true) %>PIC </label>
+				<label> <%= f.radio_button( :pic, false) %>SIC </label>
+			</div>
 		</div>
 	</div>
 	<div class="col-sm-3">
 		<div class="form-group">
-				<%= f.label :date %>
-				<%= f.date_field :date, :value => ( @entry.date.nil? ?
-				Time.now.strftime("%Y-%m-%d") :
-				@entry.date.strftime("%Y-%m-%d")),
-				class: "form-control" %>
+			<%= f.label :date %>
+			<%= f.date_field :date, :value => ( @entry.date.nil? ?
+			Time.now.strftime("%Y-%m-%d") :
+			@entry.date.strftime("%Y-%m-%d")),
+			class: "form-control" %>
 		</div>
 	</div>
 	<div class="col-sm-2">
 		<div class="form-group">
 			<div>
-				<%= f.label :pd_start, "start" %>
+				<%= f.label :pd_start, "Per Diem start" %>
 			</div>
 			<div>
-				<%= f.text_field :pd_start, :size =>"5", class: "form-control", 'aria-describedby' => "pdhelp" %>
+				<%= f.text_field :pd_start, :placeholder =>"HHMM(L)", class: "form-control", 'aria-describedby' => "pdhelp" %>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-2">
 		<div class="form-group">
 			<div>
-				<%= f.label :pd_end, "end" %>
+				<%= f.label :pd_end, "Per Diem end" %>
 			</div>
 			<div>
-				<%= f.text_field :pd_end, :size => "5", class: "form-control" %>
+				<%= f.text_field :pd_end, :placeholder =>"HHMM(L)", class: "form-control" %>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-4">
-		<!--	TODO - extract per diem from flight hours
-			 <div class="checkbox-inline">
-			<%= f.label :extract_per_diem, 'extract per diem hours from flights', class: "checkbox-inline" %>
-			<%= f.check_box :extract_per_diem %>
-		</div> -->
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-4"></div>
-	<div class="col-sm-8" id="pdhelp">
-		Per Diem hours (HHMM) - leave these blank for a full day (24 hours)
+		<span id="helpBlock", class="help-block">Per Diem hours (HHMM) - leave blank for 24 hours.</span>
+		
+		<!-- TODO - extract per diem from flight hours -->
 	</div>
 </div>
 <div class="row">
@@ -84,19 +78,23 @@
 				<%= f.label :flight_number %>
 			</div>
 			<div>
-				<%= f.text_field :flight_number, class: "form-control" %>
+				<%= f.text_field :flight_number, :placeholder =>"ex.\"976\" CNS auto...", class: "form-control" %>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-4">
 		<div class="form-group">
-			<div><%= f.label :crew_name, "Crew name" %></div>
-			<div><%= f.text_field :crew_name, class: "form-control" %></div>
+			<div>
+				<%= f.label :crew_name, "Crew name" %>
+			</div>
+			<div>
+				<%= f.text_field :crew_name, class: "form-control" %>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-sm-2">
 		<div class="form-group">
 			<div>
 				<%= f.label :crew_meal %>
@@ -106,7 +104,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-4">
+	<div class="col-sm-3">
 		<div class="form-group">
 			<div>
 				<%= f.label :tips %>
@@ -122,7 +120,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-4">
+	<div class="col-sm-7">
 		<div class="form-group">
 			<%= f.label :remarks %>
 			<%= f.text_area :remarks, class: "form-control" %>
@@ -133,12 +131,12 @@
 	<div class="col-sm-12">
 		<%= f.submit :class => "btn btn-success" %>
 		<% if !@entry.new_record? %>
-			<%= link_to entry_path(@entry.id),
-							method: :delete,
-							data: { confirm: 'Are you sure? This cannot be undone!' },
-							class: "btn btn-danger" do %>
-								delete this entry and it's flights
-							<% end %>
+		<%= link_to entry_path(@entry.id),
+		method: :delete,
+		data: { confirm: 'Are you sure? This cannot be undone!' },
+		class: "btn btn-danger" do %>
+		delete this entry and it's flights
+		<% end %>
 		<% end %>
 		<%= link_to "back to entry listing", root_path, class: "btn btn-primary"%>
 	</div>

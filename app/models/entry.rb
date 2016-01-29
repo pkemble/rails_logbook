@@ -7,7 +7,7 @@ class Entry < ActiveRecord::Base
 	validates :date, presence: true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :extract_per_diem
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end
 	
 	before_save do
 	  # tail
