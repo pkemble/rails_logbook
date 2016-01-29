@@ -21,6 +21,12 @@ Rails.application.routes.draw do
     resources :flights
   end
   
+  resources :users
+  
+  get    'login'   => 'sessions#new'
+  post   'login'   => 'sessions#create'
+  delete 'logout'  => 'sessions#destroy'
+  
   # Example resource route with options:
   #   resources :products do
   #     member do
