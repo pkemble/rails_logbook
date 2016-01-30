@@ -2,7 +2,11 @@ class Entry < ActiveRecord::Base
   require 'hobbstime'
   require 'stringutil'
   
+  include ActiveModel::Dirty
+  
 	has_many :flights
+	
+	belongs_to :user
 		
 	validates :date, presence: true
 	validates :pd_end, :pd_start, :time_format => true
@@ -10,14 +14,17 @@ class Entry < ActiveRecord::Base
 	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end
 	
 	before_save do
+	  
 	  # tail
-	  if self.tail =~ /^\d{3}$/
-	    self.tail = 'N' + self.tail.upcase + 'AF'
+	  @user = User.find(self.user_id)
+	  byebug
+	  unless @user.nil? || @user.def_tail_number.nil? || !self.tail_changed?
+	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
 	  
 	  #flight number
-	  if self.flight_number =~ /^\d*$/
-	    self.flight_number = 'CNS' + self.flight_number
+	  unless @user.nil? || @user.def_flight_number.nil? || !self.flight_number_changed?
+	    self.flight_number = @user.def_flight_number.gsub('*', self.flight_number)
 	  end
 	  
 	  #per diem

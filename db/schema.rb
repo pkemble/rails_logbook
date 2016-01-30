@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160130015459) do
+ActiveRecord::Schema.define(version: 20160130185029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160130015459) do
     t.float    "per_diem_hours"
     t.datetime "per_diem_start"
     t.datetime "per_diem_end"
+    t.integer  "user_id"
   end
 
   create_table "flights", force: :cascade do |t|
@@ -62,9 +63,12 @@ ActiveRecord::Schema.define(version: 20160130015459) do
     t.string   "email"
     t.string   "name"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "remember_digest"
+    t.boolean  "admin",             default: false
+    t.string   "def_tail_number"
+    t.string   "def_flight_number"
   end
 
   add_foreign_key "flights", "entries"
