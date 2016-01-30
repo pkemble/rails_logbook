@@ -1,11 +1,15 @@
 <header class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
-		<%= link_to 'big logbook title thing', root_path, id: "logo" %>
+		<% if logged_in? && !current_user.nil? %>
+			<%= @current_user.name %>'s Logbook 
+		<% else %>
+			<%= link_to 'big logbook title thing', root_path, id: "logo" %>
+		<% end %>
 		<nav>
 			<ul class="nav navbar-nav navbar-right">
 				<li><%= link_to 'home', root_path %></li>
 				<% if logged_in? %>
-					<li><%= link_to 'settings', current_user %></li>
+					<li><%= link_to @current_user.email, current_user %></li>
 					<li><%= link_to 'log out', logout_path, method: "delete" %></li>
 				<% else %>
 					<li><%= link_to 'sign up', new_user_path %></li>
