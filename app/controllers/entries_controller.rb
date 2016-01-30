@@ -1,4 +1,7 @@
 class EntriesController < ApplicationController
+  
+  include SessionsHelper
+  
   def index
     # in case someone types it in...
     redirect_to root_path
@@ -20,6 +23,12 @@ class EntriesController < ApplicationController
 	
   def create
     @entry = Entry.new(entry_params)
+    @user = current_user
+    
+    unless @user.nil? 
+      @entry.user_id = @user.id
+    end
+    
     if @entry.save
       redirect_to edit_entry_path(@entry.id)
     else
