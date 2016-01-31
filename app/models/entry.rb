@@ -11,13 +11,12 @@ class Entry < ActiveRecord::Base
 	validates :date, presence: true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :user_has_entries
 	
 	before_save do
 	  
 	  # tail
 	  @user = User.find(self.user_id)
-	  byebug
 	  unless @user.nil? || @user.def_tail_number.nil? || !self.tail_changed?
 	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
@@ -68,5 +67,9 @@ class Entry < ActiveRecord::Base
       self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
       self.pd_end = HobbsTime.to_short_format(self.per_diem_end)
     end
+  end
+  
+  def user_has_entries?
+    Entry.where(user_id: current_user.id).any?
   end
 end

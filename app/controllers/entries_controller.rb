@@ -7,11 +7,13 @@ class EntriesController < ApplicationController
     redirect_to root_path
   end
   
+  # TODO is this used?
   def show
     @entry = Entry.find(params[:id])
   end
   
   def new
+    @user = current_user
   	@entry = Entry.new
   end  
   
@@ -30,7 +32,12 @@ class EntriesController < ApplicationController
     end
     
     if @entry.save
-      redirect_to edit_entry_path(@entry.id)
+      byebug
+      if params[:commit_type] == "add-flight"
+        redirect_to new_entry_flight_path
+      else
+        redirect_to edit_entry_path(@entry.id)
+      end
     else
       render 'new'
     end
@@ -38,7 +45,7 @@ class EntriesController < ApplicationController
   
   def continued_entry
     
-    @recent_entry = Entry.last
+    @recent_entry = Entry.where(user_id: current_user.id).last
     @entry = Entry.new
     @entry.tail = @recent_entry.tail
     @entry.pic = @recent_entry.pic
