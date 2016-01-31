@@ -1,11 +1,13 @@
 class FlightsController < ApplicationController
   require 'stringutil'
   
+  include FlightsHelper
+  
 	def new
 		@flight = Flight.new
-		@flight.dep = last_loc
 		@entry = Entry.find(params[:entry_id])
-		
+		@user = current_user
+		@flight.dep = FlightsHelper.last_loc(@user, @entry)
 	end
 	
 	def show
@@ -16,8 +18,8 @@ class FlightsController < ApplicationController
 		@entry = Entry.find(params[:entry_id])
 		@flight = @entry.flights.new(flight_params)
 		if @flight.save
-		  if params[:create_type] == "next"
-		    redirect_to new_entry_flight_path, notice: "Flight saved"  
+		  if params[:commit_type] == "next"
+		    redirect_to new_entry_flight_path, flash[:success] = "Flight saved"  
 		  else
 		    redirect_to edit_entry_path(params[:entry_id])
 		  end
@@ -47,22 +49,6 @@ class FlightsController < ApplicationController
 	  @flight.destroy
 	  redirect_to edit_entry_path(@flight.entry_id)
 	end
-	
-	def last_loc
-	  if !@flight.dep.nil?
-	    return @flight.dep
-	  end
-    @entry = Entry.find(params[:entry_id])
-    if @entry.flights.any?
-      return @entry.flights.last.arr
-    else
-      #todo get the preceding entry/flight
-      @entries = Entry.order('date')
-      if @entries.count > 1
-        return Entry.order('date').last(2)[0].flights.last.arr
-      end
-    end
-  end
 	
 	private
 		def flight_params
