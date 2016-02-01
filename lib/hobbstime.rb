@@ -2,7 +2,7 @@
 
 class HobbsTime
   
-  attr_reader :hobbs_start, :hobbs_end, :hobbs_date, :span
+  attr_reader :hobbs_start, :hobbs_end, :hobbs_date, :span, :formatted_span
   
   HMFormat = "%H%M"
   
@@ -11,18 +11,27 @@ class HobbsTime
     @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : Time.strptime(t2, HMFormat)
     @hobbs_date = date
     @span = span
+    @formatted_span = formatted_span
   end
 
-  def span
-    # if @hobbs_start.nil? && @hobbs_end.nil?
-      # return 24
-    # end
-        
+  def span        
     if @hobbs_end < @hobbs_start
       @hobbs_start = @hobbs_start.prev_day
     end
+    if @hobbs_end == @hobbs_start
+      @hobbs_end = @hobbs_end.tomorrow
+    end
     
-    return ((@hobbs_end - @hobbs_start) / 3600 ).round(1)
+    ((@hobbs_end - @hobbs_start) / 3600 ).round(1)
+  end
+  
+  #returns a formatted span - pretty much removes .0 from 24.0
+  def formatted_span
+    if self.span.to_s == "24.0"
+      return "24"
+    else
+      return self.span.to_s
+    end
   end
   
   # gets a time object and returns the HMFormat constant format 

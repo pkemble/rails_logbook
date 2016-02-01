@@ -5,7 +5,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-sm-6 form-group">
-				<% if @user.entries.any? %>
+				<% if Entry.where(user_id: current_user.id).any? %> <!-- TODO isn't this a method in Entry.rb? -->
 					<%= link_to 'Populate form from the last entry', continued_entry_path, class: "btn btn-success" %>
 				<% end %>
 				<%= link_to 'Clear form', new_entry_path, class: "btn btn-warning" %>

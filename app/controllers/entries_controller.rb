@@ -32,7 +32,6 @@ class EntriesController < ApplicationController
     end
     
     if @entry.save
-      byebug
       if params[:commit_type] == "add-flight"
         redirect_to new_entry_flight_path
       else
