@@ -61,7 +61,7 @@ class EntriesController < ApplicationController
     if @entry.update(entry_params)
       redirect_to root_path
     else
-      redirect_to edit_entry_path(@entry.id)
+      render 'edit'
     end
   end
   
