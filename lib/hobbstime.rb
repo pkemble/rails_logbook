@@ -7,7 +7,6 @@ class HobbsTime
   HMFormat = "%H%M"
   
   def initialize(t1=nil, t2=nil, date=nil) # TODO make date arg required.
-    byebug
     if date == nil
       return nil
     end
