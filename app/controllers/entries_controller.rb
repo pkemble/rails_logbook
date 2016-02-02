@@ -67,6 +67,11 @@ class EntriesController < ApplicationController
   
   def destroy
     @entry = Entry.find(params[:id])
+    if @entry.flights.any?
+      @entry.flights.each do |f|
+        f.destroy #TODO might provide an undo for this?
+      end
+    end
     @entry.delete
     redirect_to root_path
   end
