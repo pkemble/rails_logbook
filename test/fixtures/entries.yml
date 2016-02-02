@@ -11,6 +11,7 @@ simple_entry:
   pic: true
   crew_name: Steve Lemieux
   crew_meal: 1
+  user: one
   
 # column: value
 #
@@ -20,4 +21,5 @@ two:
   flight_number: CNSSSS104
   pic: false
   crew_name: bob bob bob
+  user: two
 #  column: value

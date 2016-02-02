@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include UsersHelper
+  
   before_action :logged_in_user, :except => [:new, :create]
   before_action :correct_user, :except => [:new, :create]
   
@@ -42,18 +44,5 @@ class UsersController < ApplicationController
 	 
 	 # before filters
 	 
-	 # checks a user is logged in
-	 def logged_in_user
-	   unless logged_in?
-	     store_location
-	     flash[:danger] = "Please log in first!"
-	     redirect_to login_path
-	   end
-	 end
-	 
-	 # checks the correct user
-	 def correct_user
-	   @user = User.find(params[:id])
-	   redirect_to(root_url) unless current_user?(@user)
-	 end
+
 end

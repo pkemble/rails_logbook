@@ -1,5 +1,6 @@
 class LogbookController < ApplicationController
-  include SessionsHelper
+  before_action :logged_in_user
+  before_action :current_user
   
   def index
     if logged_in?

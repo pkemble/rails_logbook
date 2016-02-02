@@ -1,6 +1,7 @@
 class EntriesController < ApplicationController
   
-  include SessionsHelper
+  before_action :logged_in_user
+  before_action :correct_user
   
   def index
     # in case someone types it in...
@@ -60,7 +61,7 @@ class EntriesController < ApplicationController
     if @entry.update(entry_params)
       redirect_to root_path
     else
-      redirect_to edit_entry_path(@entry.id)
+      render 'edit'
     end
   end
   
