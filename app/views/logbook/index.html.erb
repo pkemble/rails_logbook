@@ -25,7 +25,7 @@
 			<td><%= e.flight_number %></td>
 			<td><%= e.arpt_string %></td>
 			<td><%= e.crew_name %></td>
-			<td><%= e.per_diem_hours %></td>
+			<td><%= e.per_diem_hours == 24.0 ? "24" : e.per_diem_hours %></td>
 		</tr>
 	<% end %>	
 </table>

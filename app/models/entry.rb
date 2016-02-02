@@ -11,13 +11,12 @@ class Entry < ActiveRecord::Base
 	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :user_has_entries
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
 	
 	before_save do
 	  
 	  # tail
 	  @user = User.find(self.user_id)
-    byebug
 	  unless @user.nil? || @user.def_tail_number.nil? || !self.tail_changed?
 	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
@@ -30,7 +29,7 @@ class Entry < ActiveRecord::Base
 	  #per diem
 	  #TODO extract per diem
 	  @per_diem = HobbsTime.new(pd_start, pd_end, self.date)
-	  self.per_diem_hours = @per_diem.formatted_span
+	  self.per_diem_hours = @per_diem.span
 	  self.per_diem_start = @per_diem.hobbs_start
 	  self.per_diem_end = @per_diem.hobbs_end
 
@@ -67,7 +66,6 @@ class Entry < ActiveRecord::Base
     unless self.per_diem_start.nil? || self.per_diem_end.nil?
       self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
       self.pd_end = HobbsTime.to_short_format(self.per_diem_end)
-      
     end
   end
   

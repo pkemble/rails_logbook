@@ -15,7 +15,6 @@ class HobbsTime
     @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : date.change(hour: t2[0..1], min: t2[2..3])
     @hobbs_date = date
     @span = span
-    @formatted_span = formatted_span
   end
 
   def span        
@@ -27,15 +26,6 @@ class HobbsTime
     end
     
     ((@hobbs_end - @hobbs_start) / 3600 ).round(1)
-  end
-  
-  #returns a formatted span - pretty much removes .0 from 24.0
-  def formatted_span
-    if self.span.to_s == "24.0"
-      return "24"
-    else
-      return self.span.to_s
-    end
   end
   
   # gets a time object and returns the HMFormat constant format 
