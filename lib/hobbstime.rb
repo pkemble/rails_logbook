@@ -6,9 +6,14 @@ class HobbsTime
   
   HMFormat = "%H%M"
   
-  def initialize(t1=nil, t2=nil, date=Date.today) # TODO make date arg required.
-    @hobbs_start = t1.nil? || t1.empty? ? date.beginning_of_day : Time.strptime(t1, HMFormat)
-    @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : Time.strptime(t2, HMFormat)
+  def initialize(t1=nil, t2=nil, date=nil) # TODO make date arg required.
+    byebug
+    if date == nil
+      return nil
+    end
+    
+    @hobbs_start = t1.nil? || t1.empty? ? date.beginning_of_day : date.change(hour: t1[0..1], min: t1[2..3])
+    @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : date.change(hour: t2[0..1], min: t2[2..3])
     @hobbs_date = date
     @span = span
   end

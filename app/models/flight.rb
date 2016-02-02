@@ -14,7 +14,8 @@ class Flight < ActiveRecord::Base
   before_save do
     self.dep = self.dep.icao
     self.arr = self.arr.icao
-    @f_hobbs_time = HobbsTime.new(blockout, blockin, Date.new)
+    byebug
+    @f_hobbs_time = HobbsTime.new(blockout, blockin, entry.date)
     self.p_blockout = @f_hobbs_time.hobbs_start
     self.p_blockin = @f_hobbs_time.hobbs_end
     self.total_time = @f_hobbs_time.span
