@@ -85,7 +85,7 @@
 	<div class="col-sm-12">
 		<div class="btn-group form-group" role="group">
 			<% if @flight.new_record? %>
-				<%= f.submit "Save and start next flight", :commit_type => "next", :class => "btn btn-success" %>
+				<%= f.submit "Save and start next flight", :class => "btn btn-success" %>
 				<%= f.submit "Save and return to entry", :class => "btn btn-success "%>
 			<% else %>
 				<%= f.submit "Update flight", :class => "btn btn-success" %>

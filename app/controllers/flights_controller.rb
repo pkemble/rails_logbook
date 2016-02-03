@@ -21,8 +21,9 @@ class FlightsController < ApplicationController
 		@entry = Entry.find(params[:entry_id])
 		@flight = @entry.flights.new(flight_params)
 		if @flight.save
-		  if params[:commit_type] == "next"
-		    redirect_to new_entry_flight_path, flash[:success] = "Flight saved"  
+		  if params[:commit] == "Save and start next flight" # weak, but I can't see another option
+		    flash[:success] = "Flight: #{@flight.dep} to #{@flight.arr} saved!"
+		    redirect_to new_entry_flight_path  
 		  else
 		    redirect_to edit_entry_path(params[:entry_id])
 		  end
