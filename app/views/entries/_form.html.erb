@@ -21,7 +21,7 @@
 		<div class="form-group">
 			<label>Seat:</label>
 			<div class="radio role-radio">
-				<label> <%= f.radio_button( :pic, true) %>PIC </label>
+				<label> <%= f.radio_button( :pic, true, :checked => true ) %>PIC </label>
 				<label> <%= f.radio_button( :pic, false) %>SIC </label>
 			</div>
 		</div>
@@ -63,20 +63,34 @@
 </div>
 <div class="row">
 	<div class="col-sm-4">
-		<div class="form-group">
+		<% if @user.def_tail_number.empty? %>
+			<div class="form-group">
 			<div>
 				<%= f.label :tail %>
 			</div>
+		<% else %>
+			<div class="form-group has-warning">
+			<div>
+				<%= f.label :tail %> with pattern: <%= @user.def_tail_number %>
+			</div>
+		<% end %>
 			<div>
 				<%= f.text_field :tail, :placeholder => 'e.g. \'243\', \'708\'', class: "form-control" %>
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-4">
-		<div class="form-group">
+		<% if @user.def_flight_number.empty? %>
+			<div class="form-group">
 			<div>
 				<%= f.label :flight_number %>
 			</div>
+		<% else %>
+			<div class="form-group has-warning">
+			<div>
+				<%= f.label :flight_number %> with pattern: <%= @user.def_flight_number %>
+			</div>
+		<% end %>
 			<div>
 				<%= f.text_field :flight_number, :placeholder =>"ex.\"976\" CNS auto...", class: "form-control" %>
 			</div>

@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 	
 	belongs_to :user
 		
-	validates :date, :presence => true
+	validates :date, :pic, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
 	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
@@ -17,12 +17,17 @@ class Entry < ActiveRecord::Base
 	  
 	  # tail
 	  @user = User.find(self.user_id)
-	  unless @user.nil? || @user.def_tail_number.nil? || !self.tail_changed?
+	  byebug
+	  unless @user.nil? || @user.def_tail_number.nil? || 
+	    !self.tail_changed? || self.tail.empty?
+	    
 	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
 	  
 	  #flight number
-	  unless @user.nil? || @user.def_flight_number.nil? || !self.flight_number_changed?
+	  unless @user.nil? || @user.def_flight_number.nil? || 
+	    !self.flight_number_changed? || self.flight_number.empty?
+	    
 	    self.flight_number = @user.def_flight_number.gsub('*', self.flight_number)
 	  end
 	  
