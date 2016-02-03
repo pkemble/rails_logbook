@@ -16,8 +16,9 @@ class UsersController < ApplicationController
 	  @user = User.new(user_params)
     if @user.save(user_params)
       log_in @user
-      flash[:success] = "welcome"
-      redirect_to root_path
+      #TODO help pages:
+      flash[:partial] = "welcome_message"
+      redirect_to edit_user_path(@user)
     else
       render 'new'
     end
