@@ -17,15 +17,13 @@ class HobbsTime
     @span = span
   end
 
-  def span        
-    if @hobbs_end < @hobbs_start
-      @hobbs_start = @hobbs_start.prev_day
-    end
-    if @hobbs_end == @hobbs_start
+  def span
+    if @hobbs_end < @hobbs_start || @hobbs_end == @hobbs_start
       @hobbs_end = @hobbs_end.tomorrow
     end
-    
+
     ((@hobbs_end - @hobbs_start) / 3600 ).round(1)
+    
   end
   
   # gets a time object and returns the HMFormat constant format 
