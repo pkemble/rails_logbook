@@ -7,8 +7,8 @@ class Flight < ActiveRecord::Base
   
   attr_accessor :last_loc, :n_curr
   
-  validates :dep, :arr, :presence => true
-  validates :blockout, :blockin, :time_format => true
+  validates :dep, :arr, :pf, :presence => true
+  validates :blockout, :blockin, :time_format => true, :presence => true
   #validates :night, :if "night < total_time" # TODO
   
   before_save do
