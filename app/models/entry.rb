@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 	
 	belongs_to :user
 		
-	validates :date, :pic, :presence => true
+	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
 	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
@@ -17,7 +17,6 @@ class Entry < ActiveRecord::Base
 	  
 	  # tail
 	  @user = User.find(self.user_id)
-	  byebug
 	  unless @user.nil? || @user.def_tail_number.nil? || 
 	    !self.tail_changed? || self.tail.empty?
 	    
@@ -39,6 +38,11 @@ class Entry < ActiveRecord::Base
 	  self.per_diem_end = @per_diem.hobbs_end
 
 	  self.total_time = total_time
+	  
+	  #clean up crew meals
+	  if self.crew_meal == 0
+	    self.crew_meal = nil
+	  end
 	  
 	end
 	

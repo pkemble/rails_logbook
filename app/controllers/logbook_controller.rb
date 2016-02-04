@@ -4,7 +4,7 @@ class LogbookController < ApplicationController
   
   def index
     if logged_in?
-      @entries = Entry.where(user_id: current_user.id)
+      @entries = Entry.where(user_id: current_user.id).order(:date)
     else
       redirect_back_or login_path
     end

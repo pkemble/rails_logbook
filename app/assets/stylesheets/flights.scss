@@ -2,41 +2,5 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.ff_basics_section, .ff_currency_section {
-  display: inline-block;
-}
-
-.ff_section {
-  clear: both;
-  width: 400px;
-  padding: 2px;
-  margin: 1px;
-  
-  // border: 1px solid blue;
-}
-
-.ff_label {
-  background-color: #cce1ff;
-  width: 80px;
-  text-align: right;
-  padding: 2px;
-  float:left;
-
-  // border: 1px solid red;
-}
-
-.ff_number {
-  float: left;
-  
-  // border: 1px solid green;
-}
-
-.ff_single {
-  float:left;
-}
-
-.flight_listing td{
-  padding: 2px 2px;
-}
 
 

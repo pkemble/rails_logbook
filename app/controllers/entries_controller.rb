@@ -80,7 +80,7 @@ class EntriesController < ApplicationController
     def entry_params
       params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
-                                    :pd_end )
+                                    :pd_end, :travel_expenses )
     end
     
     def recent_params
