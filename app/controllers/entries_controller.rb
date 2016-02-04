@@ -1,14 +1,20 @@
 class EntriesController < ApplicationController
+  
+  before_action :logged_in_user
+  before_action :correct_user
+  
   def index
     # in case someone types it in...
     redirect_to root_path
   end
   
+  # TODO is this used?
   def show
     @entry = Entry.find(params[:id])
   end
   
   def new
+    @user = current_user
   	@entry = Entry.new
   end  
   
@@ -20,11 +26,34 @@ class EntriesController < ApplicationController
 	
   def create
     @entry = Entry.new(entry_params)
+    @user = current_user
+    
+    unless @user.nil? 
+      @entry.user_id = @user.id
+    end
+    
     if @entry.save
-      redirect_to edit_entry_path(@entry.id)
+      if params[:commit_type] == "add-flight"
+        redirect_to new_entry_flight_path
+      else
+        redirect_to edit_entry_path(@entry.id)
+      end
     else
       render 'new'
     end
+  end
+  
+  def continued_entry
+    
+    @recent_entry = Entry.where(user_id: current_user.id).last
+    @entry = Entry.new
+    @entry.tail = @recent_entry.tail
+    @entry.pic = @recent_entry.pic
+    @entry.crew_name = @recent_entry.crew_name
+    @entry.flight_number = @recent_entry.flight_number
+    
+    render 'new'
+    
   end
   
   def update
@@ -32,12 +61,17 @@ class EntriesController < ApplicationController
     if @entry.update(entry_params)
       redirect_to root_path
     else
-      redirect_to edit_entry_path(@entry.id)
+      render 'edit'
     end
   end
   
   def destroy
     @entry = Entry.find(params[:id])
+    if @entry.flights.any?
+      @entry.flights.each do |f|
+        f.destroy #TODO might provide an undo for this?
+      end
+    end
     @entry.delete
     redirect_to root_path
   end
@@ -46,7 +80,11 @@ class EntriesController < ApplicationController
     def entry_params
       params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
-                                    :pd_end, :extract_per_diem )
+                                    :pd_end )
+    end
+    
+    def recent_params
+      [ tail, pic, crew_name, flight_number ]
     end
       
 end

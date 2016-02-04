@@ -1,22 +1,34 @@
 class Entry < ActiveRecord::Base
   require 'hobbstime'
+  require 'stringutil'
+  
+  include ActiveModel::Dirty
   
 	has_many :flights
+	
+	belongs_to :user
 		
-	validates :date, presence: true
+	validates :date, :pic, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :extract_per_diem
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
 	
 	before_save do
+	  
 	  # tail
-	  if self.tail =~ /^\d{3}$/
-	    self.tail = 'N' + self.tail.upcase + 'AF'
+	  @user = User.find(self.user_id)
+	  byebug
+	  unless @user.nil? || @user.def_tail_number.nil? || 
+	    !self.tail_changed? || self.tail.empty?
+	    
+	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
 	  
 	  #flight number
-	  if self.flight_number =~ /^\d*$/
-	    self.flight_number = 'CNS' + self.flight_number
+	  unless @user.nil? || @user.def_flight_number.nil? || 
+	    !self.flight_number_changed? || self.flight_number.empty?
+	    
+	    self.flight_number = @user.def_flight_number.gsub('*', self.flight_number)
 	  end
 	  
 	  #per diem
@@ -30,6 +42,10 @@ class Entry < ActiveRecord::Base
 	  
 	end
 	
+	def nice_date
+	  self.date.strftime("%m/%d/%Y")
+	end
+	
 	def total_time
 	  t = 0
 	  if self.flights.any?
@@ -41,13 +57,14 @@ class Entry < ActiveRecord::Base
 	end
 	
 	def arpt_string
-	  arpt_string = ""
+	  a = ""
 	  unless self.flights.any? == false
 	    self.flights.each do |f|
-	     arpt_string += f.dep.gsub('K', '') + '-'
+	     a += f.dep.remove_icao + '/'
   	  end
-  	  arpt_string += self.flights.last.arr.gsub('K','')
+  	  a += self.flights.last.arr.remove_icao
 	  end
+    arpt_string = a
 	end
 	
 	def get_formatted_per_diem_times
@@ -55,5 +72,9 @@ class Entry < ActiveRecord::Base
       self.pd_start = HobbsTime.to_short_format(self.per_diem_start)
       self.pd_end = HobbsTime.to_short_format(self.per_diem_end)
     end
+  end
+  
+  def user_has_entries?
+    Entry.where(user_id current_user.id).any?
   end
 end

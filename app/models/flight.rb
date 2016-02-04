@@ -7,14 +7,14 @@ class Flight < ActiveRecord::Base
   
   attr_accessor :last_loc, :n_curr
   
-  validates :dep, :arr, :presence => true
-  validates :blockout, :blockin, :time_format => true
+  validates :dep, :arr, :pf, :presence => true
+  validates :blockout, :blockin, :time_format => true, :presence => true
   #validates :night, :if "night < total_time" # TODO
   
   before_save do
     self.dep = self.dep.icao
     self.arr = self.arr.icao
-    @f_hobbs_time = HobbsTime.new(blockout, blockin, Date.new)
+    @f_hobbs_time = HobbsTime.new(blockout, blockin, entry.date)
     self.p_blockout = @f_hobbs_time.hobbs_start
     self.p_blockin = @f_hobbs_time.hobbs_end
     self.total_time = @f_hobbs_time.span

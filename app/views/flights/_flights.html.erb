@@ -1,7 +1,7 @@
-<h2>flights:</h2>
-<table class="flight_listing">
+<table class="table table-condensed table-striped table-bordered">
 	<tr>
-		<th colspan="8">
+		<th colspan="2"></th>
+		<th colspan="6">
 			Flight times
 		</th>
 		<th colspan="5">
@@ -23,14 +23,18 @@
 		<th>n.t.o.</th>
 		<th>n.ldg</th>
 	</tr>
-	<% @flights.each do |f| %>
+	<% @entry.flights.each do |f| %>
 		<tr>
-			<td><%= link_to image_tag('pencil-2x.png'), 
-						edit_entry_flight_path(@entry.id, f.id) %></td>
-			<td><%= link_to image_tag('delete-2x.png'), 
-						entry_flight_path(@entry.id, f.id), 
+			<td><%= link_to edit_entry_flight_path(@entry.id, f.id), class: "btn-sm btn-primary" do%>
+					<span class="glyphicon glyphicon-edit"></span>
+				<% end %></td>
+			<td><%= link_to entry_flight_path(@entry.id, f.id), 
 						method: :delete,
-						data: { confirm: 'Are you sure?' } %></td>
+						data: { confirm: 'Are you sure?' },
+						class: "btn-sm btn-danger" do %>
+							<span class="glyphicon glyphicon-remove"></span>
+						<% end %>
+			</td>
 			<td><%= f.pf ? "X" : "" %></td>
 			<td><%= f.dep %></td>
 			<td><%= f.arr %></td>
@@ -46,7 +50,7 @@
 	<% end %>
 	<tr>
 		<th colspan="100%">
-			<%= link_to 'add a new flight...', new_entry_flight_path(@entry.id) %>
+			<%= link_to 'add a new flight...', new_entry_flight_path(@entry.id), class: "btn-sm btn-success" %>
 		</th>
 	</tr>
 </table>

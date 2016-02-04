@@ -8,6 +8,7 @@ class LogbookWorkflowsTest < ActionDispatch::IntegrationTest
   def setup
 		@flight = flights(:simple_flight)
 		@entry = Entry.find_by_id(@flight.entry_id)
+		@user = @entry.user
   end
   
   # create a flight, edit with an error, and delete
@@ -25,5 +26,17 @@ class LogbookWorkflowsTest < ActionDispatch::IntegrationTest
   	delete_via_redirect(entry_flight_path(@entry.id, @flight.id))
   	assert_template 'entries/edit'
   	
+  end
+  
+  test "only_logged_in_users" do
+    #TODO expand these to flights and users
+    get edit_entry_path(@entry.id)
+    assert_not flash.empty?
+    assert_redirected_to login_url
+    
+    #patch
+    patch entry_path(id: @entry, entry: { date: @entry.date, pd_start: "0400", pd_end: "2300" })
+    assert_not flash.empty?
+    assert_redirected_to login_url
   end
 end

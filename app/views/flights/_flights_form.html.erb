@@ -1,98 +1,97 @@
 <% if @flight.errors.any? %>
-<div class="error">
-	<%= pluralize(@flight.errors.count, "error")%> detected:</br>
-	<ul>
-		<% @flight.errors.full_messages.each do |m| %>
-		<li>
-			<%= m %>
-		</li>
-		<% end %>
-	</ul>
+<div class="panel panel-danger">
+	<div class="panel-heading">
+		<%= pluralize(@flight.errors.count, "error")%> detected:</br>
+	</div>
+	<div class="panel-body">
+		<ul>
+			<% @flight.errors.full_messages.each do |m| %>
+			<li>
+				<%= m %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
 </div>
 <% end %>
-<div class="ff">
-	<div class="ff_basics_section">
-		<div class="ff_section">
-			<div class="ff_single">
-				<%= f.label :pf, "Pilot Flying (PF)" %><%= f.check_box :pf %>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Basics
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-sm-1">
+				<div class="form-group">
+					<label>Role:</label>
+					<div class="radio role-radio">
+						<label> <%= f.radio_button( :pf, true, :checked => true) %>PF </label>
+						<label> <%= f.radio_button( :pf, false) %>PM </label>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2 form-group">
+				<%= f.label :dep, "DEP" %>
+				<%= f.text_field :dep, class: "form-control" %>
+			</div>
+			<div class="col-sm-2 form-group">
+				<%= f.label :arr, "ARR" %>
+				<%= f.text_field :arr, class: "form-control" %>
 			</div>
 		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :dep %>
+		<div class="row">
+			<div class="col-sm-2 col-sm-offset-1 form-group">
+				<%= f.label :blockout, "Out"%>
+				<%= f.text_field :blockout, :placeholder => "HHMM(Z)", :class => "blocktimefield form-control" %>
 			</div>
-			<div class="ff_number">
-				<%= f.text_field :dep %>
-			</div>
-		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :arr %>
-			</div>
-			<div class="ff_number">
-				<%= f.text_field :arr %>
-			</div>
-		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :blockout %>
-			</div>
-			<div class="ff_number">
-				<%= f.text_field :blockout, :class => "blocktimefield" %>
-			</div>
-		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :blockin %>
-			</div>
-			<div class="ff_number">
-				<%= f.text_field :blockin, :class => "blocktimefield" %>
+			<div class="col-sm-2">
+				<%= f.label :blockin , "In"%>
+				<%= f.text_field :blockin, :placeholder => "HHMM(Z)", :class => "blocktimefield form-control" %>
 			</div>
 		</div>
 	</div>
-	<div class="form_submit, section">
-		<%= f.submit %> | <%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn' %>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		Currency
 	</div>
-	<div class="ff_currency_section">
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :instrument %>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-sm-2 form-group">
+				<%= f.label :instrument, "IFR" %>
+				<%= f.number_field :instrument, :step => "0.1", :placeholder => "0.0", class: "form-control" %>
 			</div>
-			<div class="ff_number">
-				<%= f.number_field :instrument, :step => "0.1" %>
-			</div>
-		</div>
-		<div class="ff_section">
-			<div class="ff_label">
+			<div class="col-sm-2 form-group">
 				<%= f.label :approaches %>
-			</div>
-			<div class="ff_number">
-				<%= f.number_field :approaches, :max => "9" %>
+				<%= f.number_field :approaches, class: "form-control" %>
 			</div>
 		</div>
-		<div class="ff_section">
-			<div class="ff_label">
+		<div class="row">
+			<div class="col-sm-3 form-group">
 				<%= f.label :night %>
+				<%= f.number_field :night, :step => "0.1", :placeholder => "0.0", class: "form-control" %>
 			</div>
-			<div class="ff_number">
-				<%= f.number_field :night, :max => "9.9" %>
+			<div class="col-sm-3 form-group">
+				<%= f.label :night_to, "Night T.O." %>
+				<%= f.number_field :night_to, class: "form-control" %>
 			</div>
-		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :night_to %>
-			</div>
-			<div class="ff_number">
-				<%= f.number_field :night_to, :max => "3" %>
+			<div class="col-sm-3 form-group">
+				<%= f.label :night_ld, "Night Landings" %>
+				<%= f.number_field :night_ld, class: "form-control" %>
 			</div>
 		</div>
-		<div class="ff_section">
-			<div class="ff_label">
-				<%= f.label :night_ld %>
-			</div>
-			<div class="ff_number">
-				<%= f.number_field :night_ld, :max => "3" %>
-			</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="btn-group form-group" role="group">
+			<% if @flight.new_record? %>
+				<%= f.submit "Save and start next flight", :class => "btn btn-success" %>
+				<%= f.submit "Save and return to entry", :class => "btn btn-success "%>
+			<% else %>
+				<%= f.submit "Update flight", :class => "btn btn-success" %>
+			<% end %>
+			<%= link_to "Clear form", new_entry_flight_path(params[:entry_id]), class: "btn btn-warning" %>
+			<%= link_to "Return to entry", edit_entry_path(params[:entry_id]), class: 'btn btn-primary' %>
 		</div>
 	</div>
 </div>

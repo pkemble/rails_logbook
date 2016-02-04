@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160111162931) do
-=======
-ActiveRecord::Schema.define(version: 20160119190506) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 20160201203151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160119190506) do
     t.float    "per_diem_hours"
     t.datetime "per_diem_start"
     t.datetime "per_diem_end"
+    t.integer  "user_id"
   end
 
   create_table "flights", force: :cascade do |t|
@@ -45,14 +42,14 @@ ActiveRecord::Schema.define(version: 20160119190506) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float    "total_time"
-    t.time     "p_blockout"
-    t.time     "p_blockin"
     t.boolean  "night_to"
     t.boolean  "night_ld"
     t.float    "night"
     t.float    "instrument"
     t.float    "approaches"
     t.boolean  "pf"
+    t.datetime "p_blockin"
+    t.datetime "p_blockout"
   end
 
   add_index "flights", ["entry_id"], name: "index_flights_on_entry_id", using: :btree
@@ -60,6 +57,18 @@ ActiveRecord::Schema.define(version: 20160119190506) do
   create_table "import_exports", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "name"
+    t.string   "password_digest"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "remember_digest"
+    t.boolean  "admin",             default: false
+    t.string   "def_tail_number"
+    t.string   "def_flight_number"
   end
 
   add_foreign_key "flights", "entries"

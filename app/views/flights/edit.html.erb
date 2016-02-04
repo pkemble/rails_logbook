@@ -1,7 +1,6 @@
-<h2>edit a flight</h2>
+<h3>Edit a flight</h3>
+<div class="container">
 <%= form_for @flight, url: entry_flight_path do |f| %>
 	<%= render 'flights_form', f: f %>
 <% end %>
-
-<h2>flight object:</h2>
-<%= debug(@flight) %>
+</div>
