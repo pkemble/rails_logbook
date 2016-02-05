@@ -5,8 +5,12 @@ class UsersController < ApplicationController
   before_action :correct_user, :except => [:new, :create]
   
   def admin
-    @users = User.all
-    
+    if current_user.admin?
+      @users = User.all
+    else
+      flash[:danger] = "You must be an admin to be there!"
+      redirect_to root_path
+    end
   end
   
 	def show
