@@ -33,4 +33,16 @@ class User < ActiveRecord::Base
 	def forget
 		update_attribute(:remember_digest, nil)
 	end
+	
+	def flights_count
+	  c = 0
+	  if self.entries.any?
+      self.entries.each do |e|
+        if e.flights.any?
+          c += e.flights.count
+        end
+      end 
+	  end
+	  return c
+	end
 end

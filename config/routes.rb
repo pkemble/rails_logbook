@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get    'login'   => 'sessions#new'
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
+  get    'admin'   => 'users#admin'
   
   # Example resource route with options:
   #   resources :products do
