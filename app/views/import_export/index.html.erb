@@ -1,9 +1,13 @@
 <div class="container">
 	<h1>import-export</h1>
 	<div class="col-sm-4 col-sm-offset-4">
-
+		<h1>Export options</h1>
 		<div class="row">
-			<%= link_to "Generate PSI expense report for #{@month}", psi_expense_report_path, class: "btn btn-primary" %>
+			
+			Generate PSI expense report for <%= link_to @prev_month, psi_expense_report_path, class: "btn btn-primary" %>
+		</div>
+		<div class="row">
+			...or choose a past month
 		</div>
 
 	</div>
