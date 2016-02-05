@@ -4,6 +4,11 @@ class UsersController < ApplicationController
   before_action :logged_in_user, :except => [:new, :create]
   before_action :correct_user, :except => [:new, :create]
   
+  def admin
+    @users = User.all
+    
+  end
+  
 	def show
 		@user = User.find(params[:id])
 	end
@@ -36,6 +41,12 @@ class UsersController < ApplicationController
 	  else
 	    render 'edit'
 	  end
+	end
+	
+	def destroy
+	  @user = User.find(params[:id]).destroy
+	  flash[:success] = "#{@user.name} deleted"
+	  redirect_to admin_path
 	end
 	
 	private
