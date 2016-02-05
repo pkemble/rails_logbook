@@ -1,0 +1,24 @@
+<div class="container">
+	<div class="col-sm-8 col-md-offset-2">
+		<% @users.each do |u| %>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="col-sm-4">
+				<h4><%= u.name %></h4>	<%= u.email %> <br>
+				Entries : <%= u.entries.count %> <br>
+				Flights : <%= u.flights_count %>
+				</div>
+				<div class="col-sm-4">
+					<% if u.admin? && @user.admin? %>
+						<%= link_to "remove admin priveleges", u, method: :toggle_admin %>
+					<% else %>
+						<%= link_to "make admin", u, method: :toggle_admin %>
+					<% end %>
+					<br>
+					<%= link_to "delete user", u, method: :delete, data: { confirm: "Are you sure?" }%>
+				</div>
+			</div>
+		</div>
+		<% end %>
+	</div>
+</div>
