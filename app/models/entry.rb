@@ -17,7 +17,6 @@ class Entry < ActiveRecord::Base
 	  
 	  # tail
 	  @user = User.find(self.user_id)
-	  byebug
 	  unless @user.nil? || @user.def_tail_number.nil? || 
 	    !self.tail_changed? || self.tail.empty?
 	    
