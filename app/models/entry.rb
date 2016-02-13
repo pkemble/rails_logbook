@@ -39,6 +39,11 @@ class Entry < ActiveRecord::Base
 
 	  self.total_time = total_time
 	  
+	  #clean up crew meals
+	  if self.crew_meal == 0
+	    self.crew_meal = nil
+	  end
+	  
 	end
 	
 	def nice_date
