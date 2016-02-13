@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 	
 	belongs_to :user
 		
-	validates :date, :pic, :presence => true
+	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
 	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
