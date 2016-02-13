@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'logbook/index'
   
   get 'io' => 'import_export#index'
-  get 'psi_expense_report' => 'import_export#psi_expense'
+  get 'psi_expense_report/:month' => 'import_export#psi_expense'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
