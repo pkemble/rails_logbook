@@ -11,22 +11,21 @@ class Entry < ActiveRecord::Base
 	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries, :from_recent_entry
 	
 	before_save do
 	  
 	  # tail
 	  @user = User.find(self.user_id)
 	  unless @user.nil? || @user.def_tail_number.nil? || 
-	    !self.tail_changed?
+	    !self.tail_changed? || self.from_recent_entry
 	    
 	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
 	  
 	  #flight number
-	  
 	  unless @user.nil? || @user.def_flight_number.nil? || 
-	    !self.flight_number_changed?
+	    !self.flight_number_changed? || self.from_recent_entry
 	    
 	    self.flight_number = @user.def_flight_number.gsub('*', self.flight_number)
 	  end

@@ -26,7 +26,13 @@ class EntriesController < ApplicationController
   end
 	
   def create
+    byebug
     @entry = Entry.new(entry_params)
+    
+    if URI(request.referer).path == "/continued_entry"
+      @entry.from_recent_entry = true
+    end
+    
     @user = current_user
     
     unless @user.nil? 
@@ -83,10 +89,6 @@ class EntriesController < ApplicationController
       params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
                                     :pd_end, :travel_expenses, :commit_type )
-    end
-    
-    def recent_params
-      [ tail, pic, crew_name, flight_number ]
     end
       
 end
