@@ -10,6 +10,7 @@ class EntriesController < ApplicationController
   
   # TODO is this used?
   def show
+    byebug
     @entry = Entry.find(params[:id])
   end
   
@@ -20,7 +21,7 @@ class EntriesController < ApplicationController
   
   def edit
     @entry = Entry.find(params[:id])
-    @flights = @entry.flights
+    @flights = @entry.flights.order(:blockout)
     @entry.get_formatted_per_diem_times
   end
 	

@@ -23,12 +23,12 @@
 		<th>n.t.o.</th>
 		<th>n.ldg</th>
 	</tr>
-	<% @entry.flights.each do |f| %>
+	<% @flights.each do |f| %>
 		<tr>
-			<td><%= link_to edit_entry_flight_path(@entry.id, f.id), class: "btn-sm btn-primary" do%>
+			<td><%= link_to edit_entry_flight_path(f.entry_id, f.id), class: "btn-sm btn-primary" do%>
 					<span class="glyphicon glyphicon-edit"></span>
 				<% end %></td>
-			<td><%= link_to entry_flight_path(@entry.id, f.id), 
+			<td><%= link_to entry_flight_path(f.entry_id, f.id), 
 						method: :delete,
 						data: { confirm: 'Are you sure?' },
 						class: "btn-sm btn-danger" do %>
