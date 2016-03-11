@@ -58,7 +58,7 @@ class Entry < ActiveRecord::Base
 	     t = t + f.total_time
 	   end  
 	  end
-	  total_time = t
+	  total_time = t.round(1)
 	end
 	
 	def arpt_string
