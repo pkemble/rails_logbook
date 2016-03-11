@@ -18,14 +18,15 @@ class Entry < ActiveRecord::Base
 	  # tail
 	  @user = User.find(self.user_id)
 	  unless @user.nil? || @user.def_tail_number.nil? || 
-	    !self.tail_changed? || self.tail.empty?
+	    !self.tail_changed?
 	    
 	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
 	  end
 	  
 	  #flight number
+	  
 	  unless @user.nil? || @user.def_flight_number.nil? || 
-	    !self.flight_number_changed? || self.flight_number.empty?
+	    !self.flight_number_changed?
 	    
 	    self.flight_number = @user.def_flight_number.gsub('*', self.flight_number)
 	  end
