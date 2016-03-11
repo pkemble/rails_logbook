@@ -34,8 +34,9 @@ class EntriesController < ApplicationController
     end
     
     if @entry.save
-      if params[:commit_type] == "add-flight"
-        redirect_to new_entry_flight_path
+      byebug
+      if params[:commit] == "Create entry and add flights"
+        redirect_to new_entry_flight_path(@entry.id)
       else
         redirect_to edit_entry_path(@entry.id)
       end
@@ -81,7 +82,7 @@ class EntriesController < ApplicationController
     def entry_params
       params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
-                                    :pd_end, :travel_expenses )
+                                    :pd_end, :travel_expenses, :commit_type )
     end
     
     def recent_params
