@@ -11,7 +11,8 @@ class Entry < ActiveRecord::Base
 	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
 		
-	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end, :per_diem_hours_formatted, :user_has_entries, :from_recent_entry
+	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end,
+	 :per_diem_hours_formatted, :user_has_entries, :from_recent_entry
 	
 	before_save do
 	  
@@ -80,5 +81,8 @@ class Entry < ActiveRecord::Base
   
   def user_has_entries?
     Entry.where(user_id current_user.id).any?
+  end
+  
+  def past_months
   end
 end

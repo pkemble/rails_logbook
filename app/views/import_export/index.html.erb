@@ -4,16 +4,9 @@
 		<h1>Export options</h1>
 		<div class="row">
 			
-			<h4>Generate PSI expense report for <%= link_to @prev_month, io_path(@prev_month), method: :psi_expense %></h4>
+			<h4>Generate PSI expense report for <%= link_to @prev_month, '/psi_expense_report/' + @prev_month_num %></h4>
 		</div>
-		<div class="row">
-			...or choose a past month:
-		</div>
-		<div class="row">
-			<% @dates.each do |dt| %>
-				<%= link_to dt, io_path(dt), method: :psi_expense %><br />
-			<% end %>
-		</div>
+
 
 	</div>
 	<%= debug(params)%>
