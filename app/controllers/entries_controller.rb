@@ -26,7 +26,6 @@ class EntriesController < ApplicationController
   end
 	
   def create
-    byebug
     @entry = Entry.new(entry_params)
     
     if URI(request.referer).path == "/continued_entry"
@@ -40,7 +39,6 @@ class EntriesController < ApplicationController
     end
     
     if @entry.save
-      byebug
       if params[:commit] == "Create entry and add flights"
         redirect_to new_entry_flight_path(@entry.id)
       else

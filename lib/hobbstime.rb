@@ -10,9 +10,12 @@ class HobbsTime
     if date == nil
       return nil
     end
-    
-    @hobbs_start = t1.nil? || t1.empty? ? date.beginning_of_day : date.change(hour: t1[0..1], min: t1[2..3])
-    @hobbs_end = t2.nil? || t2.empty? ? date.tomorrow : date.change(hour: t2[0..1], min: t2[2..3])
+    @hobbs_start = t1.nil? || t1.empty? ? 
+      date.beginning_of_day :
+      date.change(hour: t1[0..1].to_i, min: t1[2..3].to_i)
+    @hobbs_end = t2.nil? || t2.empty? ?
+      date.tomorrow : 
+      date.change(hour: t2[0..1].to_i, min: t2[2..3].to_i)
     @hobbs_date = date
     @span = span
   end

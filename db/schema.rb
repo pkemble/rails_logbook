@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204180911) do
+ActiveRecord::Schema.define(version: 20160327165433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,32 @@ ActiveRecord::Schema.define(version: 20160204180911) do
   create_table "import_exports", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "psi_imports", force: :cascade do |t|
+    t.string   "date"
+    t.string   "dep"
+    t.string   "arr"
+    t.text     "tail"
+    t.integer  "dto"
+    t.integer  "nto"
+    t.integer  "dlnd"
+    t.integer  "night_ld"
+    t.float    "btime"
+    t.float    "ntime"
+    t.float    "pictime"
+    t.float    "sictime"
+    t.float    "melpic"
+    t.float    "melsic"
+    t.integer  "holds"
+    t.string   "pic"
+    t.string   "sic"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "blockout"
+    t.string   "blockin"
+    t.float    "approaches"
+    t.boolean  "imported"
   end
 
   create_table "users", force: :cascade do |t|

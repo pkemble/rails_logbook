@@ -64,10 +64,10 @@ class Entry < ActiveRecord::Base
 	def arpt_string
 	  a = ""
 	  unless self.flights.any? == false
-	    self.flights.each do |f|
-	     a += f.dep.remove_icao + '/'
+	    self.flights.order(:p_blockout).each do |f|
+	     a += f.dep.remove_icao + '-'
   	  end
-  	  a += self.flights.last.arr.remove_icao
+  	  a += self.flights.order(:p_blockout).last.arr.remove_icao
 	  end
     arpt_string = a
 	end

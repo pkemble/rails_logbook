@@ -8,8 +8,9 @@ class String
   
   def remove_icao
     if self.length == 4 && self.upcase[0] == 'K'
-      s = self[1..3]
-      return s
+      return self[1..3]
+    else
+      return self
     end
   end
 end
