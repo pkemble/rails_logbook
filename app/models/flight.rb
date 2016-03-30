@@ -26,6 +26,10 @@ class Flight < ActiveRecord::Base
     n_curr = a + "/" + b    
   end
   
+  after_save do
+    current_user.total_time += self.total_time
+  end
+  
   private
     def to_utc(btime)
       DateTime.strptime(btime.to_s, "%H%M").to_time.utc

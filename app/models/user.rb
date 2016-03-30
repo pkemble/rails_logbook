@@ -45,4 +45,15 @@ class User < ActiveRecord::Base
 	  end
 	  return c
 	end
+
+  def self.backfill_times
+    n = 0
+    Entry.where(user_id: current_user.id).each do |e|
+      e.flights.each do |f|
+        n += f.total_time
+      end
+    end
+    self.total_time = n
+    self.save
+  end
 end

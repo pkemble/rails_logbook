@@ -19,4 +19,7 @@ module UsersHelper
      @user = User.find(session[:user_id])
      redirect_to(root_url) unless current_user?(@user)
    end
+   
+   #updates times
+
 end

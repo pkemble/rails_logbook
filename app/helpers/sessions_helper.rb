@@ -1,6 +1,14 @@
 module SessionsHelper
+  
+  include UsersHelper
+  
 	def log_in(user)
 		session[:user_id] = user.id
+    #update times
+    if user.total_time.nil?
+      byebug
+      user.total_time = user.backfill_times
+    end
 	end
 	
 	def remember(user)

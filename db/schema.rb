@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160327165433) do
+ActiveRecord::Schema.define(version: 20160330154319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(version: 20160327165433) do
     t.boolean  "admin",             default: false
     t.string   "def_tail_number"
     t.string   "def_flight_number"
+    t.float    "total_time"
+    t.float    "night_curr"
   end
 
   add_foreign_key "flights", "entries"
