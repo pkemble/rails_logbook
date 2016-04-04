@@ -11,6 +11,13 @@ class ImportExportController < ApplicationController
     @prev_month_num = Time.now.prev_month.strftime('%m')
   end
   
+  def export
+    @since = params[:since]
+    @dSince = Time.strptime(@since, "%s")
+    @entries = Entry.where(user_id: current_user.id).where("updated_at > ?", @dSince).order(:date)
+    render :json => @entries.to_json(:include => :flights)
+  end
+  
   def upload
     if PsiImport.import(params[:csv_data])
     else
