@@ -2,8 +2,8 @@ class ImportExportController < ApplicationController
   
   include ImportExportHelper
   
-  before_action :logged_in_user
-  before_action :correct_user
+  before_action :logged_in_user, except: [:export]
+  before_action :correct_user , except: [:export]
   
   
   def index
@@ -13,8 +13,10 @@ class ImportExportController < ApplicationController
   
   def export
     @since = params[:since]
+    @user_id = User.find_by(email: params[:email]).id
+    byebug
     @dSince = Time.strptime(@since, "%s")
-    @entries = Entry.where(user_id: current_user.id).where("updated_at > ?", @dSince).order(:date)
+    @entries = Entry.where(user_id: @user_id).where("updated_at > ?", @dSince).order(:date)
     render :json => @entries.to_json(:include => :flights)
   end
   
