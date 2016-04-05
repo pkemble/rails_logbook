@@ -14,7 +14,6 @@ class ImportExportController < ApplicationController
   def export
     @since = params[:since]
     @user_id = User.find_by(email: params[:email]).id
-    byebug
     @dSince = Time.strptime(@since, "%s")
     @entries = Entry.where(user_id: @user_id).where("updated_at > ?", @dSince).order(:date)
     render :json => @entries.to_json(:include => :flights)
