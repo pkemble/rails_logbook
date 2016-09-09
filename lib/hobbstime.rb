@@ -33,4 +33,5 @@ class HobbsTime
   def self.to_short_format(t)
     return t.localtime.strftime(HMFormat) #TODO revisit timezones
   end
+  
 end

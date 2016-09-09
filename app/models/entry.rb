@@ -38,7 +38,7 @@ class Entry < ActiveRecord::Base
 	  self.per_diem_start = @per_diem.hobbs_start
 	  self.per_diem_end = @per_diem.hobbs_end
 
-	  self.total_time = total_time
+	  #self.flight_time = flight_time
 	  
 	  #clean up crew meals
 	  if self.crew_meal == 0
@@ -51,15 +51,27 @@ class Entry < ActiveRecord::Base
 	  self.date.strftime("%m/%d/%Y")
 	end
 	
-	def total_time
+	def flight_time
 	  t = 0
 	  if self.flights.any?
 	   self.flights.each do |f|
-	     t = t + f.total_time
+	     t += f.block_time
 	   end  
 	  end
-	  total_time = t.round(1)
+	  flight_time = t.round(1)
 	end
+
+  def xc #TODO this is currently more like pf time - no distance measurements made
+    t = 0
+    if self.flights.any?
+      self.flights.each do |f|
+        if f.pf
+          t += f.block_time
+        end
+      end
+    end
+    xc = t.round(1)
+  end
 	
 	def arpt_string
 	  a = ""
@@ -82,7 +94,6 @@ class Entry < ActiveRecord::Base
   def user_has_entries?
     Entry.where(user_id current_user.id).any?
   end
-  
-  def past_months
-  end
+
 end
+  

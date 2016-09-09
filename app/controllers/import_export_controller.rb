@@ -20,18 +20,36 @@ class ImportExportController < ApplicationController
   end
   
   def upload
-    if PsiImport.import(params[:csv_data])
-    else
+    unless PsiImport.import(params[:csv_data])
       flash.now[:danger] = "d'oh"
     end
     redirect_to psi_import_path
   end
-  
+ 
+  def upload_pre_astro
+    unless PsiImport.import_pre_astro(params[:csv_data])
+      flash.now[:danger] ="wtf"
+    end
+    redirect_to psi_import_path
+  end
+
   def import_loaded_csv
-      @user = current_user
-      PsiImport.convert(@user)
-      flash[:success] = "imported all that shit"
-      redirect_to psi_import_path
+    @user = current_user
+    PsiImport.convert(@user)
+    flash[:success] = "imported all that shit"
+    redirect_to psi_import_path
+  end
+
+  def reimport_psi_imports
+    @user = current_user
+
+    Flight.delete_all(user_id: @user.id)
+    Entry.delete_all(user_id: @user.id)
+
+    PsiImport.convert(@user)
+
+    flash[:success] = "reimported all that shit"
+    redirect_to psi_import_path
   end
   
   def psi_import

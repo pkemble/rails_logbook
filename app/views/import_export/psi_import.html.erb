@@ -4,41 +4,52 @@
   <%= submit_tag "import CSV", :class => "btn btn-success" %>
 <% end %>
 
+<%= form_tag({action: :upload_pre_astro}, multipart: true) do %>
+  <%= file_field_tag 'csv_data', :class => "btn" %>
+  <%= submit_tag "import pre astro CSV", :class => "btn btn-success" %>
+<% end %>
+
 <%= link_to import_loaded_csv_path, 
   method: :import_loaded_csv,
   class: "btn btn-success" do %>
-  import loaded CSV data below into logbook
+    import loaded CSV data below into logbook
 <% end %>
 
-<table class="table table-striped table-condensed table-bordered">
-  <tr>
-    <td>imported</td>
-    <td>date</td>
-    <td>tail</td>
-    <td>dep</td>
-    <td>arr</td>
-    <td>block in</td>
-    <td>block out</td>
-    <td>total time</td>
-    <td>pic</td>
-    <td>sic</td>
-  </tr>
-<% @psi_imports.each do |rec| %>
-  <tr>
-    <% if rec.imported %>
-      <td class="success">Y</td>
-    <% else %>
-      <td class="danger">N</td>
-    <% end %>
-    <td><%= rec.date %></td>
-    <td><%= rec.tail %></td>
-    <td><%= rec.dep %></td>
-    <td><%= rec.arr %></td>
-    <td><%= rec.blockin %></td>
-    <td><%= rec.blockout %></td>
-    <td><%= rec.btime %></td>
-    <td><%= rec.pic %></td>
-    <td><%= rec.sic %></td>
-  </tr>
+<%= link_to reimport_psi_imports_path,
+  method: :reimport_psi_imports,
+  class: "btn btn-danger" do %>
+    delete tables and re-import psi imports table
 <% end %>
-</table>
+
+    <table class="table table-striped table-condensed table-bordered">
+      <tr>
+        <td>imported</td>
+        <td>date</td>
+        <td>tail</td>
+        <td>dep</td>
+        <td>arr</td>
+        <td>block in</td>
+        <td>block out</td>
+        <td>total time</td>
+        <td>pic</td>
+        <td>sic</td>
+      </tr>
+      <% @psi_imports.each do |rec| %>
+        <tr>
+          <% if rec.imported %>
+            <td class="success">Y</td>
+          <% else %>
+            <td class="danger">N</td>
+          <% end %>
+          <td><%= rec.date %></td>
+          <td><%= rec.tail %></td>
+          <td><%= rec.dep %></td>
+          <td><%= rec.arr %></td>
+          <td><%= rec.blockin %></td>
+          <td><%= rec.blockout %></td>
+          <td><%= rec.btime %></td>
+          <td><%= rec.pic %></td>
+          <td><%= rec.sic %></td>
+        </tr>
+      <% end %>
+    </table>
