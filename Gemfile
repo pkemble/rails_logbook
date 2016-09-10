@@ -4,6 +4,7 @@ gem 'bootstrap-sass', '3.2.0.0'
 gem 'bcrypt'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
+gem 'json', '1.8.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
@@ -59,6 +60,7 @@ group :development do
 #  gem 'capistrano-rvm'
 	gem 'rvm-capistrano'
   gem 'capistrano-passenger'
-    
+	
+	gem 'hirb' #tables in rails console    
 end
 

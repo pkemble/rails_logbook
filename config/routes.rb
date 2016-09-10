@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   get 'psi_import' => 'import_export#psi_import'
   post 'psi_import' => 'import_export#upload'
   post 'import_loaded_csv' => 'import_export#import_loaded_csv'
+  post 'reimport_psi_imports' => 'import_export#reimport_psi_imports'
+  post 'import_pre_astro_csv' => 'import_export#upload_pre_astro'
+  match 'import_export/glob_flights' => 'import_export#glob_flights'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

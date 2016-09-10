@@ -1,5 +1,7 @@
 Rails.application.configure do
   
+  config.autoload_paths += %W{#{config.root}/lib}
+  
   config.reload_plugins = true
   
   # Settings specified here will take precedence over those in config/application.rb.

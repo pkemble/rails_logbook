@@ -15,8 +15,11 @@
 /log/*
 !/log/.keep
 /tmp
-/nbproject/private/
+/nbproject/*
 
 # Ignore development stuff
 .project
 .byebug_history
+
+# Ignore seeds
+*.csv

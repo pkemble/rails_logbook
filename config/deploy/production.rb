@@ -4,12 +4,10 @@
 # You can define all roles on a single server, or split them:
 
 set :stage, :production
-set :assets_roles, [:web, :app, :db] 
+set :assets_roles, [ :web, :app, :db ] 
 server 'petekemble.com', user: 'pete', roles: %w{app db web}
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
-
-
 
 # role-based syntax
 # ==================
