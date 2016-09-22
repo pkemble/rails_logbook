@@ -5,8 +5,9 @@ class HobbsTime
   attr_reader :hobbs_start, :hobbs_end, :hobbs_date, :span, :formatted_span
   
   HMFormat = "%H%M"
+  ET = "Eastern Time (US & Canada)"
   
-  def initialize(t1=nil, t2=nil, date=nil) # TODO make date arg required.
+  def initialize(t1=nil, t2=nil, date=nil)
     if date == nil
       return nil
     end
@@ -31,7 +32,7 @@ class HobbsTime
   
   # gets a time object and returns the HMFormat constant format 
   def self.to_short_format(t)
-    return t.localtime.strftime(HMFormat) #TODO revisit timezones
+    return t.strftime(HMFormat) #TODO revisit timezones
   end
   
 end

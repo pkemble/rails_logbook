@@ -42,6 +42,7 @@ class PsiImport < ActiveRecord::Base
   end
   
   def self.convert(user)
+    byebug
     @psuedo_entries = PsiImport.select('DISTINCT ON (date,tail) *') #TODO: this causes problem with flights late into the next zulu day. see Fragrassi 95KH flights
     @psuedo_entries.each do |e|
       
@@ -54,11 +55,11 @@ class PsiImport < ActiveRecord::Base
         # TODO this 0500 hack has to go away...non imported entries need to be looked at for this too
         # @entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
         if e.date.include? "-"
-          @entry.date = DateTime.strptime e.date + ":0500", "%m-%d-%Y:%H%M"
+          @entry.date = DateTime.strptime(e.date, "%m-%d-%Y")
         elsif e.date.include? ":"
-          @entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
+          @entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
         else
-          @entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
+          @entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
         end
 
 
