@@ -2,6 +2,8 @@ class Flight < ActiveRecord::Base
   
   require 'hobbstime'
   require 'stringutil'
+
+  CUTOFF = "04"
     
   belongs_to :entry
   
@@ -32,17 +34,37 @@ class Flight < ActiveRecord::Base
     end
 
     @prev_date = @orig_date.yesterday
-    @new_entry = Entry.where(date: @prev_date)
+    @candidate_entries = Entry.where(date: @prev_date)
 
-    if @new_entry.count == 0 || @new_entry.count > 1
+    if @candidate_entries.count == 0 || @candidate_entries.count > 1
       GlobLogger.debug "Found less than or more than 1 Entry for #{@prev_date}"
       return
     end
 
-    entry_id = @new_entry[0].id
-    #if f.save!
-    GlobLogger.debug "Moved flight id: #{id} to entry id: #{@new_entry.id}"
-    #end
+    @new_entry = @candidate_entries[0]
+
+    self.entry_id = @new_entry.id
+    self.globbed = true
+
+    if self.save!
+      GlobLogger.debug "Moved flight id: #{id} to entry id: #{@new_entry.id}"
+    end
+  end
+
+  def check_for_late_flights
+    begin
+      @d1 = self.p_blockout
+      @d2 = self.p_blockout.change({hour: CUTOFF, min: 0})
+
+      Rails.logger.debug "Comparing #{@d1} < #{@d2}"
+      if @d1 <= @d2
+        return true
+      else
+        return false
+      end
+    rescue
+      Rails.logger.debug "#{self} can't be checked. p_blockout nil?"
+    end
   end
   
   def n_curr #not used

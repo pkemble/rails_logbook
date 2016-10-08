@@ -63,12 +63,11 @@ class ImportExportController < ApplicationController
     GlobLogger.debug "Globbing flights for #{@user.name}"
 
     @user_entries = Entry.where(user_id: @user.id)
-    byebug
     @user_entries.each do |e|
       if e.flights.count > 1
         @f1 = e.flights[0]
         @f2 = e.flights[1]
-        if @f1.blockout && @f1.blockout.check_for_late_flights == true
+        if @f1.globbed == false && @f1.check_for_late_flights == true
           @blockin = DateTime.strptime(@f1.blockin, "%H%M")
           @next_blockout = DateTime.strptime(@f2.blockout, "%H%M")
           if (@blockin + 10.hours) < @next_blockout
@@ -87,7 +86,6 @@ class ImportExportController < ApplicationController
     if params[:month].nil? 
       @t = Time.now.prev_month.beginning_of_month
       @e = Time.now.prev_month.end_of_month
-      byebug
       @entries = Entry.where(date: @t..@e, user_id: @user.id ).order(:date)
       #render :text => psi_output TODO
     else

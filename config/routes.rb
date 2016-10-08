@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  
+
+  resources :entries do
+    resources :flights
+  end
   resources :flights
+
+  resources :airports
+
   get 'logbook/index'
   
   get 'io' => 'import_export#index'
@@ -27,9 +33,7 @@ Rails.application.routes.draw do
 
   # Example resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :entries do
-    resources :flights
-  end
+
   
   resources :users
   

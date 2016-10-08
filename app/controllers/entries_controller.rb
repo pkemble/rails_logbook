@@ -21,7 +21,7 @@ class EntriesController < ApplicationController
   
   def edit
     @entry = Entry.find(params[:id])
-    @flights = @entry.flights.order(:blockout)
+    @flights = @entry.flights.order(:p_blockout)
     @entry.get_formatted_per_diem_times
   end
 	

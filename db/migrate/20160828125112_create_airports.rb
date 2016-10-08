@@ -6,8 +6,8 @@ class CreateAirports < ActiveRecord::Migration
       t.string :country
       t.string :iata
       t.string :icao
-      t.integer :lat
-      t.integer :lon
+      t.float :lat
+      t.float :lon
       t.integer :elev
       t.string :tz
       t.string :dst

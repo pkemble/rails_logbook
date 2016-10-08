@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'httparty'
 gem 'bootstrap-sass', '3.2.0.0'
 gem 'bcrypt'
 gem 'will_paginate'
