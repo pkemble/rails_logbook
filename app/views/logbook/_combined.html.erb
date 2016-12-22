@@ -44,7 +44,7 @@
           <td>approaches</td>
         </tr>
         <% e.flights.order(:blockout).each do |f| %>
-          <% if f.blockout && f.blockout.check_for_late_flights == true %>
+          <% if f.blockout && f.check_for_late_flights == true %>
               <tr class="danger">
             <% else %>
               <tr>
