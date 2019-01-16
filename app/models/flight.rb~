@@ -34,7 +34,7 @@ class Flight < ActiveRecord::Base
 			return
 		end
 		unless self.p_blockout.nil?
-		
+		byebug
 			@day = self.entry.date
 			
 			@sun_times_dep = SunTimes.new

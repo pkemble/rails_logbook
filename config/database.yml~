@@ -2,7 +2,7 @@
 default: &default
   adapter: mysql2
   database: logbook
-  host: 127.0.0.1
+  hostname: 127.0.0.1
   username: logbookdb
   password: novabein
   socket: /tmp/mysql.sock

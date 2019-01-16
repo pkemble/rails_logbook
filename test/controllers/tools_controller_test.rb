@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ImportExportTest < ActiveSupport::TestCase
+class ToolsControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

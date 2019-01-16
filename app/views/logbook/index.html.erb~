@@ -5,17 +5,16 @@
   SIC: <%= p @totals.sic %><br>
   Instrument:<%= p @totals.instrument %><br>
   Night: <%= p @totals.night %>
-  
 </p>
 <p>
-<%= link_to 'new entry', new_entry_path, class: "btn btn-success" %>
-</p>
-<%= link_to 'view by flights', root_path(:view => 'flights') %>
+  <%= link_to 'new entry', new_entry_path, class: "btn btn-success" %>
+  </p>
 
-
-
-<% unless params[:view] && params[:view] == 'flights' %>
-	<%= render 'entries' %>
-<% else %>
-	<%= render 'flights' %>
-<% end %>
+  <% case params[:view] %>
+  <% when 'flights'  %>
+    <%= render 'flights' %>
+  <% when 'combined' %>
+    <%= render 'combined' %>
+  <% else %>
+    <%= render 'entries' %>
+  <% end %>

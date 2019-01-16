@@ -27,7 +27,7 @@ class Airport < ActiveRecord::Base
 			@crow.icao = row["icao"]
 			@crow.iata = row["iata"]
 			@crow.lat = row["lat"]
-			@crow.lon = row["lon"]
+			@crow.lon = row["long"]
 			@crow.elev = row["elev"]
 			@crow.tz = row["tz"]
 			@crow.dst = row["dst"]
