@@ -35,7 +35,7 @@
           delete tables and re-import psi imports table
         <% end %>
         
-      <%= link_to wipe_all_path,
+      <%= link_to wipal_all_path,
         method: :wipe_all,
         class: "btn btn-danger" do %>
           delete logbook all import tables.

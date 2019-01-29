@@ -5,10 +5,31 @@ class ImportExportController < ApplicationController
   before_action :logged_in_user, except: [:export]
   before_action :correct_user , except: [:export]
   
-  
   def index
     @prev_month = Time.now.prev_month.strftime('%B')
     @prev_month_num = Time.now.prev_month.strftime('%m')
+  end
+  
+  def psi_output
+    @t = Time.now.prev_month.beginning_of_month
+    @e = Time.now.prev_month.end_of_month
+    @entries = Entry.where(date: @t..@e).order(:date)
+            # <!-- using Expense report 1/2016 -->
+        # <td><%= e.date.strftime("%m/%d/%Y") %></td>
+        # <td><%= e.tail %></td>
+        # <td><%= e.arpt_string %></td>
+        # <td></td><!-- hidden column -->
+        # <td></td><!-- catering -->
+        # <td></td><!-- travel exp. -->
+        # <td><%= e.tips %></td>
+        # <td></td><!-- other exp. -->
+        # <td><%= e.remarks %></td>
+        # <td><%= e.crew_meal %></td>
+        # <td><%= e.per_diem_hours %></td>
+    @entries.each do |e|
+      psi_output = e.datestrftime("%m/%d/%Y")
+      psi_output += e.tail
+    end
   end
   
   def export
@@ -32,11 +53,17 @@ class ImportExportController < ApplicationController
     end
     redirect_to psi_import_path
   end
+  
+  def import_airports
+  	Airport.import(params[:csv_data])
+  	flash[:success] = "Airports Imported"
+  	redirect_to psi_import_path
+  end
 
   def import_loaded_csv
     @user = current_user
     PsiImport.convert(@user)
-    flash[:success] = "imported all that shit"
+    flash[:success] = "Import Complete"
     redirect_to psi_import_path
   end
 
@@ -48,12 +75,21 @@ class ImportExportController < ApplicationController
 
     PsiImport.convert(@user)
 
-    flash[:success] = "reimported all that shit"
+    flash[:success] = "Reimported"
+    redirect_to psi_import_path
+  end
+  
+  def wipe_all
+    @user = current_user
+	 Flight.delete_all(user_id: @user.id)
+    Entry.delete_all(user_id: @user.id)
+    PsiImport.delete_all
+    flash[:success] = "wiped it all"
     redirect_to psi_import_path
   end
   
   def psi_import
-    @psi_imports = PsiImport.all
+    @psi_imports = PsiImport.order('date').all
   end
 
   def glob_flights

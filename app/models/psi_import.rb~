@@ -69,18 +69,16 @@ class PsiImport < ActiveRecord::Base
       @crow.blockout = row["Dept Time"]
       @crow.blockin = row["Arr Time"]
       @crow.approaches = row["Approaches"]
-      @crow.ac_model = 'PC12'
       @crow.save!
     end
   end
   
   def self.convert(user)
-    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic')
+    byebug
+    @psuedo_entries = PsiImport.select('DISTINCT ON (date,tail) *') #TODO: this causes problem with flights late into the next zulu day. see Fragrassi 95KH flights
     @psuedo_entries.each do |e|
       
       begin
-        #first find if a similar date / tail entry exists
-        
         @entry = Entry.new()
         # TODO pd start and end set here as the straight imports with them being nil
         # produced 44 hours per diem per day...hacking it for now
@@ -96,7 +94,7 @@ class PsiImport < ActiveRecord::Base
 #          @entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
 #        end
 			
-			  @entry.date = e.date
+			@entry.date = e.date
 
 
         @entry.tail = e.tail

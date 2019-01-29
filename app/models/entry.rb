@@ -55,7 +55,9 @@ class Entry < ActiveRecord::Base
 	  t = 0
 	  if self.flights.any?
 	   self.flights.each do |f|
-	     t += f.block_time
+	     unless f.block_time.nil?
+         t += f.block_time
+	     end
 	   end  
 	  end
 	  flight_time = t.round(1)
@@ -65,7 +67,7 @@ class Entry < ActiveRecord::Base
     t = 0
     if self.flights.any?
       self.flights.each do |f|
-        if f.pf
+        if f.pf and f.block_time.nil?
           t += f.block_time
         end
       end

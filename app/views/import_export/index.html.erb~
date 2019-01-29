@@ -8,6 +8,13 @@
     	<h4><%= link_to "PSI CSV import", psi_import_path %></h4>
     </div>
     <div class="row">
+        <%= link_to add_night,
+      method: :add_night,
+      class: "btn btn-success" do %>
+        "Add night to Flights with blocktimes"
+      <% end %>
+    </div>
+    <div class="row">
     	<%= form_tag({action: :import_airports}, multipart: true) do %>
 		    <%= file_field_tag 'csv_data', :class => "btn" %>
     	<%= submit_tag "Upload Airports CSV", :class => "btn btn-success" %>

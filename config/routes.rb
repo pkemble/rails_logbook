@@ -17,7 +17,14 @@ Rails.application.routes.draw do
   post 'import_loaded_csv' => 'import_export#import_loaded_csv'
   post 'reimport_psi_imports' => 'import_export#reimport_psi_imports'
   post 'import_pre_astro_csv' => 'import_export#upload_pre_astro'
+  post 'wipe_all' => 'import_export#wipe_all'
   post 'glob_flights' => 'import_export#glob_flights'
+  post 'import_airports' => 'import_export#import_airports'
+
+  get 'tools' => 'tools#index'
+  get 'tools_night_report' => 'tools#night_report'
+  get 'tools_add_night' => 'tools#add_night'
+  post 'add_night_to_single_flight' => 'tools#add_night_to_single_flight'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

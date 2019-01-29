@@ -1,0 +1,24 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<div class="missing-airports">
+	<table class="table table-condensed table-bordered">
+		<th>missing airports</th>
+		<% @missing.each do |m| %>
+			<tr>
+				<td><%= m.iata %></td>
+			</tr>
+		<% end %>
+	</table>
+</div>
+<%= link_to 'night report', tools_night_report_path, class: 'btn btn-info' %>
+<%= link_to 'add night to flights with block times', tools_add_night_path, class: 'btn btn-info' %>
+<p>
+<%= form_tag("/add_night_to_single_flight", method: "post") do %>
+	<%= label_tag(:flight_id, "Flight ID") %>
+	<%= text_field_tag(:flight_id) %>
+	<%= submit_tag("Add night to single flight") %>
+<% end %>
+</p>
+<%= @output %>

@@ -13,12 +13,10 @@ class LogbookController < ApplicationController
     @entries = Entry.where(user_id: current_user.id).order(:date).paginate(page: params[:page], per_page: 30)
 
     if params[:view].nil?
-      @flights = Flight.where(user_id: current_user.id).joins(:entry)
-      .order('entries.date').order(:blockout).paginate(page: params[:page],
+      @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).paginate(page: params[:page],
         per_page: 30)
     elsif params[:view] == "flights"
-      @flights = Flight.where(user_id: current_user.id).joins(:entry)
-      .order('entries.date').order(:blockout).paginate(page: params[:page],
+      @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).paginate(page: params[:page],
       per_page: 100)
     end
   end
