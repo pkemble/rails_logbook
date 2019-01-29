@@ -19,7 +19,7 @@ class Airport < ActiveRecord::Base
 	
 	def self.import(csv_file)
 		Airport.delete_all
-		CSV.foreach(csv_file.path, :headers => true) do |row|
+		CSV.foreach(csv_file.path, :headers => true, :encoding => 'iso-8859-1') do |row|
 			@crow = Airport.new()
 			@crow.name = row["name"]
 			@crow.city = row["city"]
@@ -35,25 +35,13 @@ class Airport < ActiveRecord::Base
 			@crow.save!
 		end
 	end	
-	
-  def get_sun(dt)
-    byebug
-    date = dt.strftime("%Y-%m-%d")
-    options = {
-      "lat" => self.lat.to_s,
-      "lng" => self.lon.to_s,
-      "date" => date
-    }
-    srss_url = "#{API}json"
 
-    begin
-      response = HTTParty.get(srss_url, :query => options)
-
-      sun = JSON.parse(response.body)
-
-    rescue
-      return nil
-    end
-
-  end
+	def self.add_missing_airport(iata)
+	  unless Airport.where(iata: iata).count > 0
+	    byebug
+      @missing = Airport.new()
+      @missing.iata = iata
+      @missing.save!
+	  end
+	end
 end

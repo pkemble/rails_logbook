@@ -2,8 +2,7 @@ class Flight < ActiveRecord::Base
   
   require 'hobbstime'
   require 'stringutil'
-  require 'ruby-sun-times/lib/sun_times'
-
+  require 'sun-times'
   CUTOFF = "04"
     
   belongs_to :entry
@@ -27,16 +26,25 @@ class Flight < ActiveRecord::Base
   
   def add_night_time
 		#get sunrise and sunset for each airport
-		@dep = Airport.where(iata: self.dep.remove_icao).first
-		@arr = Airport.where(iata: self.arr.remove_icao).first
+		@dep = Airport.where(iata: self.dep.remove_icao).where.not(lat: nil).first
+		if @dep.nil?
+		  Airport.add_missing_airport(self.dep.remove_icao)
+		  return
+		end
+		@arr = Airport.where(iata: self.arr.remove_icao).where.not(lat: nil).first
+    if @arr.nil?
+      Airport.add_missing_airport(self.arr.remove_icao)
+      return
+    end
 		if @dep.nil? || @arr.nil?
 			Rails.logger.debug('Either #{self.dep} or #{self.arr} are not in the airports database')
 			return
 		end
-		unless self.p_blockout.nil?
+		unless self.p_blockout.nil? or self.p_blockin.nil?
 		
 			@day = self.entry.date
-			
+			@blockout = self.p_blockout.to_s
+			@blockin = self.p_blockin.to_s
 			@sun_times_dep = SunTimes.new
 			@rise_dep_utc = @sun_times_dep.rise(@day, @dep.lat, @dep.lon)
 			@set_dep_utc = @sun_times_dep.set(@day, @dep.lat, @dep.lon)
@@ -45,27 +53,39 @@ class Flight < ActiveRecord::Base
 			@rise_arr_utc = @sun_times_arr.rise(@day, @arr.lat, @arr.lon)
 			@set_arr_utc = @sun_times_arr.set(@day, @arr.lat, @arr.lon)
 			
+			if @rise_dep_utc.nil? or @rise_arr_utc.nil? or @set_dep_utc.nil? or @set_arr_utc.nil?
+			  logger.debug 'Something was null: #{self.id}'
+			  return
+			end
+			#byebug
 			#is sunrise after blockin?
-			if @rise_dep_utc > self.p_blockin
+			if @rise_dep_utc > @blockin
 			# - yes, entire flight is night
 				self.night = self.block_time
 			#is sunrise after blockout?
-			elsif @rise_dep_utc > self.p_blockout
+			elsif @rise_dep_utc > @blockout
 			# - yes, calculate how much after
-				@night_time = @rise_dep_utc - self.p_blockout
+				@night_time = @rise_dep_utc - Time.parse(@blockout)
 			# - no
 			
 			#is sunset before blockout?
-			elsif @set_dep_utc < self.p_blockout	
+			elsif @set_dep_utc < @blockout
 			# - yes, the entire flight is night
 				self.night = self.block_time
 			# - no
 			
 			#is sunset before blockin?
-			elsif @set_arr_utc < self.p_blockin
-			# - yes, calculate how much after
-				@night_time = self.p_blockin - @set_arr_utc	
-			end		
+			elsif @set_arr_utc < @blockin
+			# - yes, calculate how much afterarr
+				@night_time = Time.parse(@blockin) - @set_arr_utc 
+			end
+			unless @night_time.nil?
+        # check flight 351045793. using arrival sunset could create night longer than total block
+			  @total_night  = (@night_time / 3600).round(1)
+			  self.night = self.block_time < @total_night ? self.block_time : @total_night
+			end
+			self.save!
+			logger.debug 'Logged #{self.night} hours for Flight id: #{self.id}'
 		end
   end
 

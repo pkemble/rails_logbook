@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'tools' => 'tools#index'
   get 'tools_night_report' => 'tools#night_report'
   get 'tools_add_night' => 'tools#add_night'
+  post 'add_night_to_single_flight' => 'tools#add_night_to_single_flight'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
