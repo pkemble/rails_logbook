@@ -81,7 +81,7 @@ class ImportExportController < ApplicationController
   
   def wipe_all
     @user = current_user
-	 Flight.delete_all(user_id: @user.id)
+	  Flight.delete_all(user_id: @user.id)
     Entry.delete_all(user_id: @user.id)
     PsiImport.delete_all
     flash[:success] = "wiped it all"

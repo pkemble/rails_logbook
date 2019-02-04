@@ -1,6 +1,7 @@
 class Airport < ActiveRecord::Base
 
   API = "http://api.sunrise-sunset.org/"
+  
 	
 # "id",
 # "name",
@@ -26,21 +27,34 @@ class Airport < ActiveRecord::Base
 			@crow.country = row["country"]
 			@crow.icao = row["icao"]
 			@crow.iata = row["iata"]
-			@crow.lat = row["lat"]
-			@crow.lon = row["lon"]
-			@crow.elev = row["elev"]
+			@crow.lat = row["lat"].to_f
+			@crow.lon = row["lon"].to_f
+			@crow.elev = row["elev"].to_f
 			@crow.tz = row["tz"]
 			@crow.dst = row["dst"]
 			@crow.olsontz = row["olsontz"]
+			@crow.used = 0
+			if @crow.iata == "\\N"
+			  @crow.iata = @crow.icao.remove_icao
+			end
 			@crow.save!
 		end
+		
 	end	
 
-	def self.add_missing_airport(iata)
-	  unless Airport.where(iata: iata).count > 0
-	    byebug
+	def get_lat
+	  return self.lat
+	end
+	
+	def get_lon
+	  return self.lon
+	end
+
+	def self.add_missing_airport(icao, used = 0)
+	  unless Airport.where(icao: icao).count > 0
       @missing = Airport.new()
-      @missing.iata = iata
+      @missing.icao = icao
+      @missing.used = used
       @missing.save!
 	  end
 	end

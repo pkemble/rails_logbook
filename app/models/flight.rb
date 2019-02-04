@@ -26,14 +26,14 @@ class Flight < ActiveRecord::Base
   
   def add_night_time
 		#get sunrise and sunset for each airport
-		@dep = Airport.where(iata: self.dep.remove_icao).where.not(lat: nil).first
+		@dep = Airport.where(icao: self.dep).where.not(lat: nil).first
 		if @dep.nil?
-		  Airport.add_missing_airport(self.dep.remove_icao)
+		  Airport.add_missing_airport(self.dep)
 		  return
 		end
-		@arr = Airport.where(iata: self.arr.remove_icao).where.not(lat: nil).first
+		@arr = Airport.where(icao: self.arr).where.not(lat: nil).first
     if @arr.nil?
-      Airport.add_missing_airport(self.arr.remove_icao)
+      Airport.add_missing_airport(self.arr)
       return
     end
 		if @dep.nil? || @arr.nil?
@@ -142,8 +142,29 @@ class Flight < ActiveRecord::Base
     
   end
 
-  def is_xc
-    return self.pf
+  def check_for_xc 
+    
+    @dep = Airport.where(icao: self.dep).where("lat IS NOT NULL").to_a[0]
+    @arr = Airport.where(icao: self.arr).where("lat IS NOT NULL").to_a[0]
+    if @dep.nil?
+      Airport.add_missing_airport(self.dep.remove_icao)
+      return
+    end
+    if @arr.nil?
+      Airport.add_missing_airport(self.arr.remove_icao)
+      return
+    end
+    
+    a = Geokit::LatLng.new(@dep.lat, @dep.lon)
+    b = Geokit::LatLng.new(@arr.lat, @arr.lon)
+    self.distance = a.distance_to(b).round(1)
+    
+    if self.distance > 50 and self.pf?
+      self.xc = true
+    else
+      self.xc = false
+    end
+    self.save!
   end
   
   private

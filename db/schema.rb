@@ -10,20 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190121140050) do
+ActiveRecord::Schema.define(version: 20190201215010) do
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
     t.string  "city"
     t.string  "iata"
     t.string  "icao"
-    t.string  "lat"
-    t.string  "lon"
     t.integer "elev"
     t.string  "tz"
     t.string  "dst"
     t.string  "olsontz"
     t.string  "country"
+    t.float   "lat",     limit: 24
+    t.float   "lon",     limit: 24
+    t.integer "used"
   end
 
   create_table "entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -64,6 +65,8 @@ ActiveRecord::Schema.define(version: 20190121140050) do
     t.datetime "p_blockout"
     t.integer  "user_id"
     t.boolean  "globbed",                  default: false
+    t.boolean  "xc"
+    t.float    "distance",   limit: 24
     t.index ["entry_id"], name: "index_flights_on_entry_id", using: :btree
   end
 

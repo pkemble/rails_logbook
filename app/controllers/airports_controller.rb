@@ -6,4 +6,8 @@ class AirportsController < ApplicationController
   def index
   	
   end
+  private
+    def airport_params
+      params.require(:airport).permit(:lat, :lon, :iata, :icao)
+    end
 end

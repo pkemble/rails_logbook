@@ -23,11 +23,15 @@ class Totals
   end
   
   def instrument
-    return Flight.sum(:instrument)
+    return Flight.sum(:instrument).round(1)
   end
   
   def night
-    return Flight.sum(:night)
+    return Flight.sum(:night).round(1)
+  end
+  
+  def xc
+    return Flight.where(xc: :true).sum(:block_time).round(1)
   end
   
   private

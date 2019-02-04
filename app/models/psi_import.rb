@@ -75,7 +75,7 @@ class PsiImport < ActiveRecord::Base
   end
   
   def self.convert(user)
-    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic')
+    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
     @psuedo_entries.each do |e|
       
       begin
@@ -131,8 +131,8 @@ class PsiImport < ActiveRecord::Base
               Rails.logger.debug "blockout/blockin missing: using btime in csv"
               @flight.block_time = f.btime
             end
-
-            unless f.night_ld || f.dlnd
+            
+            if (f.night_ld == 0 || f.night_ld.nil?) && (f.dlnd == 0 || f.dlnd.nil?)
               @flight.pf = false
             else
               @flight.pf = true
@@ -150,7 +150,7 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        Rails.logger.debug "oops...PsiImport.find(#{e.id}): #{oops}"
+        Rails.logger.debug "oops...PsiImport.find(#{e}): #{oops}"
         next
       end
     end

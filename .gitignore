@@ -23,3 +23,10 @@
 
 # Ignore seeds
 *.csv
+*.csv~
+
+#Ignore Gemfile.lock
+Gemfile.lock
+
+#Ignore temp files
+*.*~
