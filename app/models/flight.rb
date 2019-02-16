@@ -25,6 +25,10 @@ class Flight < ActiveRecord::Base
   end
   
   def add_night_time
+    if self.night != nil
+      return
+    end
+    
 		#get sunrise and sunset for each airport
 		@dep = Airport.where(icao: self.dep).where.not(lat: nil).first
 		if @dep.nil?

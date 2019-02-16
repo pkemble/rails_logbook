@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190201215010) do
+ActiveRecord::Schema.define(version: 20190212202456) do
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -55,8 +55,8 @@ ActiveRecord::Schema.define(version: 20190201215010) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.float    "block_time", limit: 24
-    t.boolean  "night_to"
-    t.boolean  "night_ld"
+    t.integer  "night_to"
+    t.integer  "night_ld"
     t.float    "night",      limit: 24
     t.float    "instrument", limit: 24
     t.float    "approaches", limit: 24
@@ -67,6 +67,12 @@ ActiveRecord::Schema.define(version: 20190201215010) do
     t.boolean  "globbed",                  default: false
     t.boolean  "xc"
     t.float    "distance",   limit: 24
+    t.integer  "day_ld"
+    t.integer  "day_to"
+    t.boolean  "dual_given"
+    t.boolean  "dual_recvd"
+    t.text     "remarks",    limit: 65535
+    t.boolean  "marked"
     t.index ["entry_id"], name: "index_flights_on_entry_id", using: :btree
   end
 
@@ -95,6 +101,8 @@ ActiveRecord::Schema.define(version: 20190201215010) do
     t.boolean  "imported"
     t.string   "ac_model"
     t.datetime "date"
+    t.boolean  "dual_given"
+    t.boolean  "dual_recvd"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

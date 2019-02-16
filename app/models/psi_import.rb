@@ -9,13 +9,14 @@ class PsiImport < ActiveRecord::Base
   include PsiImportHelper
   
   def self.import(csv_file)
-    PsiImport.delete_all
+    #PsiImport.delete_all
     CSV.foreach(csv_file.path, :headers => true) do |row|
     	@crow = PsiImport.new()
     	
     	@crow.date = DateTime.strptime(row["DepartureTimeLocal"], '%m/%d/%Y')
     	@crow.dep = row["OriginAirport"]
     	@crow.arr = row["DestinationAirport"]
+    	@crow.ac_model = row["AircraftType"]
     	@crow.tail = row["AircraftRegistration"]
     	@crow.dto = row["DayTakeoffs"]
     	@crow.nto = row["NightTakeoffs"]
@@ -33,17 +34,21 @@ class PsiImport < ActiveRecord::Base
       @crow.sic = row["SIC"]
       @crow.holds = row["HoldTime"]
       if row["PrecApproaches"].nil?
-      	@approaches = row["Approaches"]
-      else
-      	@approaches = row["PrecApproaches"] + row["Approaches"]
+      	row["PrecApproaches"] = 0
       end
+      if row["Approaches"].nil?
+        row["Approaches"] = 0
+      end
+     	@approaches = row["PrecApproaches"].to_i + row["Approaches"].to_i
       @crow.approaches = @approaches
+      @crow.dual_given = row["dual_given"]
+      @crow.dual_recvd = row["dual_recvd"]
       @crow.save!
     end
   end
   
   def self.import_pre_astro(csv_file)
-    PsiImport.delete_all
+    #PsiImport.delete_all
 
     CSV.foreach(csv_file.path, :headers => true) do |row|
 
@@ -77,7 +82,6 @@ class PsiImport < ActiveRecord::Base
   def self.convert(user)
     @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
     @psuedo_entries.each do |e|
-      
       begin
         #first find if a similar date / tail entry exists
         
@@ -97,15 +101,14 @@ class PsiImport < ActiveRecord::Base
 #        end
 			
 			  @entry.date = e.date
-
-
         @entry.tail = e.tail
         @entry.ac_model = e.ac_model
         @entry.from_recent_entry = true
         if e.pic.include? "Kemble"
-          @entry.flight_number = "CNS976"
+          if e.ac_model.start_with?("PC12") && e.sic != nil
+            @entry.flight_number = "CNS976"
+          end
           @entry.pic = true
-          @entry.crew_name = PsiImportHelper.format_crew_name(e.sic)
         else
           @entry.pic = false
           @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
@@ -137,10 +140,17 @@ class PsiImport < ActiveRecord::Base
             else
               @flight.pf = true
             end
+            
+            @flight.night_ld = f.night_ld
+            @flight.day_ld = f.dlnd
 
             @flight.night = f.ntime
 
             @flight.user_id = user.id
+            
+            @flight.dual_given = f.dual_given
+            @flight.dual_recvd = f.dual_recvd
+            
             @flight.save
 
             #finally, set the imported flag
@@ -150,9 +160,10 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        Rails.logger.debug "oops...PsiImport.find(#{e}): #{oops}"
+        Rails.logger.debug "oops..#{e}: #{oops}"
         next
       end
+      PsiImport.where(imported: true).delete_all
     end
   end
 end

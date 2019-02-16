@@ -68,7 +68,5 @@ group :development do
 #  gem 'capistrano-rvm'
 	gem 'rvm-capistrano'
   gem 'capistrano-passenger'
-	
-	gem 'hirb' #tables in rails console    
 end
 
