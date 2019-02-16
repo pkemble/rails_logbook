@@ -9,7 +9,7 @@ gem 'geokit-rails'
 #gem 'ruby-sun-times', require: 'sun_times'
 gem 'rails-controller-testing'
 gem 'minitest', '5.10.3'
-#gem 'json', '1.8.3'
+gem 'json'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
