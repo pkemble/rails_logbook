@@ -1,3 +1,57 @@
+class PageTotals
+    attr_accessor :block_time, :sepic, :sesic, :mepic, :mesic, :setb, :metb, :instrument, :night, :appr
+    
+    def initialize
+      self.night = 0
+      self.appr = 0
+      self.instrument = 0
+      self.metb = 0
+      self.setb = 0
+      self.mesic = 0
+      self.mepic = 0
+      self.sesic = 0
+      self.sepic = 0
+      self.block_time = 0
+    end
+    
+    def get_page_totals(flights)
+      flights.each do |f|
+        self.night += f.night unless f.night.blank?
+        self.appr += f.approaches unless f.approaches.blank?
+        self.instrument += f.instrument unless f.instrument.blank?
+        if f.entry.ac_model.start_with? 'BE400' or 'PA44' and f.entry.pic
+          self.mepic += f.block_time
+        end
+        if f.entry.ac_model.start_with? 'BE400'
+          self.metb += f.block_time 
+        end
+        if f.entry.ac_model.start_with? 'PC12'
+          self.setb += f.block_time
+        end
+        if f.entry.ac_model.start_with? 'BE400' and f.entry.pic == FALSE
+          self.mesic += f.block_time
+        end
+        if f.entry.ac_model.start_with? 'PC12' and f.entry.pic == FALSE
+          self.sesic += f.block_time
+        end
+        if f.entry.pic and f.entry.ac_model.start_with? 'BE400' or 'PA44' == FALSE
+          self.sepic += f.block_time
+        end
+      end
+    end
+    
+    def add_to_running_total(page_total)
+      self.night += page_total.night
+      self.instrument += page_total.instrument
+      self.appr += page_total.appr
+      self.mepic += page_total.mepic
+      self.mesic += page_total.mesic
+      self.sepic += page_total.sepic
+      self.sesic += page_total.sesic
+      return page_total
+    end
+end
+
 class Totals
   attr_reader :time, :pic, :sic, :instrument, :night
   

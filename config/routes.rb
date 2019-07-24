@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   post 'wipe_all' => 'import_export#wipe_all'
   post 'glob_flights' => 'import_export#glob_flights'
   post 'import_airports' => 'import_export#import_airports'
+  
+  get 'print' => 'logbook#print'
 
   get 'tools' => 'tools#index'
   get 'tools_night_report' => 'tools#night_report'

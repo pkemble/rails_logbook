@@ -34,6 +34,9 @@ set :log_level, :debug
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
+# Passenger workaround 2/21/19
+set :passenger_restart_with_touch, true
+
 namespace :deploy do
 
   after :restart, :clear_cache do

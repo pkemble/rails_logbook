@@ -7,7 +7,9 @@
 		<%= csrf_meta_tags %>
 	</head>
 	<body>
-		<%= render 'layouts/header' %>
+  	<% unless current_page?(print_path) %>
+  		<%= render 'layouts/header' %>
+  	<% end %>
 		<div class="container">
 			<% if flash[:partial] %>
 				<%= render partial: "#{flash[:partial]}" %>

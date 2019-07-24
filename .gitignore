@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 /nbproject/*
+.~lock.*
 
 # Ignore development stuff
 .project

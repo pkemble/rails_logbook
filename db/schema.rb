@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190212202456) do
+ActiveRecord::Schema.define(version: 20190307135345) do
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -79,30 +79,31 @@ ActiveRecord::Schema.define(version: 20190212202456) do
   create_table "psi_imports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "dep"
     t.string   "arr"
-    t.text     "tail",       limit: 65535
+    t.text     "tail",          limit: 65535
     t.integer  "dto"
     t.integer  "nto"
     t.integer  "dlnd"
     t.integer  "night_ld"
-    t.float    "btime",      limit: 24
-    t.float    "ntime",      limit: 24
-    t.float    "pictime",    limit: 24
-    t.float    "sictime",    limit: 24
-    t.float    "melpic",     limit: 24
-    t.float    "melsic",     limit: 24
+    t.float    "btime",         limit: 24
+    t.float    "ntime",         limit: 24
+    t.float    "pictime",       limit: 24
+    t.float    "sictime",       limit: 24
+    t.float    "melpic",        limit: 24
+    t.float    "melsic",        limit: 24
     t.integer  "holds"
     t.string   "pic"
     t.string   "sic"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "blockout"
     t.string   "blockin"
-    t.float    "approaches", limit: 24
+    t.float    "approaches",    limit: 24
     t.boolean  "imported"
     t.string   "ac_model"
     t.datetime "date"
     t.boolean  "dual_given"
     t.boolean  "dual_recvd"
+    t.string   "flight_number"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

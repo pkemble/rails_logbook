@@ -41,6 +41,15 @@
           delete logbook all import tables.
         <% end %>
       </p>
+      <% if defined?(@import_errors) %>
+        <% @import_errors.each do |e| %>
+          <li>
+            <ul><%= e.to_s %></ul>
+          </li>
+        <% end %>
+        <%= dump() %>
+      <% end %>
+        
       <table class="table table-striped table-condensed table-bordered">
         <tr>
           <td>imported</td>

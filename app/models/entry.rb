@@ -3,6 +3,8 @@ class Entry < ActiveRecord::Base
   require 'stringutil'
   
   include ActiveModel::Dirty
+  include ActiveModel::Validations
+  include EntriesHelper
   
 	has_many :flights
 	
@@ -10,6 +12,8 @@ class Entry < ActiveRecord::Base
 		
 	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
+  validates_uniqueness_of :date, scope: [:date, :tail], 
+  :message => Proc.new {|entry| "Entry exists with #{entry.date.strftime('%m/%d/%Y')} on #{entry.tail}"}
 		
 	attr_accessor :total_time, :arpt_string, :pd_start, :pd_end,
 	 :per_diem_hours_formatted, :user_has_entries, :from_recent_entry
@@ -96,6 +100,21 @@ class Entry < ActiveRecord::Base
   def user_has_entries?
     Entry.where(user_id current_user.id).any?
   end
-
+  
+  private
+  
+#  def not_duplicate
+#    @duplicates = Entry.where(date: self.date).where(tail: self.tail).select('*')
+#    if @duplicates.count > 0
+#      @map = @duplicates.map {|row| row[:id]}
+#      @duplicate_list = ''
+#      @map.each do |d|
+#        @duplicate_list << "\n" + d.to_s
+#      end
+#      errors.add(:base, "Duplicate found: " + @duplicate_list)
+#      return false
+#    end
+#    return true
+#  end
 end
   

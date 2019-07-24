@@ -63,8 +63,17 @@ class ImportExportController < ApplicationController
   def import_loaded_csv
     @user = current_user
     PsiImport.convert(@user)
+    @import_errors = PsiImport.convert(@user)
+    if @import_errors.any?
+      @full_errors = '<li>'
+      @import_errors.each do |e|
+        @full_errors += '<ul>' + e.to_s + '</ul>'
+      end
+      @full_errors += '</li>'
+      flash[:warning] = :duplicate_entries_html, [:msg => @full_errors]
+    end
     flash[:success] = "Import Complete"
-    redirect_to psi_import_path
+    redirect_to psi_import_path(@import_errors)
   end
 
   def reimport_psi_imports

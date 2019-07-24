@@ -4,12 +4,14 @@ class PsiImport < ActiveRecord::Base
  # => ["id", "date", "dep", "arr", "tail", "dto", "nto", "dlnd", "night_ld", "btime", "ntime", "pictime",
  # "sictime", "melpic", "melsic", "holds", "pic", "sic", "created_at", "updated_at", "blockout", "blockin",
  #  "approaches", "imported", "ac_model"]  
+  @import_errors = Array.new
   
   require 'csv'
   include PsiImportHelper
+  include EntriesHelper
   
   def self.import(csv_file)
-    #PsiImport.delete_all
+    PsiImport.delete_all
     CSV.foreach(csv_file.path, :headers => true) do |row|
     	@crow = PsiImport.new()
     	
@@ -23,6 +25,7 @@ class PsiImport < ActiveRecord::Base
     	@crow.dlnd = row["DayLandings"]
     	@crow.night_ld = row["NightLandings"]
     	@crow.btime = row["BlockTimefromFlight"]
+      @crow.flight_number = row["PIC"].scan(/\d/).join('')
     	if row["PIC"].include? "Kemble"
         @crow.pictime = row["PicTime"]
         @crow.melpic = row["MELPicTime"]
@@ -41,8 +44,11 @@ class PsiImport < ActiveRecord::Base
       end
      	@approaches = row["PrecApproaches"].to_i + row["Approaches"].to_i
       @crow.approaches = @approaches
-      @crow.dual_given = row["dual_given"]
-      @crow.dual_recvd = row["dual_recvd"]
+      unless row["dual_given"].nil?
+        @crow.dual_given = row["dual_given"]
+        @crow.dual_recvd = row["dual_recvd"]
+      end
+
       @crow.save!
     end
   end
@@ -80,11 +86,9 @@ class PsiImport < ActiveRecord::Base
   end
   
   def self.convert(user)
-    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
+    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic, flight_number')
     @psuedo_entries.each do |e|
       begin
-        #first find if a similar date / tail entry exists
-        
         @entry = Entry.new()
         # TODO pd start and end set here as the straight imports with them being nil
         # produced 44 hours per diem per day...hacking it for now
@@ -103,20 +107,30 @@ class PsiImport < ActiveRecord::Base
 			  @entry.date = e.date
         @entry.tail = e.tail
         @entry.ac_model = e.ac_model
-        @entry.from_recent_entry = true
+        @entry.flight_number = e.flight_number
+        @entry.from_recent_entry = true #TODO what is this?
         if e.pic.include? "Kemble"
-          if e.ac_model.start_with?("PC12") && e.sic != nil
-            @entry.flight_number = "CNS976"
-          end
+#          if e.ac_model.start_with?("PC12") && e.sic != nil
+#            @entry.flight_number = "CNS976"
+#          end
           @entry.pic = true
         else
           @entry.pic = false
           @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
         end
         @entry.user_id = user.id
-
         @entry.save
-
+#        if @entry.errors.any?
+#          #binding.pry
+#          @import_errors << @entry.errors.messages
+#        end
+        
+        if @entry.errors.any?
+          Rails.logger.info @entry.errors.messages
+          e.delete
+          next
+        end
+        
         #flights
         
         @flights = PsiImport.where(date: e.date, tail: e.tail)
@@ -131,7 +145,7 @@ class PsiImport < ActiveRecord::Base
               ))
 
             if @flight.blockout.nil?
-              Rails.logger.debug "blockout/blockin missing: using btime in csv"
+              Rails.logger.debug 'blockout/blockin missing: using btime in csv'
               @flight.block_time = f.btime
             end
             
@@ -160,10 +174,12 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        Rails.logger.debug "oops..#{e}: #{oops}"
+        Rails.logger.debug "oops..#{e.date}, #{e.tail}: #{oops}"
         next
       end
       PsiImport.where(imported: true).delete_all
+      
     end
+    return @import_errors
   end
 end
