@@ -1,0 +1,108 @@
+<table class="table table-striped table-condensed table-bordered">
+  <thead>
+    <td>date</td>
+    <td>model</td>
+    <td>tail</td>
+    <td>dep</td>
+    <td>arr</td>
+    <td>block out</td>
+    <td>block in</td>
+    <td>night</td>
+    <td>instrument</td>
+    <td>approaches</td>
+    <td>XC</td>
+    <td>SE PIC</td>
+    <td>SE SIC</td>
+    <td>ME PIC</td>
+    <td>ME SIC</td>
+    <td>SE Turb.</td>
+    <td>SE Turb.</td>
+  </thead>
+  
+  <% @page.flights.each do |f| %>
+    <tr>
+      <td><%= f.entry.date.strftime('%m-%d-%Y') %></td>
+      <td><%= f.entry.ac_model %></td>
+      <td><%= f.entry.tail %></td>
+      <td><%= f.dep %></td>
+      <td><%= f.arr %></td>
+      <td><%= f.blockout %></td>
+      <td><%= f.blockin %></td>
+      <td><%= f.night %></td>
+      <td><%= f.instrument %></td>
+      <td><%= f.approaches %></td>
+      <td>
+        <% if f.xc %>
+          <%=  f.block_time %>
+        <% end %>
+      </td>
+        <td>
+          <% if f.entry.pic %>
+            <%= f.block_time %>
+          <% end %>
+        </td>
+        <td>
+          <% if f.entry.pic == false %>
+            <%= f.block_time %>
+          <% end %>
+        </td>
+          <!-- ME PIC -->
+        <td>
+        <% if f.entry.ac_model.start_with? 'BE400' or 'PA44' and f.entry.pic %>
+          <%= f.block_time %>
+        <% end %>
+        </td>
+        <!-- ME SIC -->
+        <td>
+        <% if f.entry.ac_model.start_with? 'BE400' and f.entry.pic == false %>
+          <%= f.block_time %>
+        <% end %>
+        </td>
+        <!-- SE Turb -->
+        <td>
+        <% if f.entry.ac_model.start_with? 'PC12' %>
+          <%= f.block_time %>
+        <% end %>
+        </td>
+        <!-- ME Turb -->
+        <td>
+        <% if f.entry.ac_model.start_with? 'BE400' %>
+          <%= f.block_time %>
+        <% end %>
+        </td>
+      </tr>
+      
+    <% end %>
+    <tfoot>
+      <!-- <tr>
+        <td>Totals:</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>night</td>
+        <td>instrument</td>
+        <td>approaches</td>
+        <td>XC</td>
+        <td>PIC</td>
+        <td>SIC</td>
+      </tr> -->
+      <tr>
+        <td>totals go here</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>night</td>
+        <td>instrument</td>
+        <td>approaches</td>
+        <td>XC</td>
+        <td>PIC</td>
+        <td>SIC</td>
+      </tr>
+    </tfoot>
+  </table>
