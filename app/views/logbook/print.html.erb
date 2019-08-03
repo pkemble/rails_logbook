@@ -1,4 +1,3 @@
-
-<% @page_array.each do |page| %>
- <%= render :partial => 'print_page', :page => '@page' %> 
-<% end %>
+<div id='printable' data-logbook="<%= @json_page %>">
+text
+</div>

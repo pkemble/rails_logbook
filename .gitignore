@@ -28,3 +28,6 @@
 
 #Ignore temp files
 *.*~
+
+#Ignore Gemfile lock
+Gemfile.lock
