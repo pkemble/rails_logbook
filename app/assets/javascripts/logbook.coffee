@@ -20,22 +20,15 @@ parseJsonFlights = (page_array) ->
     p_page_running_total = JSON.parse(p_page_flights.running_total)
       
     for flights, flight of JSON.parse(p_page_flights.page_flights)
-      if flight.entry_data.pic
-        pic = flight.block_time
-        sic = ''
-      else
-        pic = ''
-        sic = flight.block_time
-      
       page_flight_conv = "<td>" +
-       flight.entry_data.date +
-       "</td><td>" + flight.entry_data.tail +
-       "</td><td>" + flight.entry_data.ac_model + 
+       flight.date +
+       "</td><td>" + flight.tail +
+       "</td><td>" + flight.ac_model + 
        "</td><td>" + flight.dep + 
        "</td><td>" + flight.arr + 
        "</td><td>" + flight.block_time + 
-       "</td><td>" + pic +
-       "</td><td>" + sic +
+       "</td><td>" + flight.pic +
+       "</td><td>" + flight.sic +
        "</td><td>" + flight.night + 
        "</td><td>" + flight.instrument + 
        "</td><td>" + flight.approaches + "</td>"
