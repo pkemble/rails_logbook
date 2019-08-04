@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190212202456) do
+ActiveRecord::Schema.define(version: 20190804004324) do
+
+  create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "tail"
+    t.string   "ac_model"
+    t.boolean  "turb"
+    t.boolean  "multi"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "efis"
+    t.boolean  "fadec"
+    t.boolean  "glass"
+  end
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -29,7 +41,6 @@ ActiveRecord::Schema.define(version: 20190212202456) do
 
   create_table "entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "date"
-    t.text     "tail",            limit: 65535
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.boolean  "pic"
@@ -43,7 +54,6 @@ ActiveRecord::Schema.define(version: 20190212202456) do
     t.datetime "per_diem_end"
     t.integer  "user_id"
     t.decimal  "travel_expenses",               precision: 8, scale: 2
-    t.string   "ac_model"
   end
 
   create_table "flights", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -79,28 +89,29 @@ ActiveRecord::Schema.define(version: 20190212202456) do
   create_table "psi_imports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "dep"
     t.string   "arr"
-    t.text     "tail",       limit: 65535
+    t.text     "tail",          limit: 65535
     t.integer  "dto"
     t.integer  "nto"
     t.integer  "dlnd"
     t.integer  "night_ld"
-    t.float    "btime",      limit: 24
-    t.float    "ntime",      limit: 24
-    t.float    "pictime",    limit: 24
-    t.float    "sictime",    limit: 24
-    t.float    "melpic",     limit: 24
-    t.float    "melsic",     limit: 24
+    t.float    "btime",         limit: 24
+    t.float    "ntime",         limit: 24
+    t.float    "pictime",       limit: 24
+    t.float    "sictime",       limit: 24
+    t.float    "melpic",        limit: 24
+    t.float    "melsic",        limit: 24
     t.integer  "holds"
     t.string   "pic"
     t.string   "sic"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "blockout"
     t.string   "blockin"
-    t.float    "approaches", limit: 24
+    t.float    "approaches",    limit: 24
     t.boolean  "imported"
     t.string   "ac_model"
     t.datetime "date"
+    t.string   "flight_number"
     t.boolean  "dual_given"
     t.boolean  "dual_recvd"
   end

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tail: MyString
+  ac_model: MyString
+  turb: false
+  multi: false
+
+two:
+  tail: MyString
+  ac_model: MyString
+  turb: false
+  multi: false

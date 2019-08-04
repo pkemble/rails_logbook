@@ -7,6 +7,7 @@ class Entry < ActiveRecord::Base
 	has_many :flights
 	
 	belongs_to :user
+	belongs_to :aircraft
 		
 	validates :date, :presence => true
 	validates :pd_end, :pd_start, :time_format => true
