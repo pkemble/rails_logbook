@@ -16,15 +16,7 @@ class Entry < ActiveRecord::Base
 	 :per_diem_hours_formatted, :user_has_entries, :from_recent_entry
 	
 	before_save do
-	  
-	  # tail
-	  @user = User.find(self.user_id)
-	  unless @user.nil? || @user.def_tail_number.nil? || 
-	    !self.tail_changed? || self.from_recent_entry
-	    
-	    self.tail = @user.def_tail_number.gsub('*', self.tail.upcase)
-	  end
-	  
+
 	  #flight number
 	  unless @user.nil? || @user.def_flight_number.nil? || 
 	    !self.flight_number_changed? || self.from_recent_entry

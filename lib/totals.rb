@@ -31,33 +31,38 @@ class Totals
   end
   
   def multi
-    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PA44%'")
-    return total_hopper(@entries) + P_TOTAL_MULTI
+#    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PA44%'")
+#    return total_hopper(@entries) + P_TOTAL_MULTI
+    return 'TODO'
   end
   
   def jet
-    @entries = Entry.where("ac_model like 'BE400%'")
-    return total_hopper(@entries)
+#    @entries = Entry.where("ac_model like 'BE400%'")
+#    return total_hopper(@entries)
+    return 'TODO'
   end
   
   def turbine_pic
-    t = 0
-    @entries = Entry.where("ac_model like 'PC12%' and pic is true") #TODO I guess add in any other a/c where I was pic turbine in the future
-    @entries.each do |e|
-      t += e.flight_time
-    end
-    return t.round(1)
+#    t = 0
+#    @entries = Entry.where("ac_model like 'PC12%' and pic is true") #TODO I guess add in any other a/c where I was pic turbine in the future
+#    @entries.each do |e|
+#      t += e.flight_time
+#    end
+#    return t.round(1)
+    return "TODO"
   end
   
   def multi_turbine_sic
-    t = 0
-    @entries = Entry.where("ac_model like 'BE400%' and sic is true") #TODO I guess add in any other a/c where I was sic turbine in the future
-    return total_hopper(@entries)
+#    t = 0
+#    @entries = Entry.where("ac_model like 'BE400%' and sic is true") #TODO I guess add in any other a/c where I was sic turbine in the future
+#    return total_hopper(@entries)
+    return 'TODO'
   end
   
   def turbine
-    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PC12%'")
-    return total_hopper(@entries)
+#    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PC12%'")
+#    return total_hopper(@entries)
+    return 'TODO'
   end
   
   def instrument

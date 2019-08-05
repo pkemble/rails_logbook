@@ -16,8 +16,10 @@ class PsiImport < ActiveRecord::Base
     	@crow.date = DateTime.strptime(row["DepartureTimeLocal"], '%m/%d/%Y')
     	@crow.dep = row["OriginAirport"]
     	@crow.arr = row["DestinationAirport"]
+    	  
     	@crow.ac_model = row["AircraftType"]
     	@crow.tail = row["AircraftRegistration"]
+    	
     	@crow.dto = row["DayTakeoffs"]
     	@crow.nto = row["NightTakeoffs"]
     	@crow.dlnd = row["DayLandings"]
@@ -74,7 +76,7 @@ class PsiImport < ActiveRecord::Base
       @crow.blockout = row["Dept Time"]
       @crow.blockin = row["Arr Time"]
       @crow.approaches = row["Approaches"]
-      @crow.ac_model = 'PC12'
+      @crow.ac_model = 'PC12' #TODO do something smart with tail numbers to differentiate between legacy and NG
       @crow.save!
     end
   end
@@ -101,9 +103,18 @@ class PsiImport < ActiveRecord::Base
 #        end
 			
 			  @entry.date = e.date
-        @entry.tail = e.tail
-        @entry.ac_model = e.ac_model
-        @entry.from_recent_entry = true
+			  
+        #TODO notify so that TAA columns can be added after import to new aircraft 
+        
+			  @ac = Aircraft.where(tail: e.tail)
+			  if(@ac.count == 0)
+			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
+			    @ac.save!
+			  else
+			    @entry.aircraft = @ac.first
+			  end
+
+        @entry.from_recent_entry = true #TODO what was the point of this?
         if e.pic.include? "Kemble"
           if e.ac_model.start_with?("PC12") && e.sic != nil
             @entry.flight_number = "CNS976"
@@ -161,6 +172,7 @@ class PsiImport < ActiveRecord::Base
       
       rescue => oops
         Rails.logger.debug "oops..#{e}: #{oops}"
+        Rails.logger.debug oops.backtrace[0]
         next
       end
       PsiImport.where(imported: true).delete_all

@@ -1,0 +1,6 @@
+<h3>Edit an Aircraft</h3>
+<div class="container">
+  <%= form_for @aircraft, url: aircraft_path do |ac| %>
+    <%= render 'aircraft_form', ac: ac %>
+  <% end %>
+</div>

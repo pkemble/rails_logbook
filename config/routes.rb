@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :flights
   end
   resources :flights
-
+  resources :aircraft
   resources :airports
 
   get 'logbook/index'
