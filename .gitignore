@@ -25,9 +25,11 @@
 # Ignore seeds
 *.csv
 *.csv~
+*.csv#
 
 #Ignore temp files
 *.*~
 
 #Ignore Gemfile lock
 Gemfile.lock
+

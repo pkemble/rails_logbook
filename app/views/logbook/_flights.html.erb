@@ -21,8 +21,8 @@
   <% @flights.each do |f| %>
     <tr>
       <td><%= link_to f.entry.date.strftime('%m-%d-%y'), edit_entry_path(f.entry_id) %></td>
-      <td><%= f.entry.ac_model %></td>
-      <td><%= f.entry.tail %></td>
+      <td><%= f.entry.aircraft.ac_model %></td>
+      <td><%= f.entry.aircraft.tail %></td>
       <td><%= f.dep %></td>
       <td><%= f.arr %></td>
       <td><%= f.blockout %></td>

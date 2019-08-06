@@ -85,18 +85,21 @@ class Totals
   end
   
   def multi
-    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PA44%'")
+    @multi_ac = Aircraft.where(multi: true)
+    @entries = Entry.where(aircraft: @multi_ac)
     return total_hopper(@entries) + P_TOTAL_MULTI
   end
   
   def jet
-    @entries = Entry.where("ac_model like 'BE400%'")
+    @turb_ac = Aircraft.where(turb: true)
+    @entries = Entry.where(aircraft: @turb_ac)
     return total_hopper(@entries)
   end
   
   def turbine_pic
     t = 0
-    @entries = Entry.where("ac_model like 'PC12%' and pic is true") #TODO I guess add in any other a/c where I was pic turbine in the future
+    @turb_ac = Aircraft.where(turb: true).or(Aircraft.where(turboprop: true))
+    @entries = Entry.where(aircraft: @turb_ac).where(pic: true)
     @entries.each do |e|
       t += e.flight_time
     end
@@ -105,12 +108,14 @@ class Totals
   
   def multi_turbine_sic
     t = 0
-    @entries = Entry.where("ac_model like 'BE400%' and sic is true") #TODO I guess add in any other a/c where I was sic turbine in the future
+    @multi_turb = Aircraft.where(turb: true)
+    @entries = Entry.where(aircraft: @multi_turb).where(sic: true)
     return total_hopper(@entries)
   end
   
   def turbine
-    @entries = Entry.where("ac_model like 'BE400%' or ac_model like 'PC12%'")
+    @turb = Aircraft.where(turb: true).or(Aircraft.where(turboprop: true))
+    @entries = Entry.where(aircraft: @turb)
     return total_hopper(@entries)
   end
   

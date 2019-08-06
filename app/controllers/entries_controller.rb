@@ -12,22 +12,25 @@ class EntriesController < ApplicationController
   def show
     byebug
     @entry = Entry.find(params[:id])
+    @aircraft = Aircraft.all
   end
   
   def new
     @user = current_user
   	@entry = Entry.new
+    @aircraft = Aircraft.all
   end  
   
   def edit
     @entry = Entry.find(params[:id])
     @flights = @entry.flights.order(:p_blockout)
     @entry.get_formatted_per_diem_times
+    @aircraft = Aircraft.all
   end
 	
   def create
     @entry = Entry.new(entry_params)
-    
+    @aircraft = Aircraft.all
     if URI(request.referer).path == "/continued_entry"
       @entry.from_recent_entry = true
     end
@@ -53,7 +56,7 @@ class EntriesController < ApplicationController
     
     @recent_entry = Entry.where(user_id: current_user.id).last
     @entry = Entry.new
-    @entry.tail = @recent_entry.tail
+    @entry.aircraft = @recent_entry.aircraft
     @entry.pic = @recent_entry.pic
     @entry.crew_name = @recent_entry.crew_name
     @entry.flight_number = @recent_entry.flight_number
@@ -84,7 +87,7 @@ class EntriesController < ApplicationController
     
   private
     def entry_params
-      params.require(:entry).permit( :date, :tail, :pic, :crew_name, :crew_meal,
+      params.require(:entry).permit( :date, :aircraft_id, :pic, :crew_name, :crew_meal,
                                     :tips, :remarks, :flight_number, :pd_start,
                                     :pd_end, :travel_expenses, :commit_type )
     end

@@ -25,7 +25,6 @@ class PsiImport < ActiveRecord::Base
     	@crow.dlnd = row["DayLandings"]
     	@crow.night_ld = row["NightLandings"]
     	@crow.btime = row["BlockTimefromFlight"]
-      @crow.flight_number = row["PIC"].scan(/\d/).join('')
     	if row["PIC"].include? "Kemble"
         @crow.pictime = row["PicTime"]
         @crow.melpic = row["MELPicTime"]
@@ -80,13 +79,13 @@ class PsiImport < ActiveRecord::Base
       @crow.blockout = row["Dept Time"]
       @crow.blockin = row["Arr Time"]
       @crow.approaches = row["Approaches"]
-      @crow.ac_model = 'PC12'
+      @crow.ac_model = 'PC12' #TODO do something smart with tail numbers to differentiate between legacy and NG
       @crow.save!
     end
   end
   
   def self.convert(user)
-    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic, flight_number')
+    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
     @psuedo_entries.each do |e|
       begin
         @entry = Entry.new()
@@ -105,10 +104,20 @@ class PsiImport < ActiveRecord::Base
 #        end
 			
 			  @entry.date = e.date
-        @entry.tail = e.tail
-        @entry.ac_model = e.ac_model
         @entry.flight_number = e.flight_number
-        @entry.from_recent_entry = true #TODO what is this?
+			  
+        #TODO notify so that TAA columns can be added after import to new aircraft 
+        
+			  @ac = Aircraft.where(tail: e.tail)
+			  if(@ac.count == 0)
+			    byebug
+			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
+			    @ac.save!
+			  else
+			    @entry.aircraft = @ac.first
+			  end
+
+        @entry.from_recent_entry = true #TODO what was the point of this?
         if e.pic.include? "Kemble"
 #          if e.ac_model.start_with?("PC12") && e.sic != nil
 #            @entry.flight_number = "CNS976"
@@ -119,6 +128,7 @@ class PsiImport < ActiveRecord::Base
           @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
         end
         @entry.user_id = user.id
+
         @entry.save
 #        if @entry.errors.any?
 #          #binding.pry
@@ -145,7 +155,7 @@ class PsiImport < ActiveRecord::Base
               ))
 
             if @flight.blockout.nil?
-              Rails.logger.debug 'blockout/blockin missing: using btime in csv'
+              Rails.logger.debug "blockout/blockin missing: using btime in csv"
               @flight.block_time = f.btime
             end
             
@@ -174,12 +184,11 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        Rails.logger.debug "oops..#{e.date}, #{e.tail}: #{oops}"
+        Rails.logger.debug "oops..#{e}: #{oops}"
+        Rails.logger.debug oops.backtrace[0]
         next
       end
       PsiImport.where(imported: true).delete_all
-      
     end
-    return @import_errors
   end
 end

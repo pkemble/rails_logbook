@@ -19,7 +19,7 @@
         <tr>
 
 			<td><%= link_to e.date.strftime('%m-%d-%y'), edit_entry_path(e.id) %></td>
-			<td><%= e.tail %></td>
+			<td><%= link_to e.aircraft.tail, edit_aircraft_path(e.aircraft.id) %></td>
 			<td><%= e.flights.count %></td>
 			<td><%= e.flight_time %></td>
 			<td><%= e.flight_number %></td>

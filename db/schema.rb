@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190307135345) do
+
+ActiveRecord::Schema.define(version: 20190805215812) do
+
+  create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "tail"
+    t.string   "ac_model"
+    t.boolean  "turb"
+    t.boolean  "multi"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean  "efis"
+    t.boolean  "fadec"
+    t.boolean  "glass"
+    t.boolean  "turboprop"
+  end
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string  "name"
@@ -29,7 +43,6 @@ ActiveRecord::Schema.define(version: 20190307135345) do
 
   create_table "entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "date"
-    t.text     "tail",            limit: 65535
     t.datetime "created_at",                                            null: false
     t.datetime "updated_at",                                            null: false
     t.boolean  "pic"
@@ -43,7 +56,8 @@ ActiveRecord::Schema.define(version: 20190307135345) do
     t.datetime "per_diem_end"
     t.integer  "user_id"
     t.decimal  "travel_expenses",               precision: 8, scale: 2
-    t.string   "ac_model"
+    t.integer  "aircraft_id"
+    t.index ["aircraft_id"], name: "index_entries_on_aircraft_id", using: :btree
   end
 
   create_table "flights", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -101,9 +115,9 @@ ActiveRecord::Schema.define(version: 20190307135345) do
     t.boolean  "imported"
     t.string   "ac_model"
     t.datetime "date"
+    t.string   "flight_number"
     t.boolean  "dual_given"
     t.boolean  "dual_recvd"
-    t.string   "flight_number"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -113,10 +127,10 @@ ActiveRecord::Schema.define(version: 20190307135345) do
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
     t.string   "remember_digest"
-    t.string   "def_tail_number"
     t.string   "def_flight_number"
     t.boolean  "admin",             default: false
   end
 
+  add_foreign_key "entries", "aircraft"
   add_foreign_key "flights", "entries"
 end
