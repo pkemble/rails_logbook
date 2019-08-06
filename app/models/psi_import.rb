@@ -108,6 +108,7 @@ class PsiImport < ActiveRecord::Base
         
 			  @ac = Aircraft.where(tail: e.tail)
 			  if(@ac.count == 0)
+			    byebug
 			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
 			    @ac.save!
 			  else

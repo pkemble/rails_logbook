@@ -19,6 +19,6 @@ class AircraftController < ApplicationController
   
   private
     def aircraft_params
-      params.require(:aircraft).permit(:id, :tail, :ac_model, :efis, :fadec, :glass, :multi, :turbine) 
+      params.require(:aircraft).permit(:id, :tail, :ac_model, :efis, :fadec, :glass, :multi, :turb, :turboprop) 
     end
 end

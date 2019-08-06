@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190805145828) do
+ActiveRecord::Schema.define(version: 20190805215812) do
 
   create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "tail"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20190805145828) do
     t.boolean  "efis"
     t.boolean  "fadec"
     t.boolean  "glass"
+    t.boolean  "turboprop"
   end
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
