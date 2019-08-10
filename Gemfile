@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'activerecord-session_store'  
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'httparty'
 gem 'bootstrap-sass', '3.2.0.0'

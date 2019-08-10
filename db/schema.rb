@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190805215812) do
+ActiveRecord::Schema.define(version: 20190810014733) do
 
   create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "tail"
@@ -65,9 +65,9 @@ ActiveRecord::Schema.define(version: 20190805215812) do
     t.string   "blockin"
     t.string   "blockout"
     t.integer  "entry_id"
-    t.datetime "created_at",                               null: false
-    t.datetime "updated_at",                               null: false
-    t.float    "block_time", limit: 24
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+    t.decimal  "block_time",               precision: 8, scale: 1
     t.integer  "night_to"
     t.integer  "night_ld"
     t.float    "night",      limit: 24
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 20190805215812) do
     t.datetime "p_blockin"
     t.datetime "p_blockout"
     t.integer  "user_id"
-    t.boolean  "globbed",                  default: false
+    t.boolean  "globbed",                                          default: false
     t.boolean  "xc"
     t.float    "distance",   limit: 24
     t.integer  "day_ld"
@@ -114,9 +114,18 @@ ActiveRecord::Schema.define(version: 20190805215812) do
     t.boolean  "imported"
     t.string   "ac_model"
     t.datetime "date"
-    t.string   "flight_number"
     t.boolean  "dual_given"
     t.boolean  "dual_recvd"
+    t.string   "flight_number"
+  end
+
+  create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "session_id",               null: false
+    t.text     "data",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+    t.index ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

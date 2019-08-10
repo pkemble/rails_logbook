@@ -1,6 +1,12 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+addCellsToArr = (arrData) ->
+  celledData = ''
+  for key, data of arrData
+    celledData += '<td>' + data + '</td>'
+    
+  return celledData
 
 parseJsonFlights = (page_array) ->
   
@@ -9,11 +15,9 @@ parseJsonFlights = (page_array) ->
   p_page_array = JSON.parse(page_array)
   
   printedLogbook = ''
-  tableHead = "<table class='printed-logbook table table-striped table-condensed table-bordered'>" +
-    "<tr><td>Date</td><td>Tail #</td><td>Model</td><td>Dep</td><td>Arr</td>
-    <td>Time</td><td>SE PIC</td><td>SE SIC</td><td>ME PIC</td><td>ME SIC</td>
-    <td>SE Turb.</td><td>ME Turb.</td>
-    <td>Night</td><td>Inst.</td><td>Appr.</td></tr>"
+  arrTableHead = ['Date', 'Tail', 'Model', 'Dep', 'Arr', 'Time', 'SE PIC', 'SE SIC', 'ME PIC', 'ME SIC','SE Turb.', 'ME Turb', 'Night', 'Inst.', 'Appr.']
+  tableTag = "<table class='printed-logbook table table-striped table-condensed table-bordered'>"
+  tableHead = "<tr>" + addCellsToArr(arrTableHead) + "</tr>"
   tableFoot = "</table>"
   
   for page, page of p_page_array
@@ -23,51 +27,42 @@ parseJsonFlights = (page_array) ->
     p_page_running_total = JSON.parse(p_page_flights.running_total)
       
     for flights, flight of JSON.parse(p_page_flights.page_flights)
-      page_flight_conv = "<td>" +
-       flight.date +
-       "</td><td>" + flight.tail +
-       "</td><td>" + flight.ac_model + 
-       "</td><td>" + flight.dep + 
-       "</td><td>" + flight.arr + 
-       "</td><td>" + flight.block_time + 
-       "</td><td>" + flight.sepic +
-       "</td><td>" + flight.sesic +
-       "</td><td>" + flight.mepic +
-       "</td><td>" + flight.mesic +
-       "</td><td>" + flight.setb +
-       "</td><td>" + flight.metb +
-       "</td><td>" + flight.night + 
-       "</td><td>" + flight.instrument + 
-       "</td><td>" + flight.approaches + "</td>"
-       
+      arr_page_flight_conv = [ flight.date, flight.tail, flight.ac_model, flight.dep, flight.arr, 
+        flight.block_time, flight.sepic, flight.sesic, flight.mepic, flight.mesic, flight.setb, 
+        flight.metb, flight.night, flight.instrument, flight.approaches ]
+        
+      page_flight_conv = addCellsToArr(arr_page_flight_conv) 
       converted += "<tr>" + page_flight_conv + "</tr>"
     
-    strTotal = "<td>Page Totals:</td><td colspan=4></td><td>" +
-     p_page_totals.block_time + "</td><td>" +
-     p_page_totals.sepic + "</td><td>" +
-     p_page_totals.sesic + "</td><td>" +
-     p_page_totals.mepic + "</td><td>" +
-     p_page_totals.mesic + "</td><td>" +
-     p_page_totals.setb + "</td><td>" +
-     p_page_totals.metb + "</td><td>" +
-     p_page_totals.night + "</td><td>" +
-     p_page_totals.instrument + "</td><td>" +
-     p_page_totals.appr + "</td>"
+    strTotalTitle = "<tr><td>Page Totals:</td><td colspan=4></td>"
+    arrPageTotals = [
+     p_page_totals.block_time,
+     p_page_totals.sepic,
+     p_page_totals.sesic,
+     p_page_totals.mepic,
+     p_page_totals.mesic,
+     p_page_totals.setb,
+     p_page_totals.metb,
+     p_page_totals.night,
+     p_page_totals.instrument,
+     p_page_totals.appr ]
      
-    strRunningTotal = "<td>Totals:</td><td colspan=4></td><td>" +
-     p_page_running_total.block_time + "</td><td>" +
-     p_page_running_total.sepic + "</td><td>" +
-     p_page_running_total.sesic + "</td><td>" +
-     p_page_running_total.mepic + "</td><td>" +
-     p_page_running_total.mesic + "</td><td>" +
-     p_page_running_total.setb + "</td><td>" +
-     p_page_running_total.metb + "</td><td>" +
-     p_page_running_total.night + "</td><td>" +
-     p_page_running_total.instrument + "</td><td>" +
-     p_page_running_total.appr + "</td>"
+    strRunningTotal = "<td>Totals:</td><td colspan=4></td>"
+    arrPageRunningTotal = [
+     p_page_running_total.block_time,
+     p_page_running_total.sepic,
+     p_page_running_total.sesic,
+     p_page_running_total.mepic,
+     p_page_running_total.mesic,
+     p_page_running_total.setb,
+     p_page_running_total.metb,
+     p_page_running_total.night,
+     p_page_running_total.instrument,
+     p_page_running_total.appr ]
      
-    converted += "<tr>" + strTotal + "</tr>" + "<tr>" + strRunningTotal + "</td>"
-    printedLogbook += tableHead + converted + tableFoot
+    converted += "<tr>" + strTotalTitle + addCellsToArr(arrPageTotals) + "</tr>" + 
+      "<tr>" + strRunningTotal + addCellsToArr(arrPageRunningTotal) + "</tr>"
+    printedLogbook += tableTag + tableHead + converted + tableFoot
   $('#printable').html printedLogbook
 
 $(document).ready ->

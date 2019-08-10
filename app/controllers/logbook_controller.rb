@@ -29,7 +29,7 @@ class LogbookController < ApplicationController
       redirect_back_or login_path
     end
     
-    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).limit(@@flights_per_page)
+    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).limit(200)
     
     page = 1
     @page_array = Array.new #the entire document

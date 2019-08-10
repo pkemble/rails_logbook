@@ -104,13 +104,11 @@ class PsiImport < ActiveRecord::Base
 #        end
 			
 			  @entry.date = e.date
-        @entry.flight_number = e.flight_number
 			  
         #TODO notify so that TAA columns can be added after import to new aircraft 
         
 			  @ac = Aircraft.where(tail: e.tail)
 			  if(@ac.count == 0)
-			    byebug
 			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
 			    @ac.save!
 			  else
@@ -119,12 +117,15 @@ class PsiImport < ActiveRecord::Base
 
         @entry.from_recent_entry = true #TODO what was the point of this?
         if e.pic.include? "Kemble"
-#          if e.ac_model.start_with?("PC12") && e.sic != nil
-#            @entry.flight_number = "CNS976"
-#          end
+          if e.ac_model.start_with?("PC12") && e.sic != nil
+            @entry.flight_number = "CNS976"
+          else
+            @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
+          end
           @entry.pic = true
         else
           @entry.pic = false
+          @entry.flight_number = ""
           @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
         end
         @entry.user_id = user.id
