@@ -2,9 +2,9 @@ class LogbookController < ApplicationController
   before_action :logged_in_user
   before_action :current_user
   
-  @@flights_per_page = 20
+  @@flights_per_page = 33
   
-  require 'totals'
+  #require 'totals'
   require 'printpage'
   
   def index
@@ -12,7 +12,7 @@ class LogbookController < ApplicationController
       redirect_back_or login_path
     end
 
-    @totals = Totals.new
+    @totals = Totals::Totals.new
     @entries = Entry.where(user_id: current_user.id).order(:date).paginate(page: params[:page], per_page: 30)
 
     if params[:view].nil?
@@ -29,18 +29,17 @@ class LogbookController < ApplicationController
       redirect_back_or login_path
     end
     
-    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).limit(100)
+    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).limit(@@flights_per_page)
     
     page = 1
     @page_array = Array.new #the entire document
-    @running_total = PageTotals.new() # the running totals object
+    @running_total = Totals::PageTotals.new() # the running totals object
     @page_flights = Array.new # a single re-usable page object
     @flights.in_groups_of(@@flights_per_page, false) do |flight_group|
       flight_group.each do |flight|
         @page_flights.append flight
       end
-      
-      @page_total = PageTotals.new() # the single page totals
+      @page_total = Totals::PageTotals.new() # the single page totals
       @page_total.get_page_totals(@page_flights)
       @running_total.add_to_running_total(@page_total) #cumulatively add the page totals to the running total
       @print_page = PrintPage.new() # a printable page object

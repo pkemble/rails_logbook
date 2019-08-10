@@ -10,7 +10,10 @@ parseJsonFlights = (page_array) ->
   
   printedLogbook = ''
   tableHead = "<table class='printed-logbook table table-striped table-condensed table-bordered'>" +
-    "<tr><td>Date</td><td>Tail #</td><td>Model</td><td>Dep</td><td>Arr</td><td>Time</td><td>PIC</td><td>SIC</td><td>Night</td><td>Inst.</td><td>Appr.</td></tr>"
+    "<tr><td>Date</td><td>Tail #</td><td>Model</td><td>Dep</td><td>Arr</td>
+    <td>Time</td><td>SE PIC</td><td>SE SIC</td><td>ME PIC</td><td>ME SIC</td>
+    <td>SE Turb.</td><td>ME Turb.</td>
+    <td>Night</td><td>Inst.</td><td>Appr.</td></tr>"
   tableFoot = "</table>"
   
   for page, page of p_page_array
@@ -27,23 +30,43 @@ parseJsonFlights = (page_array) ->
        "</td><td>" + flight.dep + 
        "</td><td>" + flight.arr + 
        "</td><td>" + flight.block_time + 
-       "</td><td>" + flight.pic +
-       "</td><td>" + flight.sic +
+       "</td><td>" + flight.sepic +
+       "</td><td>" + flight.sesic +
+       "</td><td>" + flight.mepic +
+       "</td><td>" + flight.mesic +
+       "</td><td>" + flight.setb +
+       "</td><td>" + flight.metb +
        "</td><td>" + flight.night + 
        "</td><td>" + flight.instrument + 
        "</td><td>" + flight.approaches + "</td>"
        
       converted += "<tr>" + page_flight_conv + "</tr>"
     
-    strTotal = "<td>Totals:</td><td colspan=4></td><td>" +
+    strTotal = "<td>Page Totals:</td><td colspan=4></td><td>" +
      p_page_totals.block_time + "</td><td>" +
-     p_page_totals.pic + "</td><td>" +
-     p_page_totals.sic + "</td><td>" +
+     p_page_totals.sepic + "</td><td>" +
+     p_page_totals.sesic + "</td><td>" +
+     p_page_totals.mepic + "</td><td>" +
+     p_page_totals.mesic + "</td><td>" +
+     p_page_totals.setb + "</td><td>" +
+     p_page_totals.metb + "</td><td>" +
      p_page_totals.night + "</td><td>" +
      p_page_totals.instrument + "</td><td>" +
-     p_page_totals.approaches + "</td>"
+     p_page_totals.appr + "</td>"
      
-    converted += "<tr>" + strTotal + "</tr>"
+    strRunningTotal = "<td>Totals:</td><td colspan=4></td><td>" +
+     p_page_running_total.block_time + "</td><td>" +
+     p_page_running_total.sepic + "</td><td>" +
+     p_page_running_total.sesic + "</td><td>" +
+     p_page_running_total.mepic + "</td><td>" +
+     p_page_running_total.mesic + "</td><td>" +
+     p_page_running_total.setb + "</td><td>" +
+     p_page_running_total.metb + "</td><td>" +
+     p_page_running_total.night + "</td><td>" +
+     p_page_running_total.instrument + "</td><td>" +
+     p_page_running_total.appr + "</td>"
+     
+    converted += "<tr>" + strTotal + "</tr>" + "<tr>" + strRunningTotal + "</td>"
     printedLogbook += tableHead + converted + tableFoot
   $('#printable').html printedLogbook
 
