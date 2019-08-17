@@ -63,10 +63,17 @@ parseJsonFlights = (page_array) ->
     converted += "<tr>" + strTotalTitle + addCellsToArr(arrPageTotals) + "</tr>" + 
       "<tr>" + strRunningTotal + addCellsToArr(arrPageRunningTotal) + "</tr>"
     printedLogbook += tableTag + tableHead + converted + tableFoot
+    printedLogbook = printedLogbook.replace /null/g, '0'
+    printedLogbook = printedLogbook.replace /0.0/g, '0'
   $('#printable').html printedLogbook
 
-$(document).ready ->
+ready = ->
   if $('#printable').length > 0
     parseJsonFlights($('#printable').attr('data-logbook'))
   return
+
+
+$(document).ready(ready)
+$(document).on('turbolinks:load', ready)
+
   

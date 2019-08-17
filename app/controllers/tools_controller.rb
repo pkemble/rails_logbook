@@ -8,7 +8,7 @@ class ToolsController < ApplicationController
     @flights = Flight.all
     @flights.each do |f|
       @apt_used = f.dep.remove_icao
-      @airport = Airport.where(iata: @apt_used).or(Airport.where(icao: @apt_used)).first
+      @airport = Airport.where(iata: @apt_used).or(Airport.where(icao: @apt_used)).or(Airport.where(icao: f.dep)).first
       
       if @airport.nil?
         Airport.add_missing_airport(@apt_used, 1)
@@ -30,6 +30,7 @@ class ToolsController < ApplicationController
     @flights = Flight.all
   	@flights.each do |f|
   		f.add_night_time
+  		f.save
   	end
   	redirect_to tools_path
   end

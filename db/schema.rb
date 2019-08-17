@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20190810014733) do
     t.decimal  "block_time",               precision: 8, scale: 1
     t.integer  "night_to"
     t.integer  "night_ld"
-    t.float    "night",      limit: 24
+    t.decimal  "night",                    precision: 8, scale: 1
     t.float    "instrument", limit: 24
     t.float    "approaches", limit: 24
     t.boolean  "pf"

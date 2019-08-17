@@ -88,8 +88,11 @@ class Flight < ActiveRecord::Base
 			  @total_night  = (@night_time / 3600).round(1)
 			  self.night = self.block_time < @total_night ? self.block_time : @total_night
 			end
-			self.save!
-			logger.debug 'Logged #{self.night} hours for Flight id: #{self.id}'
+			if self.night.nil?
+			  self.night = 0
+			end
+			#self.save! commenting as this adds duplicate entries now that it's added to the import. added the save to the tools controller
+			logger.debug "Logged #{self.night} hours for Flight id: #{self.id}"
 		end
   end
 

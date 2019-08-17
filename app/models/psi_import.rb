@@ -25,6 +25,7 @@ class PsiImport < ActiveRecord::Base
     	@crow.dlnd = row["DayLandings"]
     	@crow.night_ld = row["NightLandings"]
     	@crow.btime = row["BlockTimefromFlight"]
+      @crow.ntime = row["NightTime"]
     	if row["PIC"].include? "Kemble"
         @crow.pictime = row["PicTime"]
         @crow.melpic = row["MELPicTime"]
@@ -168,8 +169,11 @@ class PsiImport < ActiveRecord::Base
             
             @flight.night_ld = f.night_ld
             @flight.day_ld = f.dlnd
-
-            @flight.night = f.ntime
+            if f.ntime.nil?
+              @flight.add_night_time
+            else
+              @flight.night = f.ntime
+            end
 
             @flight.user_id = user.id
             

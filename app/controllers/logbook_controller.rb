@@ -29,11 +29,12 @@ class LogbookController < ApplicationController
       redirect_back_or login_path
     end
     
-    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout).limit(200)
+    @flights = Flight.where(user_id: current_user.id).joins(:entry).order('entries.date').order(:blockout)#.limit(200)
     
     page = 1
     @page_array = Array.new #the entire document
     @running_total = Totals::PageTotals.new() # the running totals object
+    @running_total = @running_total.add_previous_logbook_totals() #TODO Checkbox option?
     @page_flights = Array.new # a single re-usable page object
     @flights.in_groups_of(@@flights_per_page, false) do |flight_group|
       flight_group.each do |flight|
