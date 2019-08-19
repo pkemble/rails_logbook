@@ -117,18 +117,18 @@ class PsiImport < ActiveRecord::Base
 			  end
 
         @entry.from_recent_entry = true #TODO what was the point of this?
-        if e.pic.include? "Kemble"
-          if e.ac_model.start_with?("PC12") && e.sic != nil
-            @entry.flight_number = "CNS976"
-          else
-            @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
-          end
-          @entry.pic = true
-        else
-          @entry.pic = false
-          @entry.flight_number = ""
+#        if e.pic.include? "Kemble"
+#          if e.ac_model.start_with?("PC12") && e.sic != nil
+#            @entry.flight_number = "CNS976"
+#          else
+#            @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
+#          end
+#          @entry.pic = true
+#        else
+#          @entry.pic = false
+          @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
           @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
-        end
+#        end
         @entry.user_id = user.id
 
         @entry.save
@@ -169,9 +169,7 @@ class PsiImport < ActiveRecord::Base
             
             @flight.night_ld = f.night_ld
             @flight.day_ld = f.dlnd
-            if f.ntime.nil?
-              @flight.add_night_time
-            else
+            unless f.ntime.nil?
               @flight.night = f.ntime
             end
 

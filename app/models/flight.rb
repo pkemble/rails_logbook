@@ -22,6 +22,7 @@ class Flight < ActiveRecord::Base
       self.p_blockin = @f_hobbs_time.hobbs_end
       self.block_time = @f_hobbs_time.span
     end
+    self.add_night_time
   end
   
   def add_night_time
