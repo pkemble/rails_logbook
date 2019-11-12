@@ -1,0 +1,40 @@
+<div class='panel panel-default'>
+  <div class='panel-heading'>
+    <h3>Airports</h3>
+  </div>
+  <div class='panel panel-body'>
+    <div class="row">
+      <div class="col-sm-3">
+        <%= link_to 'Create new Airport', new_airport_path, class: 'btn btn-success' %>
+      </div>
+      <div class="col-sm-3">
+        <%= link_to 'populate airport usage', tools_populate_usage_path, class: 'btn btn-info' %>
+      </div>
+      <div class="col-sm-3">
+        <%= link_to 'Airports with missing data', airports_path(params.merge(missing: true).permit(:missing)), class: 'btn btn-info' %>
+      </div>
+    </div>
+    <%= will_paginate @airports %>
+    <table class="table table-striped table-condensed table-bordered">
+      <tr>
+        <td>ICAO</td>
+        <td>Name</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Country</td>
+        <td>Usage #</td>
+      </tr>
+      <% @airports.each do |apt| %>
+        <tr>
+          <td><%= link_to apt.icao, apt %></td>
+          <td><%= apt.name %></td>
+          <td><%= apt.city %></td>
+          <td><%= apt.state %></td>
+          <td><%= apt.country %></td>
+          <td><%= apt.used %></td>
+        </tr>
+      <% end %>
+    </table>
+    <%= will_paginate @airports %>    
+  </div>
+</div>
