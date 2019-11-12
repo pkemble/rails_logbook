@@ -7,13 +7,13 @@
 		<th>missing airports</th>
 		<% @missing.each do |m| %>
 			<tr>
-				<td><%= m.icao %></td>
+				<td><%= m.iata %></td>
 				<td><%= m.used %></td>
 			</tr>
 		<% end %>
 	</table>
 </div>
-<%= link_to 'populate airport usage', tools_populate_usage_path, class: 'btn btn-info' %>
+
 <%= link_to 'night report', tools_night_report_path, class: 'btn btn-info' %>
 <%= link_to 'add night to flights with block times', tools_add_night_path, class: 'btn btn-info' %>
 <p>
@@ -30,5 +30,8 @@
 	<%= text_field_tag(:flight_id) %>
 	<%= submit_tag("Add xc to single flight") %>
 <% end %>
+</p>
+<p>
+ <%= link_to 'airports', airports_path %>
 </p>
 <%= @output %>

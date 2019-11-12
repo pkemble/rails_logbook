@@ -26,6 +26,7 @@
 *.csv
 *.csv~
 *.csv#
+airports.json
 
 #Ignore temp files
 *.*~

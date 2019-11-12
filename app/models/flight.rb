@@ -167,7 +167,7 @@ class Flight < ActiveRecord::Base
     b = Geokit::LatLng.new(@arr.lat, @arr.lon)
     self.distance = a.distance_to(b).round(1)
     
-    if self.distance > 50 and self.pf?
+    if self.distance > 50 and (self.pf? or !self.entry.pic)
       self.xc = true
     else
       self.xc = false

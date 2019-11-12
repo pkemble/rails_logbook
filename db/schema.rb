@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190810014733) do
+ActiveRecord::Schema.define(version: 20190821113531) do
 
   create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "tail"
     t.string   "ac_model"
-    t.boolean  "turb"
-    t.boolean  "multi"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "efis"
-    t.boolean  "fadec"
-    t.boolean  "glass"
-    t.boolean  "turboprop"
+    t.boolean  "turb",       default: false
+    t.boolean  "multi",      default: false
+    t.boolean  "turboprop",  default: false
+    t.boolean  "efis",       default: false
+    t.boolean  "glass",      default: false
+    t.boolean  "fadec",      default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "airports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -30,14 +30,15 @@ ActiveRecord::Schema.define(version: 20190810014733) do
     t.string  "city"
     t.string  "iata"
     t.string  "icao"
-    t.integer "elev"
+    t.integer "elevation"
     t.string  "tz"
     t.string  "dst"
     t.string  "olsontz"
     t.string  "country"
-    t.float   "lat",     limit: 24
-    t.float   "lon",     limit: 24
+    t.float   "lat",       limit: 24
+    t.float   "lon",       limit: 24
     t.integer "used"
+    t.string  "state"
   end
 
   create_table "entries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -97,7 +98,7 @@ ActiveRecord::Schema.define(version: 20190810014733) do
     t.integer  "nto"
     t.integer  "dlnd"
     t.integer  "night_ld"
-    t.float    "btime",         limit: 24
+    t.decimal  "btime",                       precision: 8, scale: 1
     t.float    "ntime",         limit: 24
     t.float    "pictime",       limit: 24
     t.float    "sictime",       limit: 24
@@ -106,8 +107,8 @@ ActiveRecord::Schema.define(version: 20190810014733) do
     t.integer  "holds"
     t.string   "pic"
     t.string   "sic"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.string   "blockout"
     t.string   "blockin"
     t.float    "approaches",    limit: 24

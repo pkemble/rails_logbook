@@ -65,12 +65,13 @@ class ImportExportController < ApplicationController
     PsiImport.convert(@user)
     @import_errors = PsiImport.convert(@user)
     if @import_errors.any?
-      @full_errors = '<li>'
+      byebug
+      @full_errors = '<ul>'
       @import_errors.each do |e|
-        @full_errors += '<ul>' + e.to_s + '</ul>'
+        @full_errors += '<li>' + e.date.to_s + '</li>'
       end
-      @full_errors += '</li>'
-      flash[:warning] = :duplicate_entries_html, [:msg => @full_errors]
+      @full_errors += '</ul>'
+      flash[:warning] = @full_errors.html_safe
     end
     flash[:success] = "Import Complete"
     redirect_to psi_import_path(@import_errors)

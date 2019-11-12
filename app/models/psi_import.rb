@@ -112,6 +112,7 @@ class PsiImport < ActiveRecord::Base
 			  if(@ac.count == 0)
 			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
 			    @ac.save!
+			    @entry.aircraft = @ac
 			  else
 			    @entry.aircraft = @ac.first
 			  end

@@ -50,10 +50,11 @@ class Airport < ActiveRecord::Base
 	  return self.lon
 	end
 
-	def self.add_missing_airport(icao, used = 0)
-	  unless Airport.where(icao: icao).count > 0
+	def self.add_missing_airport(iata, used = 0)
+	  unless Airport.where(iata: iata).count > 0
       @missing = Airport.new()
-      @missing.icao = icao
+      @missing.iata = iata
+      @missing.icao = iata #this isn't the best but...'
       @missing.used = used
       @missing.save!
 	  end

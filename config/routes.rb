@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   end
   resources :flights
   resources :aircraft
-  resources :airports
+  resources :airports #do
+  #  get 'search', on: :name
+  #end
 
   get 'logbook/index'
   
@@ -20,6 +22,7 @@ Rails.application.routes.draw do
   post 'wipe_all' => 'import_export#wipe_all'
   post 'glob_flights' => 'import_export#glob_flights'
   post 'import_airports' => 'import_export#import_airports'
+  get 'missing_data' => 'airports#missing_data'
   
   get 'print' => 'logbook#print'
 
