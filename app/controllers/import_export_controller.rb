@@ -63,12 +63,12 @@ class ImportExportController < ApplicationController
   def import_loaded_csv
     @user = current_user
     PsiImport.convert(@user)
-    @import_errors = PsiImport.convert(@user)
+    @import_errors = PsiImport.where(imported: false)
+    byebug
     if @import_errors.any?
-      byebug
       @full_errors = '<ul>'
       @import_errors.each do |e|
-        @full_errors += '<li>' + e.date.to_s + '</li>'
+        @full_errors += '<li>' + e.date.to_s + ' : ' + e.tail + ' : ' + e.import_errors + '</li>'
       end
       @full_errors += '</ul>'
       flash[:warning] = @full_errors.html_safe

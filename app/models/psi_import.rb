@@ -4,7 +4,6 @@ class PsiImport < ActiveRecord::Base
  # => ["id", "date", "dep", "arr", "tail", "dto", "nto", "dlnd", "night_ld", "btime", "ntime", "pictime",
  # "sictime", "melpic", "melsic", "holds", "pic", "sic", "created_at", "updated_at", "blockout", "blockin",
  #  "approaches", "imported", "ac_model"]  
-  @import_errors = Array.new
   
   require 'csv'
   include PsiImportHelper
@@ -48,7 +47,8 @@ class PsiImport < ActiveRecord::Base
         @crow.dual_given = row["dual_given"]
         @crow.dual_recvd = row["dual_recvd"]
       end
-
+      @crow.blockout = row["blockout"]
+      @crow.blockin = row["blockin"]
       @crow.save!
     end
   end
@@ -87,6 +87,7 @@ class PsiImport < ActiveRecord::Base
   
   def self.convert(user)
     @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
+    byebug
     @psuedo_entries.each do |e|
       begin
         @entry = Entry.new()
@@ -105,7 +106,6 @@ class PsiImport < ActiveRecord::Base
 #        end
 			
 			  @entry.date = e.date
-			  
         #TODO notify so that TAA columns can be added after import to new aircraft 
         
 			  @ac = Aircraft.where(tail: e.tail)
@@ -118,29 +118,26 @@ class PsiImport < ActiveRecord::Base
 			  end
 
         @entry.from_recent_entry = true #TODO what was the point of this?
-#        if e.pic.include? "Kemble"
-#          if e.ac_model.start_with?("PC12") && e.sic != nil
-#            @entry.flight_number = "CNS976"
+        if e.pic.include? "Kemble"
+          if e.ac_model.start_with?("PC12") && e.sic != nil
+            @entry.flight_number = "CNS976" #TODO user default flight number
 #          else
 #            @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
-#          end
-#          @entry.pic = true
-#        else
-#          @entry.pic = false
+          end
+          @entry.pic = true
+          @entry.crew_name = e.sic.nil? ? '' : PsiImportHelper.format_crew_name(e.sic)
+        else
+          @entry.pic = false
           @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
-          @entry.crew_name = PsiImportHelper.format_crew_name(e.pic)
-#        end
+          @entry.crew_name = e.pic.nil? ? '' : PsiImportHelper.format_crew_name(e.pic)
+        end
         @entry.user_id = user.id
-
         @entry.save
-#        if @entry.errors.any?
-#          #binding.pry
-#          @import_errors << @entry.errors.messages
-#        end
         
         if @entry.errors.any?
           Rails.logger.info @entry.errors.messages
-          e.delete
+          e.import_errors = @entry.errors.messages.flatten.inspect
+          e.save
           next
         end
         
@@ -179,6 +176,12 @@ class PsiImport < ActiveRecord::Base
             @flight.dual_given = f.dual_given
             @flight.dual_recvd = f.dual_recvd
             
+            if @flight.errors.any?
+              Rails.logger.info @flight.errors.messages
+              f.import_errors = @flight.errors.messages.flatten.inspect
+              f.save
+              next
+            end
             @flight.save
 
             #finally, set the imported flag
@@ -188,7 +191,10 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        Rails.logger.debug "oops..#{e}: #{oops}"
+        e.import_errors = oops
+        e.save
+        
+        Rails.logger.debug "oops..#{e.id}: #{oops}"
         Rails.logger.debug oops.backtrace[0]
         next
       end

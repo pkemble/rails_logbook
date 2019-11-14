@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190821113531) do
+ActiveRecord::Schema.define(version: 20191114154202) do
 
   create_table "aircraft", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "tail"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20190821113531) do
     t.integer  "user_id"
     t.decimal  "travel_expenses",               precision: 8, scale: 2
     t.integer  "aircraft_id"
+    t.string   "type"
     t.index ["aircraft_id"], name: "index_entries_on_aircraft_id", using: :btree
   end
 
@@ -107,17 +108,18 @@ ActiveRecord::Schema.define(version: 20190821113531) do
     t.integer  "holds"
     t.string   "pic"
     t.string   "sic"
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
     t.string   "blockout"
     t.string   "blockin"
     t.float    "approaches",    limit: 24
-    t.boolean  "imported"
+    t.boolean  "imported",                                            default: false
     t.string   "ac_model"
     t.datetime "date"
     t.boolean  "dual_given"
     t.boolean  "dual_recvd"
     t.string   "flight_number"
+    t.string   "import_errors"
   end
 
   create_table "sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

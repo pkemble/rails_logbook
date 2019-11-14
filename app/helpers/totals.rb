@@ -35,7 +35,7 @@ module Totals
             self.mesic += flight.block_time.round(1)
           end
           if !flight.entry.aircraft.multi and flight.entry.pic == FALSE
-            byebug if flight.id == 2889
+#            byebug if flight.id == 2889
             self.sesic += flight.block_time.round(1)
           end
           if flight.entry.pic and !flight.entry.aircraft.multi

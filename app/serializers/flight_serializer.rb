@@ -33,48 +33,48 @@ class FlightSerializer < ActiveModel::Serializer
   def metb
     if object.entry.aircraft.turb and ( object.entry.aircraft.multi )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   #setb
   def setb
     if object.entry.aircraft.turb and ( !object.entry.aircraft.multi )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   #mesic
   def mesic
     if object.entry.aircraft.multi and ( !object.entry.pic )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   #sesic
   def sesic
     if !object.entry.aircraft.multi and ( !object.entry.pic )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   #mepic
   def mepic
     if object.entry.aircraft.multi and ( object.entry.pic )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   #sepic
   def sepic
     if !object.entry.aircraft.multi and ( object.entry.pic )
       return object.block_time
-#    else
-#      return "0"
+    else
+      return "0"
     end
   end
   
