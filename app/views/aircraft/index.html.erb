@@ -1,0 +1,28 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-3'>model</div>
+    <div class='col-md-3'>tail</div>
+    <div class='col-md-1'>multi</div>
+    <div class='col-md-1'>turbine</div>
+    <div class='col-md-1'>turboprop</div>
+  </div>
+  <% @aircrafts.each do |ac| %>
+    <div class='row'>
+      <div class='col-md-3'>
+        <%= ac.ac_model %>
+      </div>
+      <div class='col-md-3'>
+        <%= link_to ac.tail, edit_aircraft_path(ac) %>
+      </div>
+      <div class='col-md-1'>
+        <%= ac.multi %>
+      </div>
+      <div class='col-md-1'>
+        <%= ac.turb %>
+      </div>
+      <div class='col-md-1'>
+        <%= ac.turboprop %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,4 +1,8 @@
 class AircraftController < ApplicationController
+  def index
+    @aircrafts = Aircraft.all.order(ac_model: :asc).order(tail: :asc)
+  end
+  
   def create
     @aircraft = Aircraft.find(params[:id])
     if @aircraft.save
@@ -13,7 +17,7 @@ class AircraftController < ApplicationController
   def update
     @aircraft = Aircraft.find(params[:id])
     if !@aircraft.update(aircraft_params)
-      render 'edit'
+      render 'index'
     end
   end
   
