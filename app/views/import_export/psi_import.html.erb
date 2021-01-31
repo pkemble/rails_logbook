@@ -11,28 +11,17 @@
     <%= submit_tag "import pre astro CSV", :class => "btn btn-success" %>
   <% end %>
 </p>
-<hr />
-<h2>Tools</h2>
-<p>
-  Glob flights after midnight Zulu with > 10 hours until next flight to the previous entry (day)<br />
-  <%= link_to glob_flights_path,
-    method: :glob_flights,
-    class: "btn" do %>
-      run
-    <% end %>
-  </p>
-  <hr />
-  <p>
+
     <%= link_to import_loaded_csv_path,
       method: :import_loaded_csv,
       class: "btn btn-success" do %>
         import loaded CSV data below into logbook
       <% end %>
 
-      <%= link_to reimport_psi_imports_path,
-        method: :reimport_psi_imports,
+      <%= link_to delete_psi_imports_path,
+        method: :delete_psi_imports,
         class: "btn btn-danger" do %>
-          delete tables and re-import psi imports table
+          delete imports table
         <% end %>
         
       <%= link_to wipe_all_path,
@@ -62,6 +51,7 @@
           <td>total time</td>
           <td>pic</td>
           <td>sic</td>
+          <td>errors</td>
         </tr>
         <% @psi_imports.each do |rec| %>
           <tr>
@@ -70,7 +60,7 @@
             <% else %>
               <td class="danger">N</td>
             <% end %>
-            <td><%= rec.date %></td>
+            <td><%= rec.date.strftime('%m/%d/%Y') %></td>
             <td><%= rec.tail %></td>
             <td><%= rec.dep %></td>
             <td><%= rec.arr %></td>
@@ -79,6 +69,7 @@
             <td><%= rec.btime %></td>
             <td><%= rec.pic %></td>
             <td><%= rec.sic %></td>
+            <td><%= rec.import_errors %></td>
           </tr>
         <% end %>
       </table>

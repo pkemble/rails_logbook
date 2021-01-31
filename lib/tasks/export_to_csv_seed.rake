@@ -18,10 +18,18 @@ namespace :db do
         end
         
         f = FlightSerializer.new(flight)
+        unless flight.blockout.nil
+          blockout = flight.blockout[0..1] + ":" flight.blockout[2..3]
+          blockin = flight.blockin[0..1] + ":" flight.blockin[2..3]
+        else
+          blockout = ""
+          blockin = ""
+        end
+        
         
         f_prop_array = [ f.date, flight.dep, flight.arr, f.ac_model, f.tail, flight.day_to, flight.night_to, 
           flight.day_ld, flight.night_ld, flight.block_time, flight.night, f.pic, f.sic, f.mepic,
-          f.mesic, "0", flight.approaches, "0", pic_name, sic_name, "0", "0", flight.blockout, flight.blockin]
+          f.mesic, "0", flight.approaches, "0", pic_name, sic_name, "0", "0", blockout, blockin]
         
         f_prop_array.each do |prop|
           csv += hopper(prop)

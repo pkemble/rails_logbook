@@ -34,4 +34,15 @@
 <p>
  <%= link_to 'airports', airports_path %>
 </p>
+<hr />
+<p>
+  Glob flights after midnight Zulu with > 10 hours until next flight to the previous entry (day)<br />
+  <%= link_to glob_flights_path,
+    method: :glob_flights,
+    class: "btn" do %>
+      run
+    <% end %>
+  </p>
+  <hr />
+  <p>
 <%= @output %>

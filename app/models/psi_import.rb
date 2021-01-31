@@ -87,7 +87,6 @@ class PsiImport < ActiveRecord::Base
   
   def self.convert(user)
     @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
-    byebug
     @psuedo_entries.each do |e|
       begin
         @entry = Entry.new()
@@ -136,8 +135,11 @@ class PsiImport < ActiveRecord::Base
         
         if @entry.errors.any?
           Rails.logger.info @entry.errors.messages
-          e.import_errors = @entry.errors.messages.flatten.inspect
-          e.save
+          @failed_imports = PsiImport.where(date: e.date, tail: e.tail)
+          @failed_imports.each do |fail|
+            fail.import_errors = @entry.errors.messages.flatten.pretty_inspect()
+            fail.save
+          end  
           next
         end
         
