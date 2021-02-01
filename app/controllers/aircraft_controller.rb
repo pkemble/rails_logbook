@@ -1,6 +1,6 @@
 class AircraftController < ApplicationController
   def index
-    @aircrafts = Aircraft.all.order(ac_model: :asc).order(tail: :asc)
+    @aircrafts = Aircraft.all.order(ac_model: :asc).order(tail: :asc).where(user_id: current_user)
   end
   
   def create
@@ -18,6 +18,8 @@ class AircraftController < ApplicationController
     @aircraft = Aircraft.find(params[:id])
     if !@aircraft.update(aircraft_params)
       render 'index'
+    else
+      redirect_to aircraft_index_path, notice: @aircraft.tail + " saved successfully."
     end
   end
   

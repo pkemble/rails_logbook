@@ -9,6 +9,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><%= link_to 'home', root_path %></li>
 				<% if logged_in? %>
+				  <li><%= link_to 'aircraft', aircraft_index_path %></li>
 					<li><%= link_to 'import/export', io_path %></li>
 					<li><%= link_to 'tools', tools_path %></li>
 					<li><%= link_to 'print', print_path %></li>

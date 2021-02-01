@@ -115,7 +115,7 @@ module Totals
       return total_hopper(@entries) + P_TOTAL_MULTI
     end
     
-    def jet
+    def multi_turbine
       @turb_ac = Aircraft.where(turb: true).where(multi: true).where(turboprop: false)
       @entries = Entry.where(aircraft: @turb_ac)
       return total_hopper(@entries)
