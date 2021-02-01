@@ -77,15 +77,9 @@ class ImportExportController < ApplicationController
     redirect_to psi_import_path(@import_errors)
   end
 
-  def reimport_psi_imports
-    @user = current_user
-
-    Flight.delete_all(user_id: @user.id)
-    Entry.delete_all(user_id: @user.id)
-
-    PsiImport.convert(@user)
-
-    flash[:success] = "Reimported"
+  def delete_psi_imports
+    PsiImport.delete_all
+    flash[:success] = "Imports table cleared."
     redirect_to psi_import_path
   end
   
@@ -94,7 +88,7 @@ class ImportExportController < ApplicationController
 	  Flight.delete_all(user_id: @user.id)
     Entry.delete_all(user_id: @user.id)
     PsiImport.delete_all
-    flash[:success] = "wiped it all"
+    flash[:success] = "Flights, Entries, Imports wiped."
     redirect_to psi_import_path
   end
   
@@ -102,31 +96,6 @@ class ImportExportController < ApplicationController
     @psi_imports = PsiImport.order('date').all
   end
 
-  def glob_flights
-    @user = current_user
-    GlobLogger.debug "\n #{Time.now}\n"
-    GlobLogger.debug "=========================================="
-    GlobLogger.debug "Globbing flights for #{@user.name}"
-
-    @user_entries = Entry.where(user_id: @user.id)
-    @user_entries.each do |e|
-      if e.flights.count > 1
-        @f1 = e.flights[0]
-        @f2 = e.flights[1]
-        if @f1.globbed == false && @f1.check_for_late_flights == true
-          @blockin = DateTime.strptime(@f1.blockin, "%H%M")
-          @next_blockout = DateTime.strptime(@f2.blockout, "%H%M")
-          if (@blockin + 10.hours) < @next_blockout
-            @f1.glob
-          end
-        end
-      end
-
-    end
-    GlobLogger.debug "=========================================="
-    redirect_to psi_import_path
-  end
-  
   def psi_expense
     @user = current_user
     if params[:month].nil? 

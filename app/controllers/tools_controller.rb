@@ -54,4 +54,33 @@ class ToolsController < ApplicationController
     @flight.check_for_xc
     redirect_to tools_path
   end
+  
+  def glob_flights
+    @user = current_user
+    GlobLogger.debug "\n #{Time.now}\n"
+    GlobLogger.debug "=========================================="
+    GlobLogger.debug "Globbing flights for #{@user.name}"
+
+    @user_entries = Entry.where(user_id: @user.id)
+    @user_entries.each do |e|
+      if e.flights.count > 1
+        @f1 = e.flights[0]
+        @f2 = e.flights[1]
+        if @f1.blockin.nil? or @f2.blockin.nil?
+          GlobLogger.debug e.id.to_s + " Entry flight's block times missing, moving on"
+          next
+        end
+        if @f1.globbed == false && @f1.check_for_late_flights == true
+          @blockin = DateTime.strptime(@f1.blockin, "%H%M")
+          @next_blockout = DateTime.strptime(@f2.blockout, "%H%M")
+          if (@blockin + 10.hours) < @next_blockout
+            @f1.glob
+          end
+        end
+      end
+    end
+    GlobLogger.debug "=========================================="
+    redirect_to tools_path
+  end
+  
 end

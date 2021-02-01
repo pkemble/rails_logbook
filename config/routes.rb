@@ -17,10 +17,10 @@ Rails.application.routes.draw do
   get 'psi_import' => 'import_export#psi_import'
   post 'psi_import' => 'import_export#upload'
   post 'import_loaded_csv' => 'import_export#import_loaded_csv'
-  post 'reimport_psi_imports' => 'import_export#reimport_psi_imports'
+  post 'delete_psi_imports' => 'import_export#delete_psi_imports'
   post 'import_pre_astro_csv' => 'import_export#upload_pre_astro'
   post 'wipe_all' => 'import_export#wipe_all'
-  post 'glob_flights' => 'import_export#glob_flights'
+  post 'glob_flights' => 'tools#glob_flights'
   post 'import_airports' => 'import_export#import_airports'
   get 'missing_data' => 'airports#missing_data'
   
