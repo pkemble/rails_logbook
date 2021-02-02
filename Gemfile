@@ -1,17 +1,23 @@
-source 'https://rubygems.org'
+source 'https://rubygems.org' 
 
-gem 'activerecord-session_store'  
-gem 'active_model_serializers', '~> 0.10.0'
+#gem 'activerecord-session_store'
+gem 'active_model_serializers'
 gem 'httparty'
-gem 'bootstrap-sass', '>= 3.2.0.0'
 gem 'bcrypt'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'geokit-rails'
 #gem 'ruby-sun-times', require: 'sun_times'
 gem 'rails-controller-testing'
-gem 'minitest', '5.10.3'
-gem 'json'
+gem 'minitest'
+gem 'json', '>= 2.5.1'
+
+# rails update
+gem 'rexml'
+gem 'puma', '~> 5.0'
+gem "activerecord-session_store", github: "rails/activerecord-session_store", branch: "master"
+
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
@@ -20,15 +26,8 @@ gem 'rails'
 #gem 'pg'
 gem 'mysql2'
 
-# Use SCSS for stylesheets
-#gem 'sass-rails', '~> 5.0'
-gem 'sassc-rails'
-
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+gem 'coffee-rails'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -40,10 +39,10 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder'
 
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'sdoc', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -64,7 +63,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -75,5 +74,8 @@ group :development do
   gem 'capistrano-rvm'
 	gem 'rvm-capistrano'
   gem 'capistrano-passenger'
+  gem 'listen'
 end
 
+
+gem "webpacker", "~> 5.2"

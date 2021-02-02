@@ -18,9 +18,9 @@ namespace :db do
         end
         
         f = FlightSerializer.new(flight)
-        unless flight.blockout.nil
-          blockout = flight.blockout[0..1] + ":" flight.blockout[2..3]
-          blockin = flight.blockin[0..1] + ":" flight.blockin[2..3]
+        unless flight.blockout.nil?
+          blockout = flight.blockout[0..1] + ":" + flight.blockout[2..3]
+          blockin = flight.blockin[0..1] + ":" + flight.blockin[2..3]
         else
           blockout = ""
           blockin = ""
