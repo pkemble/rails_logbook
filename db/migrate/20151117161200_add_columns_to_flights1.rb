@@ -1,4 +1,4 @@
-class AddColumnsToFlights1 < ActiveRecord::Migration
+class AddColumnsToFlights1 < ActiveRecord::Migration[4.2]
   def change
     add_column :flights, :night_to, :boolean
     add_column :flights, :night_ld, :boolean

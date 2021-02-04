@@ -1,4 +1,4 @@
-class ChangePBlockColumnsInFlightToDate < ActiveRecord::Migration
+class ChangePBlockColumnsInFlightToDate < ActiveRecord::Migration[4.2]
   def change
     remove_column :flights, :p_blockin, :time
     remove_column :flights, :p_blockout, :time

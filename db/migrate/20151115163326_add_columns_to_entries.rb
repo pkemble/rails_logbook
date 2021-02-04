@@ -1,4 +1,4 @@
-class AddColumnsToEntries < ActiveRecord::Migration
+class AddColumnsToEntries < ActiveRecord::Migration[4.2]
   def change
     add_column :entries, :pic, :bool
     add_column :entries, :crew_name, :string

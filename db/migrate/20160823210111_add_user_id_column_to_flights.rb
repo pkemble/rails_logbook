@@ -1,4 +1,4 @@
-class AddUserIdColumnToFlights < ActiveRecord::Migration
+class AddUserIdColumnToFlights < ActiveRecord::Migration[4.2]
   def change
   	add_column :flights, :user_id, :integer
 		

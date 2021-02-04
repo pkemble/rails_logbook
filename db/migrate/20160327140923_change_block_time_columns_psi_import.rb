@@ -1,4 +1,4 @@
-class ChangeBlockTimeColumnsPsiImport < ActiveRecord::Migration
+class ChangeBlockTimeColumnsPsiImport < ActiveRecord::Migration[4.2]
   def change
     rename_column :psi_imports, :bin, :blockin
     rename_column :psi_imports, :bout, :blockout

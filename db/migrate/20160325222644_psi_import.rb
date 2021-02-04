@@ -1,4 +1,4 @@
-class PsiImport < ActiveRecord::Migration
+class PsiImport < ActiveRecord::Migration[4.2]
   def change
     create_table :psi_import do |t|
       t.datetime :date

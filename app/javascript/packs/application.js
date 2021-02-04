@@ -20,10 +20,11 @@
  * Note that we don't need to preface this path with "app/javascript" due to the `source_path` config set in config/webpacker.yml. Magical!
  * The file extension can be left off due to the `extensions` config in config/webpacker.yml.
  */
-import "stylesheets/application"
-import "stylesheets/logbook"
+
 import "core-js/stable"
 import "regenerator-runtime/runtime"
+import "@fortawesome/fontawesome-free/css/all"
+import "stylesheets/application"
+import "stylesheets/logbook"
 require("jquery");
 require("bootstrap");
-require("bootstrap-sass");

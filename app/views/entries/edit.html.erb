@@ -1,16 +1,16 @@
-<div class="panel panel-default">
-	<div class="panel-heading">
+<div class="card">
+	<div class="card-title">
 		<h3><%= @entry.aircraft.tail %> on <%= @entry.nice_date %></h3>
 	</div>
-	<div class="panel-body">
+	<div class="card-body">
 		<%= render 'form' %>
 	</div>
 </div>
-<div class="panel panel-default">
-	<div class="panel-heading">
+<div class="card">
+	<div class="card-title">
 		<h3>Flights for <%= @entry.nice_date %>:</h3>
 	</div>
-	<div class="panel-body">
+	<div class="card-body">
 		<%= render 'flights/flights'%>
 	</div>
 </div>

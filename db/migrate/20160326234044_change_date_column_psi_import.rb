@@ -1,4 +1,4 @@
-class ChangeDateColumnPsiImport < ActiveRecord::Migration
+class ChangeDateColumnPsiImport < ActiveRecord::Migration[4.2]
   def up
     change_column :psi_imports, :date, :string
   end

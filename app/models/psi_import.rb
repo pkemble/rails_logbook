@@ -109,7 +109,7 @@ class PsiImport < ActiveRecord::Base
         
 			  @ac = Aircraft.where(tail: e.tail)
 			  if(@ac.count == 0)
-			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model )
+			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model, :user_id => user.id )
 			    @ac.save!
 			    @entry.aircraft = @ac
 			  else

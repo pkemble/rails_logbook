@@ -1,5 +1,5 @@
-class RenameColumnInEntries < ActiveRecord::Migration
+class RenameColumnInEntries < ActiveRecord::Migration[4.2]
   def change
-  	rename_column :entries, :type, :ac_model
+  	add_column :entries, :ac_model, :string
   end
 end
