@@ -4,8 +4,7 @@ source 'https://rubygems.org'
 gem 'active_model_serializers'
 gem 'httparty'
 gem 'bcrypt'
-gem 'will_paginate'
-gem 'bootstrap-will_paginate'
+gem 'will_paginate-bootstrap4'
 gem 'geokit-rails'
 #gem 'ruby-sun-times', require: 'sun_times'
 gem 'rails-controller-testing'
@@ -34,6 +33,9 @@ gem 'coffee-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'

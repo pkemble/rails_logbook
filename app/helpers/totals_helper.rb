@@ -1,4 +1,4 @@
-module Totals
+module TotalsHelper
   class PageTotals
       attr_accessor :block_time, :sepic, :sesic, :mepic, :mesic, :setb, :metb, :instrument, :night, :appr
       
@@ -133,10 +133,17 @@ module Totals
     
     def multi_turbine_sic
       t = 0
-      @multi_turb = Aircraft.where(turb: true)
-      @entries = Entry.where(aircraft: @multi_turb).where(sic: true)
+      @multi_turb = Aircraft.where(turb: true).where(multi: true)
+      @entries = Entry.where(aircraft: @multi_turb).where(pic: false)
       return total_hopper(@entries)
     end
+
+		def multi_turbine_pic
+			t =0
+			@multi_turb = Aircraft.where(turb: true).where(multi: true)
+			@entries = Entry.where(aircraft: @multi_turb).where(pic: true)
+			return total_hopper(@entries)
+		end
     
     def turbine
       @turb = Aircraft.where(turb: true).or(Aircraft.where(turboprop: true))

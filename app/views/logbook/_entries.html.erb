@@ -1,8 +1,9 @@
 
 <%= link_to 'view by flights', root_path(:view => 'flights') %> |
 <%= link_to 'view combined', root_path(:view => 'combined') %>
-<%= will_paginate @entries %>
-
+<div class='pagination'>
+	<%= will_paginate @entries %>
+</div>
 <table class="table table-striped table-condensed table-bordered">
 	<tr>
 		<th>date</th>

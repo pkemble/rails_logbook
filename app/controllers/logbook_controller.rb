@@ -4,7 +4,6 @@ class LogbookController < ApplicationController
   
   @@flights_per_page = 33
   
-  #require 'totals'
   require 'printpage'
   
   def index
@@ -12,7 +11,7 @@ class LogbookController < ApplicationController
       redirect_back_or login_path
     end
 
-    @totals = Totals::Totals.new
+    @totals = TotalsHelper::Totals.new
     @entries = Entry.where(user_id: current_user.id).order(:date).paginate(page: params[:page], per_page: 30)
 
     if params[:view].nil?

@@ -8,7 +8,10 @@ class ToolsController < ApplicationController
     @flights = Flight.all
     @flights.each do |f|
       @apt_used = f.dep.remove_icao
-      @airport = (Airport.where(iata: @apt_used).or(Airport.where(icao: f.dep)).or(Airport.where(iata: f.dep))).first
+      @airport = (Airport.where(iata: f.dep.remove_icao)
+									.or(Airport.where(icao: f.dep))
+									.or(Airport.where(iata: f.dep))
+									.or(Airport.where(icao: f.dep.icao))).first
       if @airport.nil?
         Airport.add_missing_airport(@apt_used, 1)
         next

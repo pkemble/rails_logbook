@@ -1,7 +1,7 @@
 class String
 
   def icao
-    if self.length == 3 && self !~ /\d/
+    if self.length == 3 # && self !~ /\d/
       self.prepend("K")
     end
     return self.upcase
