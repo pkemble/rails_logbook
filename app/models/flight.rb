@@ -152,8 +152,8 @@ class Flight < ActiveRecord::Base
 
   def check_for_xc 
     
-    @dep = Airport.where(iata: self.dep.remove_icao).where("lat IS NOT NULL").to_a[0]
-    @arr = Airport.where(iata: self.arr.remove_icao).where("lat IS NOT NULL").to_a[0]
+    @dep = Airport.where(iata: self.dep.remove_icao).or(Airport.where(icao: self.dep)).where("lat IS NOT NULL").to_a[0]
+    @arr = Airport.where(iata: self.arr.remove_icao).or(Airport.where(icao: self.arr)).where("lat IS NOT NULL").to_a[0]
     if @dep.nil?
       Airport.add_missing_airport(self.dep.remove_icao)
       return
