@@ -215,6 +215,16 @@ GEM
     rexml (3.2.4)
     rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
+    sassc (2.4.0)
+      ffi (~> 1.9)
+    sassc-rails (2.1.2)
+      railties (>= 4.0.0)
+      sassc (>= 2.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     sdoc (2.0.3)
       rdoc (>= 5.0)
     semantic_range (2.3.1)
@@ -230,6 +240,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     thor (1.1.0)
+    tilt (2.0.10)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -282,6 +293,7 @@ DEPENDENCIES
   rails-controller-testing
   rexml
   rvm-capistrano
+  sass-rails
   sdoc
   spring
   turbolinks

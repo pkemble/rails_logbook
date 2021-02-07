@@ -32,7 +32,7 @@ airports.json
 *.*~
 
 #Ignore Gemfile lock
-Gemfile.lock
+#Gemfile.lock
 
 
 /public/packs

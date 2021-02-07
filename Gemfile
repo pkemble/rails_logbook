@@ -51,6 +51,7 @@ gem 'sdoc', group: :doc
 
 group :production do
 	gem 'passenger'
+	gem 'sass-rails'
 end
 
 group :development, :test do
