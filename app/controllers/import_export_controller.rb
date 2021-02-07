@@ -64,7 +64,6 @@ class ImportExportController < ApplicationController
     @user = current_user
     PsiImport.convert(@user)
     @import_errors = PsiImport.where(imported: false)
-    byebug
     if @import_errors.any?
       @full_errors = '<ul>'
       @import_errors.each do |e|

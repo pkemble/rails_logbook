@@ -1,26 +1,30 @@
 <p>
-  Total flight hours to date: <%= p @totals.time %><br>
-  PIC: <%= p @totals.pic %><br>
-  SIC: <%= p @totals.sic %><br>
-  Instrument:<%= p @totals.instrument %><br>
-  Night: <%= p @totals.night %><br>
-  Cross Country: <%= p @totals.xc %><br>
-  Turbine PIC: <%= p @totals.turbine_pic %><br>
-  Multi-Turbine: <%= p @totals.multi_turbine %><br>
-  Turbine: <%= p @totals.turbine %><br>
-	Multi-Turbine PIC: <%= p @totals.multi_turbine_pic %><br>
-	Multi-Turbine SIC: <%= p @totals.multi_turbine_sic %><br>
-  Multi: <%= p @totals.multi %><br>
-</p>
-<p>
   <%= link_to 'new entry', new_entry_path, class: "btn btn-success" %>
-  </p>
-
-  <% case params[:view] %>
-  <% when 'flights'  %>
-    <%= render 'flights' %>
-  <% when 'combined' %>
-    <%= render 'combined' %>
-  <% else %>
-    <%= render 'entries' %>
-  <% end %>
+</p>
+<!-- Totals: total, pic, sic, multi, multi pic -->
+<table class='table table-bordered'>
+	<thead class='bg-primary'>
+		<tr>
+			<td scope='col'>Total</td>
+			<td scope='col'>PIC</td>
+			<td scope='col'>SIC</td>
+			<td scope='col'>Multi</td>
+			<td scope='col'>Multi-Turbine PIC</td>
+		</tr>
+	</thead>
+	<tr>
+		<td><%= p @totals.time %></td>
+		<td><%= p @totals.pic %></td>
+		<td><%= p @totals.sic %></td>
+		<td><%= p @totals.multi %></td>
+		<td><%= p @totals.multi_turbine_pic %></td>
+	</tr>
+</table>
+<% case params[:view] %>
+<% when 'flights'  %>
+  <%= render 'flights' %>
+<% when 'combined' %>
+  <%= render 'combined' %>
+<% else %>
+  <%= render 'entries' %>
+<% end %>

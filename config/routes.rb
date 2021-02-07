@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :airports #do
   #  get 'search', on: :name
   #end
+	resources :totals
 
   get 'logbook/index'
   

@@ -149,8 +149,8 @@ class PsiImport < ActiveRecord::Base
         if @flights.any?
           @flights.each do |f|
             unless f.blockout.nil?
-              f.blockout = f.blockout.gsub(":", "")
-              f.blockin = f.blockin.gsub(":", "")
+              f.blockout = f.blockout.fix_btime
+              f.blockin = f.blockin.fix_btime
             end
             @flight = @entry.flights.create(f.slice(
                 :blockout, :blockin, :dep, :arr, :night_ld, :approaches

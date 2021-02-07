@@ -162,7 +162,11 @@ module TotalsHelper
     def xc
       return Flight.where(xc: :true).sum(:block_time).round(1) + P_TOTAL_XC
     end
-    
+
+		def xc_pic
+			return Flight.where(xc: :true).joins(:entry).where(entry: { pic: true }).sum(:block_time).round(1) + P_TOTAL_XC
+    end
+
     private
     def get_totals (pic)
       t = pic ? P_TOTAL_PIC : 0

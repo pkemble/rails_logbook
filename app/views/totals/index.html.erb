@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Totals</h1>
+<p>
+  Total flight hours to date: <%= p @totals.time %><br>
+  PIC: <%= p @totals.pic %><br>
+  SIC: <%= p @totals.sic %><br>
+  Instrument:<%= p @totals.instrument %><br>
+  Night: <%= p @totals.night %><br>
+  Cross Country: <%= p @totals.xc %><br>
+	Cross Country PIC: <%= p @totals.xc_pic %><br>
+  Turbine PIC: <%= p @totals.turbine_pic %><br>
+  Multi-Turbine: <%= p @totals.multi_turbine %><br>
+  Turbine: <%= p @totals.turbine %><br>
+	Multi-Turbine PIC: <%= p @totals.multi_turbine_pic %><br>
+	Multi-Turbine SIC: <%= p @totals.multi_turbine_sic %><br>
+  Multi: <%= p @totals.multi %><br>
+</p>
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @totals.each do |total| %>
+      <tr>
+        <td><%= link_to 'Show', total %></td>
+        <td><%= link_to 'Edit', edit_total_path(total) %></td>
+        <td><%= link_to 'Destroy', total, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Total', new_total_path %>

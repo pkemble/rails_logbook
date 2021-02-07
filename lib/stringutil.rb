@@ -14,5 +14,18 @@ class String
       return self
     end
   end
+
+	def fix_btime
+		@str = self.gsub(":", "")
+		if @str.length == 1
+			return '000' + @str
+		elsif @str.length == 2
+			return '00' + @str
+		elsif @str.length == 3
+			return '0' + @str
+		else
+			return @str
+		end
+	end
 end
 

@@ -1,0 +1,17 @@
+<%= form_with(model: total) do |form| %>
+  <% if total.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(total.errors.count, "error") %> prohibited this total from being saved:</h2>
+
+      <ul>
+        <% total.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
