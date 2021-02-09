@@ -4,12 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-simple_flight:
-  dep: fll
-  arr: bos
-  blockout: 1300
-  blockin: 1333
-  entry: simple_entry
+#simple_flight:
+#  dep: fll
+#  arr: bos
+#  blockout: 1300
+#  blockin: 1333
+#  entry: simple_entry
 # column: value
 #
 # bad_times:

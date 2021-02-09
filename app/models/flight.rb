@@ -6,6 +6,8 @@ class Flight < ActiveRecord::Base
   CUTOFF = "04"
     
   belongs_to :entry
+	belongs_to :arr, :class_name => 'Airport'
+	belongs_to :dep, :class_name => 'Airport'
   
   attr_accessor :last_loc
   
@@ -14,8 +16,6 @@ class Flight < ActiveRecord::Base
   #validates :night, :if "night < total_time" # TODO
   
   before_save do
-    self.dep = self.dep.icao
-    self.arr = self.arr.icao
     unless blockout.nil? || blockin.nil? #TODO test this
       @f_hobbs_time = HobbsTime.new(blockout, blockin, entry.date)
       self.p_blockout = @f_hobbs_time.hobbs_start
@@ -23,6 +23,9 @@ class Flight < ActiveRecord::Base
       self.block_time = @f_hobbs_time.span
     end
     self.add_night_time
+    
+    apt = self.dep.update_usage
+    
   end
   
   def add_night_time

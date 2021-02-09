@@ -38,8 +38,8 @@
 						<% end %>
 			</td>
 			<td><%= f.pf ? "X" : "" %></td>
-			<td><%= f.dep %></td>
-			<td><%= f.arr %></td>
+			<td><%= link_to f.dep.icao, edit_airport_path(f.dep.id) %></td>
+			<td><%= link_to f.arr.icao, edit_airport_path(f.arr.id) %></td>
 			<td><%= f.blockout %></td>
 			<td><%= f.blockin %></td>
 			<td><%= f.block_time %></td>

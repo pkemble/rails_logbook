@@ -3,7 +3,5 @@
 one:
   email: test@example.com
   name: test user
+  password_digest: asdfasdf
 
-two:
-  email: test-2@example.com
-  name: two user

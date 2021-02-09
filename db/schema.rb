@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_01_013859) do
+ActiveRecord::Schema.define(version: 2021_02_07_140403) do
 
   create_table "aircraft", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "tail"
@@ -63,8 +63,8 @@ ActiveRecord::Schema.define(version: 2021_02_01_013859) do
   end
 
   create_table "flights", id: :integer, charset: "utf8mb4", force: :cascade do |t|
-    t.text "dep"
-    t.text "arr"
+    t.integer "dep_id"
+    t.integer "arr_id"
     t.string "blockin"
     t.string "blockout"
     t.integer "entry_id"

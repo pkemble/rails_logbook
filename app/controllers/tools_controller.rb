@@ -3,21 +3,13 @@ class ToolsController < ApplicationController
     @missing = Airport.where(lat: nil).order(used: :desc).to_a
   end
   
-  def populate_usage
+  def repopulate_usage #TODO move to flight save
     Airport.update_all(used: 0)
     @flights = Flight.all
+    byebug
     @flights.each do |f|
-      @apt_used = f.dep.remove_icao
-      @airport = (Airport.where(iata: f.dep.remove_icao)
-									.or(Airport.where(icao: f.dep))
-									.or(Airport.where(iata: f.dep))
-									.or(Airport.where(icao: f.dep.icao))).first
-      if @airport.nil?
-        Airport.add_missing_airport(@apt_used, 1)
-        next
-      end
-      @airport.used = @airport.used + 1
-      @airport.save!
+      @airport = f.dep
+      @airport.update_usage
     end
     redirect_to tools_path
   end

@@ -1,6 +1,11 @@
 class AirportsController < ApplicationController
-  def show
+	
+	before_action :force_json, only: :search_apt 
+	
+  def edit
     @airport = Airport.find(params[:id])
+    @flights = Flight.where(dep: @airport).or(Flight.where(arr: @airport)).paginate(page: params[:page],
+        per_page: 30)
   end
   
   def index
@@ -12,12 +17,14 @@ class AirportsController < ApplicationController
     end
   end
   
-  def search
-    term = params[:term]
-    airports = []
-    airports = Airport.where('country LIKE ?', "%#{term}%").limit 25 if term
-    render json: airports
-  end
+	def search_apt
+		q = params[:q].upcase
+		@apts = Airport.search_multiple(q)
+	end
+
+	def force_json
+			request.format =:json
+	end
   
   def new
     @airport = Airport.new

@@ -1,6 +1,6 @@
 class String
 
-  def icao
+  def add_icao
     if self.length == 3 # && self !~ /\d/
       self.prepend("K")
     end

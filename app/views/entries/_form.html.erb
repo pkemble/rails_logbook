@@ -152,7 +152,7 @@
 	<div class="col-sm-12">
 		<%= f.submit :class => "btn btn-success" %>
 		<% unless @entry.new_record? %>
-			<%= link_to entry_path(@entry.id),
+			<%= button_to entry_path(@entry.id),
 				method: :delete,
 				data: { confirm: 'Are you sure? This cannot be undone!' },
 				class: "btn btn-danger" do %>

@@ -78,9 +78,9 @@ class Entry < ActiveRecord::Base
 	  a = ""
 	  unless self.flights.any? == false
 	    self.flights.order(:id).each do |f|
-	     a += f.dep.remove_icao + '-'
+	     a += f.dep.icao.remove_icao + '-' #TODO can we use iata here?
   	  end
-  	  a += self.flights.order(:id).last.arr.remove_icao
+  	  a += self.flights.order(:id).last.arr.icao.remove_icao
 	  end
     arpt_string = a
 	end

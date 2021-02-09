@@ -1,6 +1,7 @@
-<%= link_to 'view by entries', root_path %> | 
-<%= link_to 'view combined', root_path(:view => 'combined') %>
-
+<% unless params[:controller] == 'airports' %>
+	<%= link_to 'view by entries', root_path %> | 
+	<%= link_to 'view combined', root_path(:view => 'combined') %>
+<% end %>
 <%= will_paginate @flights %>
 <table class="table table-striped table-condensed table-bordered">
   <tr>
@@ -23,8 +24,8 @@
       <td><%= link_to f.entry.date.strftime('%m-%d-%y'), edit_entry_path(f.entry_id) %></td>
       <td><%= f.entry.aircraft.ac_model %></td>
       <td><%= f.entry.aircraft.tail %></td>
-      <td><%= f.dep %></td>
-      <td><%= f.arr %></td>
+      <td><%= f.dep.icao %></td>
+      <td><%= f.arr.icao %></td>
       <td><%= f.blockout %></td>
       <td><%= f.blockin %></td>
       <td><%= f.night %></td>

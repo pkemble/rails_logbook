@@ -1,0 +1,17 @@
+<%= render 'search' %>
+<div class="card">
+	<div class="card-title">
+		<h3><%= @airport.icao %> : <%= @airport.name %></h3>
+	</div>
+	<div class="card-body">
+		<%= render 'form' %>
+	</div>
+</div>
+<div class="card">
+	<div class="card-title">
+		<h3><%= @flights.count %> Flights for <%= @airport.name %>:</h3>
+	</div>
+	<div class="card-body">
+		<%= render 'logbook/flights'%>
+	</div>
+</div>

@@ -8,7 +8,7 @@ require 'csv'
         airports = JSON.parse(t)
 				apt_num = airports.count
         airports.each do | airport |
-          new_airport = Airport.create(airport[1].to_h)
+          new_airport = Airport.create!(airport[1].to_h)
 					apt_num = apt_num - 1
 					print airport[0] + " : " + apt_num.to_s + " to go...\r"
 					$stdout.flush

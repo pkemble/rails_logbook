@@ -32,11 +32,11 @@
 				</div>
 				<div class="col-sm-2 form-group">
 					<%= f.label :dep, "DEP" %>
-					<%= f.text_field :dep, class: "form-control" %>
+					<%= f.text_field :dep, class: "form-control", value: @flight.dep.nil? ? '' : @flight.dep.icao, 'data-behavior' => 'autocomplete' %>
 				</div>
 				<div class="col-sm-2 form-group">
 					<%= f.label :arr, "ARR" %>
-					<%= f.text_field :arr, class: "form-control" %>
+					<%= f.text_field :arr, class: "form-control", value: @flight.arr.nil? ? '' : @flight.arr.icao, 'data-behavior' => 'autocomplete' %>
 				</div>
 				<div class ="col-sm-2 form-group">
 					<%= f.label :dual_given, "Dual Given"%></br>

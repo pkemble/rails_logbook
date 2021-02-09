@@ -25,5 +25,9 @@ import "core-js/stable"
 import "regenerator-runtime/runtime"
 import "@fortawesome/fontawesome-free/css/all"
 import "stylesheets/logbook"
+import "turbolinks"
 require("jquery");
 require("bootstrap");
+require("easy-autocomplete");
+require("javascripts/airports");
+require("turbolinks").start();

@@ -1,3 +1,4 @@
+<%= render 'search' %>
 <div class='panel panel-default'>
   <div class='panel-heading'>
     <h3>Airports</h3>
@@ -8,7 +9,7 @@
         <%= link_to 'Create new Airport', new_airport_path, class: 'btn btn-success' %>
       </div>
       <div class="col-sm-3">
-        <%= link_to 'populate airport usage', tools_populate_usage_path, class: 'btn btn-info' %>
+        <%= link_to 're-populate airport usage', tools_repopulate_usage_path, class: 'btn btn-info' %>
       </div>
       <div class="col-sm-3">
         <%= link_to 'Airports with missing data', airports_path(params.merge(missing: true).permit(:missing)), class: 'btn btn-info' %>
@@ -26,7 +27,7 @@
       </tr>
       <% @airports.each do |apt| %>
         <tr>
-          <td><%= link_to apt.icao, apt %></td>
+          <td><%= link_to apt.icao, edit_airport_path(apt) %></td>
           <td><%= apt.name %></td>
           <td><%= apt.city %></td>
           <td><%= apt.state %></td>

@@ -84,8 +84,8 @@ class ImportExportController < ApplicationController
   
   def wipe_all
     @user = current_user
-	  Flight.delete_all(user_id: @user.id)
-    Entry.delete_all(user_id: @user.id)
+	  Flight.where(user_id: @user.id).delete_all
+    Entry.where(user_id: @user.id).delete_all
     PsiImport.delete_all
     flash[:success] = "Flights, Entries, Imports wiped."
     redirect_to psi_import_path

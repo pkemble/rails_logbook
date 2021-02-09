@@ -4,10 +4,10 @@ Rails.application.routes.draw do
     resources :flights
   end
   resources :flights
+	get 'search_apt', to: 'flights#search_apt'
   resources :aircraft
-  resources :airports #do
-  #  get 'search', on: :name
-  #end
+  resources :airports 
+	get 'full/search_apt', to: 'airports#search_apt'
 	resources :totals
 
   get 'logbook/index'
@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   post 'psi_import' => 'import_export#upload'
   get 'import_loaded_csv' => 'import_export#import_loaded_csv'
   get 'delete_psi_imports' => 'import_export#delete_psi_imports'
-  post 'import_pre_astro_csv' => 'import_export#upload_pre_astro'
-  post 'wipe_all' => 'import_export#wipe_all'
+  get 'import_pre_astro_csv' => 'import_export#upload_pre_astro'
+  get 'wipe_all' => 'import_export#wipe_all'
   post 'glob_flights' => 'tools#glob_flights'
   post 'import_airports' => 'import_export#import_airports'
   get 'missing_data' => 'airports#missing_data'
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   post 'add_night_to_single_flight' => 'tools#add_night_to_single_flight'
   get 'tools_calculate_xc' => 'tools#calculate_xc'
   post 'add_xc_to_single_flight' => 'tools#add_xc_to_single_flight'
-  get 'tools_populate_usage' => 'tools#populate_usage'
+  get 'tools_repopulate_usage' => 'tools#repopulate_usage'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

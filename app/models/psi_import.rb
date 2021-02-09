@@ -89,55 +89,58 @@ class PsiImport < ActiveRecord::Base
     @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
     @psuedo_entries.each do |e|
       begin
-        @entry = Entry.new()
+      	# grab a possibly existing entry if there were errors importing before
+      	entry = Entry.where('tail = ? AND date = ? AND ac_model = ? AND pic = ? AND sic = ?',
+      		 e.tail, e.date, e.ac_model, e.pic, e.sic)
+      	
+        entry = Entry.new()
         # TODO pd start and end set here as the straight imports with them being nil
         # produced 44 hours per diem per day...hacking it for now
-        @entry.pd_start = "0001"
-        @entry.pd_end = "2359"
+        entry.pd_start = "0001"
+        entry.pd_end = "2359"
         # TODO this 0500 hack has to go away...non imported entries need to be looked at for this too
-        # @entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
+        # entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
         #if e.date.include? "-"
-#          @entry.date = DateTime.strptime(e.date, "%m-%d-%Y")
+#          entry.date = DateTime.strptime(e.date, "%m-%d-%Y")
 #        elsif e.date.include? ":"
-#          @entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
+#          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
 #        else
-#          @entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
+#          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
 #        end
 			
-			  @entry.date = e.date
+			  entry.date = e.date
         #TODO notify so that TAA columns can be added after import to new aircraft 
         
 			  @ac = Aircraft.where(tail: e.tail)
 			  if(@ac.count == 0)
 			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model, :user_id => user.id )
 			    @ac.save!
-			    @entry.aircraft = @ac
+			    entry.aircraft = @ac
 			  else
-			    @entry.aircraft = @ac.first
+			    entry.aircraft = @ac.first
 			  end
 
-        @entry.from_recent_entry = true #TODO what was the point of this?
+        entry.from_recent_entry = true #TODO what was the point of this?
         if e.pic.include? "Kemble"
           if e.ac_model.start_with?("PC12") && e.sic != nil
-            @entry.flight_number = "CNS976" #TODO user default flight number
+            entry.flight_number = "CNS976" #TODO user default flight number
 #          else
-#            @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
+#            entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
           end
-          @entry.pic = true
-          @entry.crew_name = e.sic.nil? ? '' : PsiImportHelper.format_crew_name(e.sic)
+          entry.pic = true
+          entry.crew_name = e.sic.nil? ? '' : PsiImportHelper.format_crew_name(e.sic)
         else
-          @entry.pic = false
-          @entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
-          @entry.crew_name = e.pic.nil? ? '' : PsiImportHelper.format_crew_name(e.pic)
+          entry.pic = false
+          entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
+          entry.crew_name = e.pic.nil? ? '' : PsiImportHelper.format_crew_name(e.pic)
         end
-        @entry.user_id = user.id
-        @entry.save
-        
-        if @entry.errors.any?
-          Rails.logger.info @entry.errors.messages
+        entry.user_id = user.id
+        entry.save
+        if entry.errors.any?
+          Rails.logger.info entry.errors.messages
           @failed_imports = PsiImport.where(date: e.date, tail: e.tail)
           @failed_imports.each do |fail|
-            fail.import_errors = @entry.errors.messages.flatten.pretty_inspect()
+            fail.import_errors = entry.errors.messages.flatten.pretty_inspect()
             fail.save
           end  
           next
@@ -148,47 +151,58 @@ class PsiImport < ActiveRecord::Base
         @flights = PsiImport.where(date: e.date, tail: e.tail)
         if @flights.any?
           @flights.each do |f|
+          	
             unless f.blockout.nil?
               f.blockout = f.blockout.fix_btime
               f.blockin = f.blockin.fix_btime
             end
-            @flight = @entry.flights.create(f.slice(
-                :blockout, :blockin, :dep, :arr, :night_ld, :approaches
-              ))
+						# Airports
+						
+						dep = Airport.search(f.dep, true)
+						arr = Airport.search(f.arr, true)
 
-            if @flight.blockout.nil?
+						flight = Flight.new
+						flight.blockout = f.blockout
+						flight.blockin = f.blockin
+						flight.approaches = f.approaches
+						flight.night_to = f.nto
+						flight.dep = dep
+						flight.arr = arr
+						flight.entry = entry
+
+            if flight.blockout.nil?
               Rails.logger.debug "blockout/blockin missing: using btime in csv"
-              @flight.block_time = f.btime
+              flight.block_time = f.btime
             end
             
             if (f.night_ld == 0 || f.night_ld.nil?) && (f.dlnd == 0 || f.dlnd.nil?)
-              @flight.pf = false
+              flight.pf = false
             else
-              @flight.pf = true
+              flight.pf = true
             end
             
-            @flight.night_ld = f.night_ld
-            @flight.day_ld = f.dlnd
+            flight.night_ld = f.night_ld
+            flight.day_ld = f.dlnd
             unless f.ntime.nil?
-              @flight.night = f.ntime
+              flight.night = f.ntime
             end
 
-            @flight.user_id = user.id
+            flight.user_id = user.id
             
-            @flight.dual_given = f.dual_given
-            @flight.dual_recvd = f.dual_recvd
-            
-            if @flight.errors.any?
-              Rails.logger.info @flight.errors.messages
-              f.import_errors = @flight.errors.messages.flatten.inspect
-              f.save
+            flight.dual_given = f.dual_given
+            flight.dual_recvd = f.dual_recvd
+            flight.save!
+            if flight.errors.any?
+              Rails.logger.info flight.errors.messages
+              f.import_errors = flight.errors.messages.flatten.inspect
+              f.save!
               next
             end
-            @flight.save
+            
 
             #finally, set the imported flag
             f.imported = true
-            f.save
+            f.save!
           end
         end
       
