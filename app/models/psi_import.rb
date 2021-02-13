@@ -90,10 +90,14 @@ class PsiImport < ActiveRecord::Base
     @psuedo_entries.each do |e|
       begin
       	# grab a possibly existing entry if there were errors importing before
-      	entry = Entry.where('tail = ? AND date = ? AND ac_model = ? AND pic = ? AND sic = ?',
-      		 e.tail, e.date, e.ac_model, e.pic, e.sic)
+      	existing_entries = Entry.joins(:aircraft).where(aircraft: { tail: e.tail, ac_model: e.ac_model }).where(date: e.date)
+
+      	if existing_entries.count == 0
+      	  entry = Entry.new()
+      	else
+      	  entry = existing_entries.first
+      	end
       	
-        entry = Entry.new()
         # TODO pd start and end set here as the straight imports with them being nil
         # produced 44 hours per diem per day...hacking it for now
         entry.pd_start = "0001"
@@ -207,10 +211,10 @@ class PsiImport < ActiveRecord::Base
         end
       
       rescue => oops
-        e.import_errors = oops
+        e.import_errors = oops.message
         e.save
-        
-        Rails.logger.debug "oops..#{e.id}: #{oops}"
+        byebug
+        Rails.logger.debug "import error: #{e.id}: #{oops}"
         Rails.logger.debug oops.backtrace[0]
         next
       end

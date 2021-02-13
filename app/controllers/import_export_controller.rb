@@ -55,7 +55,7 @@ class ImportExportController < ApplicationController
   end
   
   def import_airports
-  	Airport.import(params[:csv_data])
+  	Airport.import(params[:json_data])
   	flash[:success] = "Airports Imported"
   	redirect_to psi_import_path
   end

@@ -16,24 +16,34 @@ class Airport < ActiveRecord::Base
   # "created_at",
   # "updated_at"
 
-  def self.import(csv_file)
+  #  def self.import(csv_file)
+  #    Airport.delete_all
+  #    CSV.foreach(csv_file.path, headers: true, encoding: 'iso-8859-1') do |row|
+  #      @crow = Airport.new
+  #      @crow.name = row['name']
+  #      @crow.city = row['city']
+  #      @crow.country = row['country']
+  #      @crow.icao = row['icao']
+  #      @crow.iata = row['iata']
+  #      @crow.lat = row['lat'].to_f
+  #      @crow.lon = row['lon'].to_f
+  #      @crow.elev = row['elev'].to_f
+  #      @crow.tz = row['tz']
+  #      @crow.dst = row['dst']
+  #      @crow.olsontz = row['olsontz']
+  #      @crow.used = 0
+  #      @crow.iata = @crow.icao.remove_icao if @crow.iata == '\\N'
+  #      @crow.save!
+  #    end
+  #  end
+  
+  def self.import(json_data)
     Airport.delete_all
-    CSV.foreach(csv_file.path, headers: true, encoding: 'iso-8859-1') do |row|
-      @crow = Airport.new
-      @crow.name = row['name']
-      @crow.city = row['city']
-      @crow.country = row['country']
-      @crow.icao = row['icao']
-      @crow.iata = row['iata']
-      @crow.lat = row['lat'].to_f
-      @crow.lon = row['lon'].to_f
-      @crow.elev = row['elev'].to_f
-      @crow.tz = row['tz']
-      @crow.dst = row['dst']
-      @crow.olsontz = row['olsontz']
-      @crow.used = 0
-      @crow.iata = @crow.icao.remove_icao if @crow.iata == '\\N'
-      @crow.save!
+    t = File.read(json_data)
+    airports = JSON.parse(t)
+    apt_num = airports.count
+    airports.each do | airport |
+      new_airport = Airport.create!(airport[1].to_h)
     end
   end
 
@@ -54,25 +64,25 @@ class Airport < ActiveRecord::Base
     return missing
   end
 
-	def self.search_multiple(q)
-		#return Airport.where("icao LIKE ? or iata LIKE ?", "#{q}%", "#{q}%").limit(10).order(:icao)
-		return Airport.where("icao LIKE ?", "%#{q}%").limit(20).order(used: :desc)
-	end
+  def self.search_multiple(q)
+    #return Airport.where("icao LIKE ? or iata LIKE ?", "#{q}%", "#{q}%").limit(10).order(:icao)
+    return Airport.where("icao LIKE ?", "%#{q}%").limit(20).order(used: :desc)
+  end
 
   def self.search(q, create = false)
     apt = Airport.where(icao: q).or(Airport.where(iata: q)).or(Airport.where(icao: q.add_icao)).first
-		if apt.nil? && create 
-			return Airport.add_missing_airport(q, 1) 
+    if apt.nil? && create
+      return Airport.add_missing_airport(q, 1)
     end
-		return apt
+    return apt
   end
-	
-	def update_usage
-		if self.used.nil?
-			self.used = 1
-		else
-			self.used += 1
-		end
-		self.save!
-	end
+
+  def update_usage
+    if self.used.nil?
+      self.used = 1
+    else
+      self.used += 1
+    end
+    self.save!
+  end
 end
