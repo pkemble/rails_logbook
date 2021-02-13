@@ -52,14 +52,14 @@ class EntriesController < ApplicationController
     end
   end
   
-  def continued_entry
+  def next_entry
     
-    @recent_entry = Entry.where(user_id: current_user.id).last
+    last_entry = Entry.where(user_id: current_user.id).last
     @entry = Entry.new
-    @entry.aircraft = @recent_entry.aircraft
-    @entry.pic = @recent_entry.pic
-    @entry.crew_name = @recent_entry.crew_name
-    @entry.flight_number = @recent_entry.flight_number
+    @entry.aircraft = last_entry.aircraft
+    @entry.pic = last_entry.pic
+    @entry.crew_name = last_entry.crew_name
+    @entry.flight_number = last_entry.flight_number
     
     render 'new'
     

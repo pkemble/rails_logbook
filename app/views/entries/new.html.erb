@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-6 form-group">
 				<% if current_user.entries.any? %>
-					<%= link_to 'Populate form from the last entry', continued_entry_path, class: "btn btn-success" %>
+					<%= link_to 'Populate form from the last entry', next_entry_path, class: "btn btn-success" %>
 				<% end %>
 				<%= link_to 'Clear form', new_entry_path, class: "btn btn-warning" %>
 			</div>

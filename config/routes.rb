@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :entries do
     resources :flights
   end
+  get 'next_entry' => 'entries#next_entry'
+  
   resources :flights
 	get 'search_apt', to: 'flights#search_apt'
   resources :aircraft
@@ -43,7 +45,6 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'continued_entry' => 'entries#continued_entry'
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

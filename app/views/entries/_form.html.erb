@@ -68,7 +68,7 @@
 		    <%= f.label :aircraft %>
 		  </div>
 		  <div class="dropdown">
-        <%= f.collection_select :aircraft_id, Aircraft.order(:tail), :id, :tail, { :selected => @entry.aircraft.id }, { :class => "form-control" } %>
+        <%= f.collection_select :aircraft_id, Aircraft.order(:tail), :id, :tail, {}, class: "form-control" %>
       </div>
 		</div>
 	</div>
@@ -158,9 +158,11 @@
 				class: "btn btn-danger" do %>
 					delete this entry and it's flights
 			<% end %>
+			<%= link_to "Create next entry", next_entry_path, class: "btn btn-success" %>
 		<% else %>
 			<%= f.submit "Create entry and add flights", :class => "btn btn-success" %>
 		<% end %>
+		
 		<%= link_to "back to entry listing", root_path, class: "btn btn-primary"%>
 	</div>
 </div>
