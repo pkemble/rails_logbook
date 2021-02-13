@@ -1,6 +1,10 @@
-<h3>Edit a flight</h3>
 <div class="container">
-<%= form_for @flight, url: entry_flight_path do |f| %>
-	<%= render 'flights_form', f: f %>
-<% end %>
+	<div class="card">
+		<div class="card-title">
+			<h3>Editing <%= @flight.dep.icao %> to <%= @flight.arr.icao %> on <%= @flight.entry.nice_date %></h3>
+		</div>
+		<%= form_for @flight, url: entry_flight_path do |f| %> 
+			<%= render 'flights_form', f: f %>
+		<% end %>
+	</div>
 </div>

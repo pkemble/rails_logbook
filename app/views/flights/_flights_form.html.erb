@@ -14,12 +14,11 @@
 	</div>
 </div>
 <% end %>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		Basics
+<div class="card">
+	<div class="card-title">
+		<h3>Basics</h3>
 	</div>
-	<div class="panel-body">
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<div class="row">
 				<div class="col-sm-1">
 					<div class="form-group">
@@ -38,12 +37,6 @@
 					<%= f.label :arr, "ARR" %>
 					<%= f.text_field :arr, class: "form-control", value: @flight.arr.nil? ? '' : @flight.arr.icao, 'data-behavior' => 'autocomplete' %>
 				</div>
-				<div class ="col-sm-2 form-group">
-					<%= f.label :dual_given, "Dual Given"%></br>
-					<%= f.check_box :dual_given %>
-				</div>
-			</div>
-			<div class="row">
 				<div class="col-sm-2 col-sm-offset-1 form-group">
 					<%= f.label :blockout, "Out"%>
 					<%= f.text_field :blockout, :placeholder => "HHMM(Z)", :class => "blocktimefield form-control" %>
@@ -51,10 +44,6 @@
 				<div class="col-sm-2">
 					<%= f.label :blockin , "In"%>
 					<%= f.text_field :blockin, :placeholder => "HHMM(Z)", :class => "blocktimefield form-control" %>
-				</div>
-				<div class ="col-sm-2 form-group">
-					<%= f.label :dual_recvd, "Dual Recevied"%></br>
-					<%= f.check_box :dual_recvd %>
 				</div>
 			</div>
 		</div>
@@ -67,12 +56,19 @@
 				<%= f.label :marked, "Marked" %></br>
 				<%= f.check_box :marked %>
 			</div>
+			<div class ="col-sm-2 form-group">
+				<%= f.label :dual_recvd, "Dual Recevied"%></br>
+				<%= f.check_box :dual_recvd %>
+			</div>
+			<div class ="col-sm-2 form-group">
+				<%= f.label :dual_given, "Dual Given"%></br>
+				<%= f.check_box :dual_given %>
+			</div>
 		</div>
-	</div>
 </div>
-<div class="panel panel-default">
-	<div class="panel-heading">
-		Currency
+<div class="card">
+	<div class="card-title">
+		<h3>Currency</h3>
 	</div>
 	<div class="panel-body">
 		<div class="row">
