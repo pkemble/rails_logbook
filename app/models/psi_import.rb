@@ -86,135 +86,132 @@ class PsiImport < ActiveRecord::Base
   end
   
   def self.convert(user)
-    @psuedo_entries = PsiImport.select('DISTINCT tail, date, ac_model, pic, sic')
-    @psuedo_entries.each do |e|
+    PsiImport.all.each do |i|
       begin
+        byebug
       	# grab a possibly existing entry if there were errors importing before
-      	existing_entries = Entry.joins(:aircraft).where(aircraft: { tail: e.tail, ac_model: e.ac_model }).where(date: e.date)
+      	existing_entries = Entry.joins(:aircraft).where(aircraft: { tail: i.tail }).where(date: i.date)
 
       	if existing_entries.count == 0
       	  entry = Entry.new()
-      	else
-      	  entry = existing_entries.first
-      	end
-      	
-        # TODO pd start and end set here as the straight imports with them being nil
-        # produced 44 hours per diem per day...hacking it for now
-        entry.pd_start = "0001"
-        entry.pd_end = "2359"
-        # TODO this 0500 hack has to go away...non imported entries need to be looked at for this too
-        # entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
-        #if e.date.include? "-"
-#          entry.date = DateTime.strptime(e.date, "%m-%d-%Y")
-#        elsif e.date.include? ":"
-#          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
-#        else
-#          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
-#        end
-			
-			  entry.date = e.date
-        #TODO notify so that TAA columns can be added after import to new aircraft 
-        
-			  @ac = Aircraft.where(tail: e.tail)
-			  if(@ac.count == 0)
-			    @ac = Aircraft.new( :tail => e.tail, :ac_model => e.ac_model, :user_id => user.id )
-			    @ac.save!
-			    entry.aircraft = @ac
-			  else
-			    entry.aircraft = @ac.first
-			  end
-
-        entry.from_recent_entry = true #TODO what was the point of this?
-        if e.pic.include? "Kemble"
-          if e.ac_model.start_with?("PC12") && e.sic != nil
-            entry.flight_number = "CNS976" #TODO user default flight number
-#          else
-#            entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
+        	
+          # TODO pd start and end set here as the straight imports with them being nil
+          # produced 44 hours per diem per day...hacking it for now
+          entry.pd_start = "0001"
+          entry.pd_end = "2359"
+          # TODO this 0500 hack has to go away...non imported entries need to be looked at for this too
+          # entry.date = DateTime.strptime e.date + ":0500", "%m/%d/%Y:%H%M"
+          #if e.date.include? "-"
+  #          entry.date = DateTime.strptime(e.date, "%m-%d-%Y")
+  #        elsif e.date.include? ":"
+  #          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
+  #        else
+  #          entry.date = DateTime.strptime(e.date, "%m/%d/%Y")
+  #        end
+  			
+  			  entry.date = i.date
+          #TODO notify so that TAA columns can be added after import to new aircraft 
+          
+  			  ac = Aircraft.where(tail: i.tail)
+  			  if(ac.count == 0)
+  			    new_ac = Aircraft.new( :tail => i.tail, :ac_model => i.ac_model, :user_id => user.id )
+  			    new_ac.save!
+  			    entry.aircraft = new_ac
+  			  else
+  			    entry.aircraft = ac.first
+  			  end
+  
+          entry.from_recent_entry = true #TODO what was the point of this?
+          if i.pic.include? "Kemble" #TODO fix all this so its not hardcoded
+            if i.ac_model.start_with?("PC12") && i.sic != nil
+              entry.flight_number = "CNS976" #TODO user default flight number
+  #          else
+  #            entry.flight_number = 'CNS' + i.pic.gsub(/[^\d]/,'')
+            end
+            entry.pic = true
+            entry.crew_name = i.sic.nil? ? '' : PsiImportHelper.format_crew_name(i.sic)
+          else
+            entry.pic = false
+            entry.flight_number = 'CNS' + i.pic.gsub(/[^\d]/,'')
+            entry.crew_name = i.pic.nil? ? '' : PsiImportHelper.format_crew_name(i.pic)
           end
-          entry.pic = true
-          entry.crew_name = e.sic.nil? ? '' : PsiImportHelper.format_crew_name(e.sic)
+          entry.user_id = user.id
+          entry.save!
+          if entry.errors.any?
+            Rails.logger.info entry.errors.messages
+            failed_imports = PsiImport.where(date: i.date, tail: i.tail)
+            failed_imports.each do |fail|
+              fail.import_errors = entry.errors.messages.flatten.pretty_inspect()
+              fail.save
+            end  
+            next
+          end
         else
-          entry.pic = false
-          entry.flight_number = 'CNS' + e.pic.gsub(/[^\d]/,'')
-          entry.crew_name = e.pic.nil? ? '' : PsiImportHelper.format_crew_name(e.pic)
-        end
-        entry.user_id = user.id
-        entry.save
-        if entry.errors.any?
-          Rails.logger.info entry.errors.messages
-          @failed_imports = PsiImport.where(date: e.date, tail: e.tail)
-          @failed_imports.each do |fail|
-            fail.import_errors = entry.errors.messages.flatten.pretty_inspect()
-            fail.save
-          end  
-          next
+          entry = existing_entries.first
         end
         
         #flights
-        
-        @flights = PsiImport.where(date: e.date, tail: e.tail)
-        if @flights.any?
-          @flights.each do |f|
-          	
-            unless f.blockout.nil?
-              f.blockout = f.blockout.fix_btime
-              f.blockin = f.blockin.fix_btime
-            end
-						# Airports
-						
-						dep = Airport.search(f.dep, true)
-						arr = Airport.search(f.arr, true)
-
-						flight = Flight.new
-						flight.blockout = f.blockout
-						flight.blockin = f.blockin
-						flight.approaches = f.approaches
-						flight.night_to = f.nto
-						flight.dep = dep
-						flight.arr = arr
-						flight.entry = entry
-
-            if flight.blockout.nil?
-              Rails.logger.debug "blockout/blockin missing: using btime in csv"
-              flight.block_time = f.btime
-            end
-            
-            if (f.night_ld == 0 || f.night_ld.nil?) && (f.dlnd == 0 || f.dlnd.nil?)
-              flight.pf = false
-            else
-              flight.pf = true
-            end
-            
-            flight.night_ld = f.night_ld
-            flight.day_ld = f.dlnd
-            unless f.ntime.nil?
-              flight.night = f.ntime
-            end
-
-            flight.user_id = user.id
-            
-            flight.dual_given = f.dual_given
-            flight.dual_recvd = f.dual_recvd
-            flight.save!
-            if flight.errors.any?
-              Rails.logger.info flight.errors.messages
-              f.import_errors = flight.errors.messages.flatten.inspect
-              f.save!
-              next
-            end
-            
-
-            #finally, set the imported flag
-            f.imported = true
-            f.save!
-          end
+          
+        unless i.blockout.nil?
+          i.blockout = i.blockout.fix_btime
+          i.blockin = i.blockin.fix_btime
         end
+				# Airports
+				
+				dep = Airport.search(i.dep, true)
+				arr = Airport.search(i.arr, true)
+				
+				#TODO check for a duplicate flights here. not sure if this is possible. without block times in the import,
+				# repeated flights to the same airports on the same day with the same crew would show as an existing flight.
+				# leaving this for now.
+				flight = Flight.new
+				flight.blockout = i.blockout
+				flight.blockin = i.blockin
+				flight.approaches = i.approaches
+				flight.night_to = i.nto
+				flight.dep = dep
+				flight.arr = arr
+				flight.entry = entry
+
+        if flight.blockout.nil?
+          Rails.logger.debug "blockout/blockin missing: using btime in csv"
+          flight.block_time = i.btime
+        end
+        
+        if (i.night_ld == 0 || i.night_ld.nil?) && (i.dlnd == 0 || i.dlnd.nil?)
+          flight.pf = false
+        else
+          flight.pf = true
+        end
+        
+        flight.night_ld = i.night_ld
+        flight.day_ld = i.dlnd
+        unless i.ntime.nil?
+          flight.night = i.ntime
+        end
+
+        flight.user_id = user.id
+        
+        flight.dual_given = i.dual_given
+        flight.dual_recvd = i.dual_recvd
+        flight.save!
+        if flight.errors.any?
+          byebug
+          Rails.logger.info flight.errors.messages
+          i.import_errors = flight.errors.messages.flatten.inspect
+          i.save!
+          next
+        end
+        
+
+        #finally, set the imported flag
+        i.imported = true
+        i.save!
       
       rescue => oops
-        e.import_errors = oops.message
-        e.save
-        byebug
-        Rails.logger.debug "import error: #{e.id}: #{oops}"
+        i.import_errors = oops.message
+        i.save! #TODO these are never getting saved as they don't have ID's - they are a distinct query not a record collection.
+        Rails.logger.debug "import error: #{i.id}: #{oops}"
         Rails.logger.debug oops.backtrace[0]
         next
       end

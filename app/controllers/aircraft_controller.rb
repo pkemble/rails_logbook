@@ -1,6 +1,6 @@
 class AircraftController < ApplicationController
   def index
-    @aircrafts = Aircraft.all.order(ac_model: :asc).order(tail: :asc).where(user_id: current_user)
+    @aircrafts = Aircraft.all.order(ac_model: :asc).order(tail: :asc).where(user_id: current_user).sort_by {|ac| ac.entry_num }.reverse
   end
   
   def create

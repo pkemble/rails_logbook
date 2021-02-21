@@ -27,7 +27,7 @@ namespace :db do
         end
         
         
-        f_prop_array = [ f.date, flight.dep, flight.arr, f.ac_model, f.tail, flight.day_to, flight.night_to, 
+        f_prop_array = [ f.date, flight.dep.icao, flight.arr.icao, f.ac_model, f.tail, flight.day_to, flight.night_to, 
           flight.day_ld, flight.night_ld, flight.block_time, flight.night, f.pic, f.sic, f.mepic,
           f.mesic, "0", flight.approaches, "0", pic_name, sic_name, "0", "0", blockout, blockin]
         

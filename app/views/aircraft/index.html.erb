@@ -7,6 +7,7 @@
 	    	<td scope='col-md-1'>multi</td>
 	    	<td scope='col-md-1'>turbine</td>
 	    	<td scope='col-md-1'>turboprop</td>
+	    	<td scope='col-md-2'># of entries</td>
 	    </tr>
 	  </thead>
 	  <% @aircrafts.each do |ac| %>
@@ -25,6 +26,9 @@
 	      </td>
 	      <td class='col-md-1'>
 	        <%= ac.turboprop %>
+	      </td>
+	      <td class='col-md-2'>
+	      	<%= ac.entry_num %>
 	      </td>
 	    </tr>
 	  <% end %>

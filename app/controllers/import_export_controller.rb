@@ -63,17 +63,10 @@ class ImportExportController < ApplicationController
   def import_loaded_csv
     @user = current_user
     PsiImport.convert(@user)
-    @import_errors = PsiImport.where(imported: false)
-    if @import_errors.any?
-      @full_errors = '<ul>'
-      @import_errors.each do |e|
-        @full_errors += '<li>' + e.date.to_s + ' : ' + e.tail + ' : ' + e.import_errors + '</li>'
-      end
-      @full_errors += '</ul>'
-      flash[:warning] = @full_errors.html_safe
-    end
+    #populate ac data
+    Aircraft.populate_ac_data
     flash[:success] = "Import Complete"
-    redirect_to psi_import_path(@import_errors)
+    redirect_to psi_import_path
   end
 
   def delete_psi_imports
@@ -86,6 +79,7 @@ class ImportExportController < ApplicationController
     @user = current_user
 	  Flight.where(user_id: @user.id).delete_all
     Entry.where(user_id: @user.id).delete_all
+    Aircraft.where(user_id: @user.id).delete_all
     PsiImport.delete_all
     flash[:success] = "Flights, Entries, Imports wiped."
     redirect_to psi_import_path
@@ -93,11 +87,20 @@ class ImportExportController < ApplicationController
   
   def psi_import
     @psi_imports = PsiImport.order('date').all
+    @import_errors = PsiImport.where(imported: false, import_errors: !nil)
+    if @import_errors.any?
+      @full_errors = '<ul>'
+      @import_errors.each do |e|
+        @full_errors += '<li>' + e.date.to_s + ' : ' + e.tail + ' : ' + e.import_errors + '</li>'
+      end
+      @full_errors += '</ul>'
+      flash[:warning] = @full_errors.html_safe
+    end
   end
 
   def psi_expense
     @user = current_user
-    if params[:month].nil? 
+    unless params[:month].nil? 
       @t = Time.now.prev_month.beginning_of_month
       @e = Time.now.prev_month.end_of_month
       @entries = Entry.where(date: @t..@e, user_id: @user.id ).order(:date)

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   
   get 'io' => 'import_export#index'
   get 'exportJson' => 'import_export#export'
-  #get 'psi_expense_report/:month', to: 'import_export#psi_expense'
+  get 'psi_expense_report/:month', to: 'import_export#psi_expense'
   get 'psi_import' => 'import_export#psi_import'
   post 'psi_import' => 'import_export#upload'
   get 'import_loaded_csv' => 'import_export#import_loaded_csv'
