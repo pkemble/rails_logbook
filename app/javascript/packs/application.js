@@ -31,3 +31,6 @@ require("bootstrap");
 require("easy-autocomplete");
 require("javascripts/airports");
 require("turbolinks").start();
+require("dropzone");
+require("chartkick");
+require("chart.js");

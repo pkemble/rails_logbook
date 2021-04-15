@@ -4,7 +4,7 @@ default: &default
   database: logbook
   host: 127.0.0.1
   username: logbookdb
-  password: novabein
+  password: <%= begin IO.read("/home/pete/dev/.db") rescue "" end %>
   socket: /tmp/mysql.sock
   pool: 5
   timeout: 5000

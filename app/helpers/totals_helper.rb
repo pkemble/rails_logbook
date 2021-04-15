@@ -73,7 +73,7 @@ module TotalsHelper
   end
   
   class Totals
-    attr_reader :time, :pic, :sic, :instrument, :night
+    attr_reader :time, :pic, :sic, :instrument, :night, :hours_gone, :days_gone
     
     #paper logbook constants don't include any sic, or turbine
     #TODO make these fields in the user form
@@ -165,6 +165,45 @@ module TotalsHelper
 
 		def xc_pic
 			return Flight.where(xc: :true).joins(:entry).where(entry: { pic: true }).sum(:block_time).round(1) + P_TOTAL_XC
+    end
+    
+    ## QOL ##
+    def hours_gone(data, year)
+      h = 0
+      unless Time.now.year == year
+        hours_in_period = 8760
+      else
+        hours_in_period = 8760 - (DateTime.new(year.to_i + 1, 1, 1).to_time - Time.now) / 1.hour
+      end
+      data.each do |q|
+        h = h + q.pd
+      end
+      hrs = h.round(1).to_i
+      pct = ((h * 100) / hours_in_period).round(1).to_i
+      str = 'Hours gone: ' + hrs.to_s + ' : ' + pct.to_s + '% of the year'
+      return {
+        :hrs => hrs,
+        :pd => hours_in_period,
+        :pct => pct,
+        :str => str
+      }
+    end
+    
+    def days_gone(data, year)
+      unless Time.now.year == year
+        days_in_period = 365
+      else
+        days_in_period = Date.today.yday
+      end
+      days = data.count
+      pct = ((data.count * 100) / days_in_period).round(1)
+      str = 'Days gone: ' + days.to_s + ' : ' + pct.to_s + '% of the year'
+      return {
+        :days => days,
+        :pd => days_in_period,
+        :pct => pct,
+        :str => str
+      }
     end
 
     private

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :airports 
 	get 'full/search_apt', to: 'airports#search_apt'
 	resources :totals
+	get 'qol' => 'qol#index'
+	post 'qol' => 'qol#upload'
 
   get 'logbook/index'
   
@@ -26,7 +28,6 @@ Rails.application.routes.draw do
   post 'glob_flights' => 'tools#glob_flights'
   post 'import_airports' => 'import_export#import_airports'
   get 'missing_data' => 'airports#missing_data'
-  
   get 'print' => 'logbook#print'
 
   get 'tools' => 'tools#index'

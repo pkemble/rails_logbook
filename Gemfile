@@ -16,7 +16,11 @@ gem 'rexml'
 gem 'puma', '~> 5.0'
 gem "activerecord-session_store", github: "rails/activerecord-session_store", branch: "master"
 
-
+#per diem imports
+gem 'roo'
+gem 'dropzonejs-rails'
+gem 'chartkick'
+gem 'groupdate'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'

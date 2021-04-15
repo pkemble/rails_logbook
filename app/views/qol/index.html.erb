@@ -1,0 +1,30 @@
+<div class='container'>
+	<%= form_tag({action: :upload}, multipart: true, class: 'dropzone') do |f| %>
+		<%= file_field_tag :file, direct_upload: true, multiple: true, data: { target: 'dropzone.input' } %>
+		<%= submit_tag "import all", :class => "btn btn-success", multiple: true %>
+	<% end %>
+</div>
+<div class='container'>
+	<ul class='nav nav-pills' id='pills-tab' role='tablist'>
+		<% @ann_data.each do |year, value| %>
+			<li class='nav-item' role='presentation'>
+				<a class='nav-link' id='pills-<%= year %>-tab' data-toggle='tab' role='tab' href='#pills-<%= year %>'><h1><%= year %></h1></a>
+			</li>
+		<% end %>
+	</ul>
+	<div class='tab-content' id='pills-tabContent'>
+		<% @ann_data.each do | year, value | %>
+			<div class='tab-pane fade' id='pills-<%= year %>' role='tabpanel'>
+				<%= @ann_data[year][:hg][:str] %><br />
+				<%= @ann_data[year][:dg][:str] %>
+				<%= column_chart Qol.where(year: year).group_by_month(:date).count, max: 31 %>
+				<%= pie_chart [ [ 'At work', @ann_data[year][:dg][:days]], [ 'At home', @ann_data[year][:dg][:pd] - @ann_data[year][:dg][:days]] ] %>
+			</div>
+		<% end %>
+	</div>
+</div>
+<script>
+  $(function () {
+    $('#pills-tab li:last-child a').tab('show')
+  })
+</script>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_140403) do
+ActiveRecord::Schema.define(version: 2021_02_21_184042) do
 
   create_table "aircraft", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "tail"
@@ -121,6 +121,19 @@ ActiveRecord::Schema.define(version: 2021_02_07_140403) do
     t.boolean "dual_recvd"
     t.string "flight_number"
     t.string "import_errors"
+  end
+
+  create_table "qols", charset: "utf8mb4", force: :cascade do |t|
+    t.date "date"
+    t.string "month"
+    t.string "year"
+    t.string "tail"
+    t.string "legs"
+    t.float "pd"
+    t.float "amount"
+    t.float "total"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "sessions", id: :integer, charset: "utf8mb4", force: :cascade do |t|
