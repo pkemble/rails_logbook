@@ -13,7 +13,7 @@ gem 'json', '>= 2.5.1'
 
 # rails update
 gem 'rexml'
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.5'
 gem "activerecord-session_store", github: "rails/activerecord-session_store", branch: "master"
 
 
