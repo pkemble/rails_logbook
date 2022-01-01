@@ -8,9 +8,39 @@ class QolController < ApplicationController
     @years.each do |y|
       @ann_data[y.year] = {
         hg: @totals.hours_gone(Qol.where(year: y.year), y.year.to_i),
-        dg: @totals.days_gone(Qol.where(year: y.year), y.year.to_i) 
+        dg: @totals.days_gone(Qol.where(year: y.year), y.year.to_i),
+        cycle_dur: trip_durations(Qol.where(year: y.year).order(:date))  
     }
+    @trip_day = trip_durations(Qol.all.order(:date))
     end
+  end
+  
+  def trip_durations(qols)
+    trips = []
+    prev_day = Date.new
+    current_trip_days = 0
+    current_cycle_count = 0
+    start_day = DateTime.new
+    trip_days = Array.new # days
+    qols.each do |q|
+      #if it's the first day
+      if current_cycle_count == 0
+        current_cycle_count = 1
+        prev_day = q.date
+        next      
+      # if it's the next day
+      
+        elsif (q.date - prev_day).to_i == 1 && !q.legs.end_with?("PSM")
+        current_cycle_count += 1
+        prev_day = q.date
+        next
+
+      else #end of the cycle
+        trip_days.append(current_cycle_count)
+        current_cycle_count = 0
+      end
+    end
+  return trip_days.uniq.map {|x| [x, trip_days.count(x)] }.sort_by { |k,v| -v }.to_h
   end
   
   def upload

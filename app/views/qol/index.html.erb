@@ -5,6 +5,9 @@
 	<% end %>
 </div>
 <div class='container'>
+	<h3>Total Days Away at a Time</h3>
+	<%= @trip_day.deep_stringify_keys %>
+	<%= bar_chart @trip_day %>
 	<ul class='nav nav-pills' id='pills-tab' role='tablist'>
 		<% @ann_data.each do |year, value| %>
 			<li class='nav-item' role='presentation'>
@@ -19,12 +22,10 @@
 				<%= @ann_data[year][:dg][:str] %>
 				<%= column_chart Qol.where(year: year).group_by_month(:date).count, max: 31 %>
 				<%= pie_chart [ [ 'At work', @ann_data[year][:dg][:days]], [ 'At home', @ann_data[year][:dg][:pd] - @ann_data[year][:dg][:days]] ] %>
+				<h3>Total Days Away at a Time in <%= year %></h3>
+				<%= column_chart @ann_data[year][:cycle_dur] %>
 			</div>
 		<% end %>
 	</div>
+	
 </div>
-<script>
-  $(function () {
-    $('#pills-tab li:last-child a').tab('show')
-  })
-</script>

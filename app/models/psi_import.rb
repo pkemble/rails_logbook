@@ -88,7 +88,6 @@ class PsiImport < ActiveRecord::Base
   def self.convert(user)
     PsiImport.all.each do |i|
       begin
-        byebug
       	# grab a possibly existing entry if there were errors importing before
       	existing_entries = Entry.joins(:aircraft).where(aircraft: { tail: i.tail }).where(date: i.date)
 
