@@ -195,7 +195,7 @@ class PsiImport < ActiveRecord::Base
         flight.dual_recvd = i.dual_recvd
         flight.save!
         if flight.errors.any?
-          byebug
+          
           Rails.logger.info flight.errors.messages
           i.import_errors = flight.errors.messages.flatten.inspect
           i.save!
